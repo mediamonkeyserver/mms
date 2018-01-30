@@ -1,37 +1,20 @@
 [![Build Status][travis-image]][travis-url] [![NPM version][npm-image]][npm-url] 
 
-# upnpserver
+# mediamonkey server
 ![upnpserver icon](icon/icon_128.png)
 
+MediaMonkey Server is a cross-platform media server written in Node.js.
 
-UpnpServer is a fast and light UPnP server written in NodeJS.
-This version does not need an external database (mysql, mongodb), it stores all information in memory.
-
-
-## Compatibility
-
-- Freebox HD
-- Soundbridge
-- ht5streamer 
-- Intel Device Validator
-- Samsung AllShare play
-- LG Smart Share
-- Android
-    - VPlayer (with UPNP Plugin)
-    - NX Player
+The code is based on upnpserver package.
 
 ## Installation
 
-    $ npm install upnpserver
+    $ npm install mediamonkeyserver
 
-## Command line
-
-For command line, install [upnpserver-cli](https://github.com/oeuillot/upnpserver-cli) package. 
- 
 ## API Usage
 
 ```javascript
-var Server = require("upnpserver");
+var Server = require("mediamonkeyserver");
 
 var server = new Server({ /* configuration, see below */ }, [
   '/home/disk1',
@@ -49,7 +32,6 @@ Server constructor accepts an optional configuration object. At the moment, the 
 - `log` _Boolean_ Enable/disable logging. Default: false.
 - `logLevel` _String_ Specifies log level to print. Possible values: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`. Defaults to `ERROR`.
 - `name` _String_ Name of server. Default 'Node Server'
-- `modelName` _String_ Model name of server. Default 'Node upnpserver'
 - `uuid` _String_ UUID of server. (If not specified, a UUID v4 will be generated)
 - `hostname` _String_ Hostname to bind the server. Default: 0.0.0.0
 - `httpPort` _Number_ Http port. Default: 10293
@@ -67,11 +49,12 @@ make test
 
 ## Author
 
-Olivier Oeuillot
+MediaMonkey team
+Olivier Oeuillot (Original author of the upnpserver package)
 
 ## Contributors
 
-https://github.com/oeuillot/upnpserver/graphs/contributors
+https://github.com/mediamonkeyserver/mms/graphs/contributors
 
 [npm-url]: https://npmjs.org/package/upnpserver
 [npm-image]: https://badge.fury.io/js/upnpserver.svg
