@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://jirik@jirik.git.cloudforge.com/mms.git"
+    "url": "https://github.com/mediamonkeyserver/mms.git"
   },
   "engines": {
     "node": ">=5.0.0"
@@ -51,7 +51,7 @@
       "email": "jh@mediamonkey.com"
     }
   ],
-  "name": "mms",
+  "name": "mediamonkeyserver",
   "optionalDependencies": {},
   "pkg": {
     "scripts": [
@@ -64,10 +64,10 @@
       "icon"
     ]
   },
-  "readme": "ERROR: No README data found!",
+  "readme": "README.md",
   "scripts": {
     "start": "node server.js",
     "test": "jshint lib/"
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
