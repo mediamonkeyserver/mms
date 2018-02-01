@@ -1,6 +1,7 @@
 {
   "name": "mms-ui",
   "version": "0.1.0",
+  "homepage": "/web",
   "private": true,
   "dependencies": {
     "material-ui": "next",
