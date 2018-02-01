@@ -443,9 +443,14 @@ class API extends events.EventEmitter {
 
 		this.httpServer = httpServer;
 
-		app.get('/\*', (req, res) => {
+		app.use((req, res, next) => {
 			this._processRequest(req, res);
 		});
+
+		// To be used later? Or everything in the middleware use() above?
+		// app.get('/\*', (req, res) => {
+		// 	this._processRequest(req, res);
+		// });
 
 		httpServer.listen(upnpServer.port, (error) => {
 			if (error) {
