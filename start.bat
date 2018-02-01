@@ -1,0 +1,2 @@
+REM set DEBUG=*
+mms
