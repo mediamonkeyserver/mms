@@ -8,6 +8,7 @@ const ip = require('ip');
 const SSDP = require('node-ssdp');
 const url = require('url');
 const util = require('util');
+const express = require('express');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -83,7 +84,7 @@ class API extends events.EventEmitter {
 		if (typeof (path) === "string") {
 			return this.addDirectory("/", path);
 		}
-		if (typeof(path) === "object") {
+		if (typeof (path) === "object") {
 			if (path.type === "video") {
 				path.type = "movie";
 			}
@@ -162,7 +163,7 @@ class API extends events.EventEmitter {
 
 		assert.equal(typeof (path), "string", "Invalid path parameter '" + path + "'");
 
-		configuration = Object.assign({}, configuration, {mountPath, path, type: "directory"});
+		configuration = Object.assign({}, configuration, { mountPath, path, type: "directory" });
 
 		return this.declareRepository(configuration);
 	}
@@ -182,7 +183,7 @@ class API extends events.EventEmitter {
 			mountPath + "'");
 		assert.equal(typeof path, "string", "Invalid path parameter '" + mountPath + "'");
 
-		configuration = Object.assign({}, configuration, {mountPath, path, type: "music"});
+		configuration = Object.assign({}, configuration, { mountPath, path, type: "music" });
 
 		return this.declareRepository(configuration);
 	}
@@ -201,7 +202,7 @@ class API extends events.EventEmitter {
 		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" + mountPath + "'");
 		assert.equal(typeof path, "string", "Invalid path parameter '" + path + "'");
 
-		configuration = Object.assign({}, configuration, {mountPath, path, type: "movie"});
+		configuration = Object.assign({}, configuration, { mountPath, path, type: "movie" });
 
 		return this.declareRepository(configuration);
 	}
@@ -217,7 +218,7 @@ class API extends events.EventEmitter {
 	addHistoryDirectory(mountPath, configuration) {
 		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" + mountPath + "'");
 
-		configuration = Object.assign({}, configuration, {mountPath, type: "history"});
+		configuration = Object.assign({}, configuration, { mountPath, type: "history" });
 
 		return this.declareRepository(configuration);
 	}
@@ -236,7 +237,7 @@ class API extends events.EventEmitter {
 		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" +
 			mountPath + "'");
 
-		configuration = Object.assign({}, configuration, {mountPath, type: "iceCast"});
+		configuration = Object.assign({}, configuration, { mountPath, type: "iceCast" });
 
 		return this.declareRepository(configuration);
 	}
@@ -361,7 +362,7 @@ class API extends events.EventEmitter {
 	 */
 	startServer(callback) {
 		callback = callback || (() => {
-			});
+		});
 
 		debug("startServer", "Start the server");
 
@@ -417,7 +418,7 @@ class API extends events.EventEmitter {
 			description: "/description.xml",
 			location: locationURL,
 			ssdpSig: "Node/" + process.versions.node + " UPnP/1.0 " + "UPnPServer/" +
-			require("./package.json").version
+				require("./package.json").version
 		};
 
 		debug("_upnpServerStarted", "New SSDP server config=", config);
@@ -437,10 +438,14 @@ class API extends events.EventEmitter {
 
 		debug("_upnpServerStarted", "New Http server port=", upnpServer.port);
 
-		var httpServer = http.createServer();
+		var app = express();
+		var httpServer = http.createServer(app);
+
 		this.httpServer = httpServer;
 
-		httpServer.on('request', this._processRequest.bind(this));
+		app.get('/\*', (req, res) => {
+			this._processRequest(req, res);
+		});
 
 		httpServer.listen(upnpServer.port, (error) => {
 			if (error) {
@@ -450,7 +455,7 @@ class API extends events.EventEmitter {
 			this.ssdpServer.start();
 
 			this.emit("waiting");
-
+			
 			var address = httpServer.address();
 
 			debug("_upnpServerStarted", "Http server is listening on address=", address);
@@ -526,8 +531,8 @@ class API extends events.EventEmitter {
 		debug("stop", "Stopping ...");
 
 		callback = callback || (() => {
-				return false;
-			});
+			return false;
+		});
 
 		var httpServer = this.httpServer;
 		var ssdpServer = this.ssdpServer;

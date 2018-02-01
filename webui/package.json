@@ -1,0 +1,23 @@
+{
+  "name": "mms-ui",
+  "version": "0.1.0",
+  "homepage": "/web",
+  "private": true,
+  "dependencies": {
+    "material-ui": "next",
+    "material-ui-icons": "next",
+    "pubsub-js": "^1.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2",
+    "typeface-roboto": "^0.0.54"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
