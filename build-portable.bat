@@ -4,6 +4,8 @@ rem
 rem npm install -g pkg
 rem
 
+call build-webui.bat
+
 mkdir dist
 mkdir dist\win64
 call pkg -t node8-win -o dist\win64\mms.exe .

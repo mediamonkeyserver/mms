@@ -62,7 +62,8 @@
     ],
     "assets": [
       "default-config.json",
-      "icon"
+      "icon",
+      "build-webui"
     ]
   },
   "readme": "README.md",
