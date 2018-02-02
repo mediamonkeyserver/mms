@@ -38,8 +38,8 @@ class NavigationList extends React.Component {
 
   componentDidMount = () => {
     Server.getInfo().then((info) => {
-      this.setState({serverName: info.serverName});
-      this.setState({collections: info.collections.map(x => {return {id: x.id, name: x.name, type: x.type}})});
+      this.setState({ serverName: info.serverName });
+      this.setState({ collections: info.collections.map(x => { return { id: x.id, name: x.name, type: x.type } }) });
     });
   }
 
@@ -56,25 +56,20 @@ class NavigationList extends React.Component {
           component="nav"
           subheader={<ListSubheader component="div" color="primary">{this.state.serverName}</ListSubheader>}
         >
+          {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
-          <ListItem button>
-            <ListItemIcon>
-              <MusicIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Music" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <MovieIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Movies" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <PlaylistIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Playlists" />
-          </ListItem>
+          {this.state.collections.map((col) => {
+            var icon = 
+              (col.type == 'music' ? <MusicIcon /> : 
+              (col.type == 'movies' ? <MovieIcon /> : <PlaylistIcon />));
+            return <ListItem button>
+              <ListItemIcon>
+                {icon}
+              </ListItemIcon>
+              <ListItemText inset primary={col.name} />
+            </ListItem>;
+          })}
+
           <Divider />
 
           {/* Settings */}
