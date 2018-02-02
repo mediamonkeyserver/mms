@@ -65,13 +65,13 @@ try {
 // LS: add default locations (used also for uploading files from MM5), TODO: be configurable
 directories.push({
   type : "music",
-  path : os.homedir() + "/Music/",
+  path : os.homedir() + "/Music",
   mountPoint : "Music"
 });
 
 directories.push({  
   type : "movie",
-  path : os.homedir() + "/Video/",
+  path : os.homedir() + "/Video",
   mountPoint : "Video"
 });
 
