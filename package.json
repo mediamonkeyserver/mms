@@ -5,6 +5,7 @@
   "dependencies": {
     "@mmserver/sqlite3": "^3.1.14",
     "async": "2.6.0",
+    "body-parser": "^1.18.2",
     "commander": "^2.13.0",
     "debug": "3.1.0",
     "exif": "0.6.0",

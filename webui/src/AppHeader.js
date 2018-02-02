@@ -9,6 +9,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import LoginIcon from './LoginIcon';
 
 import PubSub from 'pubsub-js';
+import Server from './server';
 
 const styles = {
   root: {
@@ -27,7 +28,14 @@ class AppHeader extends React.Component {
   state = {
     auth: true,
     anchorEl: null,
+    serverName: ""
   };
+
+  componentDidMount = () => {
+    Server.getInfo().then((info) => {
+      this.setState({serverName: info.serverName});
+    });
+  }
 
   handleChange = (event, checked) => {
     this.setState({ auth: checked });
@@ -56,7 +64,7 @@ class AppHeader extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
-              MediaMonkey Server
+              {this.state.serverName}
             </Typography>
             <LoginIcon />
           </Toolbar>

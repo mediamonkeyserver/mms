@@ -9,6 +9,8 @@ const SSDP = require('node-ssdp');
 const url = require('url');
 const util = require('util');
 const express = require('express');
+const bodyParser = require('body-parser');
+const restRouter = require('./lib/api/rest');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -443,6 +445,10 @@ class API extends events.EventEmitter {
 
 		this.httpServer = httpServer;
 
+		app.use('/api', bodyParser.urlencoded({ extended: true }));
+		app.use('/api', bodyParser.json());
+		app.use('/api', new restRouter);
+
 		app.use((req, res, next) => {
 			this._processRequest(req, res);
 		});
@@ -460,7 +466,7 @@ class API extends events.EventEmitter {
 			this.ssdpServer.start();
 
 			this.emit("waiting");
-			
+
 			var address = httpServer.address();
 
 			debug("_upnpServerStarted", "Http server is listening on address=", address);

@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
+//import restify from 'restify-clients';
+
+// var restify = require('restify-clients');
+
 // import { Provider } from 'react-redux'
 // import { createStore } from 'redux'
 // import mmsReducers from './reducers';
@@ -12,7 +16,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
     // <Provider store={store}>
-        <App />
+    <App />
     // </Provider>
     , document.getElementById('root'));
 registerServiceWorker();
