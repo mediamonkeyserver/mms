@@ -1,5 +1,6 @@
 var util = require('util');
 var commander = require("commander");
+const os = require('os');
 
 var Server = require("./api");
 
@@ -60,6 +61,19 @@ try {
 }
 
 //commander.garbageItems = true;
+
+// LS: add default locations (used also for uploading files from MM5), TODO: be configurable
+directories.push({
+  type : "music",
+  path : os.homedir() + "/Music/",
+  mountPoint : "Music"
+});
+
+directories.push({  
+  type : "movie",
+  path : os.homedir() + "/Video/",
+  mountPoint : "Video"
+});
 
 // Create an UpnpServer with options
 
