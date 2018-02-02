@@ -6,6 +6,8 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import Divider from 'material-ui/Divider';
 
+import Server from './server';
+
 // icons
 import SettingsIcon from 'material-ui-icons/Settings';
 import ExpandLess from 'material-ui-icons/ExpandLess';
@@ -28,10 +30,21 @@ const styles = theme => ({
 });
 
 class NavigationList extends React.Component {
-  state = { open: true };
+  state = {
+    configOpen: true,
+    serverName: "",
+    collections: []
+  };
 
-  handleClick = () => {
-    this.setState({ open: !this.state.open });
+  componentDidMount = () => {
+    Server.getInfo().then((info) => {
+      this.setState({serverName: info.serverName});
+      this.setState({collections: info.collections.map(x => {return {id: x.id, name: x.name, type: x.type}})});
+    });
+  }
+
+  handleConfigClick = () => {
+    this.setState({ configOpen: !this.state.configOpen });
   };
 
   render() {
@@ -41,7 +54,7 @@ class NavigationList extends React.Component {
       <div className={classes.root}>
         <List
           component="nav"
-          subheader={<ListSubheader component="div" color="primary">MediaMonkey Server</ListSubheader>}
+          subheader={<ListSubheader component="div" color="primary">{this.state.serverName}</ListSubheader>}
         >
           <ListSubheader>Collections</ListSubheader>
           <ListItem button>
@@ -65,14 +78,14 @@ class NavigationList extends React.Component {
           <Divider />
 
           {/* Settings */}
-          <ListItem button onClick={this.handleClick}>
+          <ListItem button onClick={this.handleConfigClick}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText inset primary="Configuration" />
-            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+            {this.state.configOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.configOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem button className={classes.nested}>
                 <ListItemText inset primary="Server" />
