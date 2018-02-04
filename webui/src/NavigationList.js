@@ -60,8 +60,8 @@ class NavigationList extends React.Component {
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
             var icon = 
-              (col.type == 'music' ? <MusicIcon /> : 
-              (col.type == 'movies' ? <MovieIcon /> : <PlaylistIcon />));
+              (col.type === 'music' ? <MusicIcon /> : 
+              (col.type === 'movies' ? <MovieIcon /> : <PlaylistIcon />));
             return <ListItem button>
               <ListItemIcon>
                 {icon}

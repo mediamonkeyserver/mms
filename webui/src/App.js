@@ -3,6 +3,7 @@ import './App.css';
 import { withStyles } from 'material-ui/styles';
 import AppHeader from './AppHeader';
 import MainDrawer from './MainDrawer';
+import FolderChooser from './FolderChooser';
 
 const styles = {
 };
@@ -13,6 +14,7 @@ class App extends Component {
       <div>
         <AppHeader />
         <MainDrawer />
+        <FolderChooser />
       </div>
     );
   }
