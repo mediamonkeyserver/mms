@@ -8,7 +8,7 @@ class Path {
 
     static removeLastSeparator = (path) => {
         if (path.endsWith('/'))
-            return path.substr(-1);
+            return path.substr(0, path.length-1);
         else
             return path;
     }
