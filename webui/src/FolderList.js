@@ -8,9 +8,10 @@ import Server from './server';
 
 const styles = theme => ({
     root: {
-        width: '100%',
-        maxWidth: 400,
-        minWidth: 250,
+        width: 400,
+        height: 450,
+        'overflow-x': 'hidden',
+        'overflow-y': 'auto',
     }
 });
 

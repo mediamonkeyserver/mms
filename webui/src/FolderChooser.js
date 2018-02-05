@@ -7,10 +7,10 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
 const styles = theme => ({
-    root: {
+    textField: {
         width: '100%',
     },
-    textField: {
+    folderList: {
         width: '100%',
     }
 });
@@ -32,21 +32,18 @@ class FolderChooser extends React.Component {
 
         return (
             <div>
-                <Grid item xs={12}>
-                    <Paper>
-                        <TextField
-                            id="name"
-                            label="Path:"
-                            className={classes.textField}
-                            value={this.state.path}
-                            // onChange={this.handleChange('name')}
-                            margin="normal"
-                        />
-                    </Paper>
-                    <FolderList
-                        path={this.state.path}
-                        onPathChange={this.onPathChange} />
-                </Grid>
+                <TextField
+                    id='name'
+                    label='Path:'
+                    className={classes.textField}
+                    value={this.state.path}
+                    // onChange={this.handleChange('name')}
+                    margin='normal'
+                />
+                <FolderList
+                    path={this.state.path}
+                    className={classes.folderList}
+                    onPathChange={this.onPathChange} />
             </div>
         );
     }
