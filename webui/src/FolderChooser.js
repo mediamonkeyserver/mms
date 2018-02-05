@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import FolderList from './FolderList';
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
 
 const styles = theme => ({
     textField: {

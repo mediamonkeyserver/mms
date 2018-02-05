@@ -6,7 +6,6 @@ import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   withMobileDialog,
 } from 'material-ui/Dialog';
@@ -25,11 +24,8 @@ class DialogChooseFolder extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <Dialog
-        className={classes.dlg}
         open={this.state.open}
         onClose={this.handleDialogClose}>
         <DialogTitle>{"Choose Folder"}</DialogTitle>
