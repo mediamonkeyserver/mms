@@ -12,7 +12,24 @@ const styles = theme => ({
     },
     folderList: {
         width: '100%',
-    }
+    },
+    textFieldRoot: {
+        padding: 0,
+        'label + &': {
+            marginTop: theme.spacing.unit * 3,
+        },
+    },
+    textFieldInput: {
+        borderRadius: 4,
+        backgroundColor: theme.palette.borderColor,
+        border: '1px solid #ced4da',
+        padding: '10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        '&:focus': {
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
 });
 
 class FolderChooser extends React.Component {
@@ -34,11 +51,17 @@ class FolderChooser extends React.Component {
             <div>
                 <TextField
                     id='name'
-                    label='Path:'
                     className={classes.textField}
                     value={this.state.path}
                     // onChange={this.handleChange('name')}
                     margin='normal'
+                    InputProps={{
+                        disableUnderline: true,
+                        classes: {
+                            root: classes.textFieldRoot,
+                            input: classes.textFieldInput,
+                        },
+                    }}
                 />
                 <FolderList
                     path={this.state.path}
