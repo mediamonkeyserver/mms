@@ -75,6 +75,12 @@ directories.push({
   mountPoint : "Video"
 });
 
+directories.push({
+  type : "playlist",
+  path : os.homedir() + "/Playlists",
+  mountPoint : "Playlists"
+});
+
 // Create an UpnpServer with options
 
 var server = new Server(commander, directories);
