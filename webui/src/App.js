@@ -3,7 +3,7 @@ import './App.css';
 import { withStyles } from 'material-ui/styles';
 import AppHeader from './AppHeader';
 import MainDrawer from './MainDrawer';
-import DialogChooseFolder from './DialogChooseFolder';
+import Dialogs from './Dialogs';
 import MainContent from './MainContent';
 import Player from './Player';
 
@@ -35,7 +35,7 @@ class App extends Component {
         </div>
         <Player/>
         <MainDrawer />
-        <DialogChooseFolder />
+        <Dialogs />
       </div>
     );
   }
