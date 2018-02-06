@@ -10,8 +10,10 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import FolderChooser from './FolderChooser';
 import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
 
-import Input, { InputLabel } from 'material-ui/Input';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import Icon from 'material-ui/Icon';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
@@ -21,14 +23,20 @@ import TextField from 'material-ui/TextField';
 import MusicIcon from 'material-ui-icons/MusicNote';
 import MovieIcon from 'material-ui-icons/Movie';
 import PlaylistIcon from 'material-ui-icons/PlaylistPlay';
+import RemoveIcon from 'material-ui-icons/Clear';
 
 import PubSub from 'pubsub-js';
 
 const styles = theme => ({
+	root: {
+	},
+	colType: {
+	},
+	colName: {
+	},
+	folders: {
+	},
 	formControl: {
-		margin: theme.spacing.unit,
-		width: '100%',
-		minWidth: 250,
 	},
 });
 
@@ -38,6 +46,7 @@ class DialogEditCollection extends React.Component {
 		add: true,
 		colType: '',
 		colName: '',
+		folders: []
 	};
 
 	handleDialogClose = () => {
@@ -49,7 +58,13 @@ class DialogEditCollection extends React.Component {
 	}
 
 	handleAddCollection = () => {
-		this.setState({ open: true, add: true });
+		this.setState({
+			open: true,
+			add: true,
+			colType: '',
+			colName: '',
+			folders: []
+		});
 	}
 
 	handleColTypeChange = (e) => {
@@ -70,13 +85,13 @@ class DialogEditCollection extends React.Component {
 				disableBackdropClick>
 				<DialogTitle>{this.state.add ? 'Create Collection' : 'Edit Collection'}</DialogTitle>
 
-				<DialogContent>
+				<DialogContent className={classes.root}>
 					{/* Collection type */}
-					<Grid container>
-						<Grid item xs={12} sm={6}>
-							<FormControl className={classes.formControl}>
-								<InputLabel>Collection type</InputLabel>
-								<Select
+					<Grid container spacing={24}>
+						<Grid item xs={12} sm={4}>
+							<FormControl fullWidth className={classes.colType}>
+								<InputLabel fullWidth>Collection type</InputLabel>
+								<Select fullWidth
 									value={this.state.colType}
 									onChange={this.handleColTypeChange}
 									inputProps={{
@@ -101,33 +116,54 @@ class DialogEditCollection extends React.Component {
 						</Grid>
 
 						{/* Collection name */}
-						<Grid item xs={12} sm={6}>
-							<FormControl className={classes.formControl}>
-								<TextField
-								  fullWidth
-									id="colName"
-									label="Name"
-									className={classes.textField}
-									value={this.state.colName}
-									onChange={this.handleColNameChange}
-								/>
-							</FormControl>
+						<Grid item xs={12} sm={8}>
+							<TextField className={classes.colName}
+								fullWidth
+								id="colName"
+								label="Name"
+								className={classes.textField}
+								value={this.state.colName}
+								onChange={this.handleColNameChange}
+							/>
 						</Grid>
 
+						{/* Folders */}
+						<Grid item xs={12} className={classes.folders}>
+							<Typography>Folders in this collection:</Typography>
 
-						{/* InputProps={{
-        endAdornment: (<InputAdornment position={'end'}>
-        <Icon>
-          <Search />
-        </Icon>
-        </InputAdornment>)
-      }} */}
+							<TextField className={classes.folder}
+								fullWidth
+								value={this.state.colName}
+								onChange={this.handleColNameChange}
+								InputProps={{
+									endAdornment: (<InputAdornment position={'end'}>
+										<Icon>
+											<RemoveIcon />
+										</Icon>
+									</InputAdornment>)
+								}}
+							/>
+
+							<Button
+								onClick={this.handleDialogClose}
+								color='"primary'
+								disabled={this.state.colType === ''}>
+								Add folder
+							</Button>
+
+						</Grid>
 					</Grid>
 				</DialogContent>
 
 				<DialogActions>
-					<Button onClick={this.handleDialogClose} color="primary" autoFocus>Create</Button>
 					<Button onClick={this.handleDialogClose}>Cancel</Button>
+					<Button
+						onClick={this.handleDialogClose}
+						color='primary'
+						disabled={this.state.colType === '' || this.state.colName === '' || this.state.folders.length == 0}
+						autoFocus>
+						Create
+					</Button>
 				</DialogActions>
 			</Dialog>
 		);
