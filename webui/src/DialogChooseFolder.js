@@ -11,16 +11,41 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import FolderChooser from './FolderChooser';
 
+import PubSub from 'pubsub-js';
+
 const styles = theme => ({
 });
 
 class DialogChooseFolder extends React.Component {
   state = {
-    open: true
+    open: false,
+    path: '/'
   };
+
+	componentDidMount = () => {
+		PubSub.subscribe('ADD_FOLDER', this.handleAddFolder.bind(this));
+  }
+  
+  handleAddFolder = (msg, data) => {
+    this.setState({
+      open: true,
+      path: '/',
+      callback: data.callback,
+    });
+  }
+
+  handleDialogOK = () => {
+    this.setState({ open: false });
+    if (this.state.callback)
+      this.state.callback(this.state.path);
+  }
 
   handleDialogClose = () => {
     this.setState({ open: false });
+  }
+
+  handlePathChange = (newPath) => {
+    this.setState({ path: newPath});
   }
 
   render() {
@@ -28,13 +53,16 @@ class DialogChooseFolder extends React.Component {
       <Dialog
         open={this.state.open}
         onClose={this.handleDialogClose}>
-        <DialogTitle>{"Choose Folder"}</DialogTitle>
+        <DialogTitle>{'Choose Folder'}</DialogTitle>
         <DialogContent>
-          <FolderChooser />
+          <FolderChooser 
+            path={this.state.path}
+            onPathChange={this.handlePathChange}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleDialogClose} color="primary" autoFocus>Add</Button>
-          <Button onClick={this.handleDialogClose} color="primary">Close</Button>
+          <Button onClick={this.handleDialogClose} color='primary'>Close</Button>
+          <Button onClick={this.handleDialogOK} color='primary' autoFocus>Add</Button>          
         </DialogActions>
       </Dialog>
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import DialogEditCollection from './DialogEditCollection';
+import DialogChooseFolder from './DialogChooseFolder';
 
 const styles = theme => ({
 });
@@ -16,6 +17,7 @@ class Dialogs extends React.Component {
 		return (
 			<div>
 				<DialogEditCollection />
+				<DialogChooseFolder />
 			</div>
 		);
 	}
