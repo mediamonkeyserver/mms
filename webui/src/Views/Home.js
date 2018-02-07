@@ -33,7 +33,7 @@ class Home extends Component {
                 <Typography variant="headline">New Server</Typography>
                 <Typography component="p">
                   There are no collections. Do you want to create one?
-                                </Typography>
+                </Typography>
               </CardContent>
               <CardActions className={classes.cardActions}>
                 <Button onClick={this.handleNewCollection} color="primary" autoFocus>Create Collection</Button>
