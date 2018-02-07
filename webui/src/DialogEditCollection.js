@@ -13,7 +13,6 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
 import { InputLabel, InputAdornment } from 'material-ui/Input';
-import Icon from 'material-ui/Icon';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
@@ -97,7 +96,7 @@ class DialogEditCollection extends React.Component {
 	}
 
 	handleFolderRemove = (event) => {
-		this.setState({ folders: this.state.folders.filter((el, i) => i != event.currentTarget.dataset.index) });
+		this.setState({ folders: this.state.folders.filter((el, i) => i !== Number(event.currentTarget.dataset.index)) });
 	}
 
 	render() {

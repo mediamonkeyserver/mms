@@ -5,17 +5,15 @@ import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import Divider from 'material-ui/Divider';
+import CollectionIcon from 'Fragments/CollectionIcon';
 
 import Server from './server';
+import PubSub from 'pubsub-js';
 
 // icons
 import SettingsIcon from 'material-ui-icons/Settings';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
-import MusicIcon from 'material-ui-icons/MusicNote';
-import MovieIcon from 'material-ui-icons/Movie';
-import PlaylistIcon from 'material-ui-icons/PlaylistPlay';
-
 
 const styles = theme => ({
   root: {
@@ -47,25 +45,24 @@ class NavigationList extends React.Component {
     this.setState({ configOpen: !this.state.configOpen });
   };
 
+  handleSettingsClick = (event) => {
+    PubSub.publish('SHOW_VIEW', { view: event.currentTarget.dataset.id });
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <div className={classes.root}>
         <List
-          component="nav"
+          component='nav'
           subheader={<ListSubheader component="div" color="primary">{this.state.serverName}</ListSubheader>}
         >
           {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
-            var icon = 
-              (col.type === 'music' ? <MusicIcon /> : 
-              (col.type === 'movies' ? <MovieIcon /> : <PlaylistIcon />));
             return <ListItem button>
-              <ListItemIcon>
-                {icon}
-              </ListItemIcon>
+              <CollectionIcon type={col.type} variant='list' />
               <ListItemText inset primary={col.name} />
             </ListItem>;
           })}
@@ -77,13 +74,16 @@ class NavigationList extends React.Component {
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Configuration" />
+            <ListItemText inset primary='Configuration' />
             {this.state.configOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={this.state.configOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Server" />
+          <Collapse in={this.state.configOpen} timeout='auto' unmountOnExit>
+            <List component='div' disablePadding>
+              <ListItem button className={classes.nested} data-id='cfgServer'>
+                <ListItemText inset primary='Server' />
+              </ListItem>
+              <ListItem button className={classes.nested} data-id='cfgCollections' onClick={this.handleSettingsClick}>
+                <ListItemText inset primary='Collections' />
               </ListItem>
             </List>
           </Collapse>
