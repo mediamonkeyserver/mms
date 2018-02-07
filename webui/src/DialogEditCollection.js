@@ -10,6 +10,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
 
 import { InputLabel, InputAdornment } from 'material-ui/Input';
 import Icon from 'material-ui/Icon';
@@ -42,6 +43,12 @@ const styles = theme => ({
 	}
 });
 
+const colTypes = {
+	music: 'Music',
+	classical: 'Classical',
+	movies: 'Movies',
+}
+
 class DialogEditCollection extends React.Component {
 	state = {
 		open: false,
@@ -70,6 +77,10 @@ class DialogEditCollection extends React.Component {
 	}
 
 	handleColTypeChange = (e) => {
+		if (this.state.colName === '' || colTypes[this.state.colType] === this.state.colName) {
+			// Update collection name based on chosen type
+			this.setState({ colName: colTypes[e.target.value] });
+		}
 		this.setState({ [e.target.name]: e.target.value });
 	}
 
@@ -78,11 +89,15 @@ class DialogEditCollection extends React.Component {
 	}
 
 	handleAddFolder = () => {
-		PubSub.publish('ADD_FOLDER', {callback: this.handleAddedFolder.bind(this)});
+		PubSub.publish('ADD_FOLDER', { callback: this.handleAddedFolder.bind(this) });
 	}
 
 	handleAddedFolder = (path) => {
-		this.setState({ folders: this.state.folders.concat(path)});
+		this.setState({ folders: this.state.folders.concat(path) });
+	}
+
+	handleFolderRemove = (event) => {
+		this.setState({ folders: this.state.folders.filter((el, i) => i != event.currentTarget.dataset.index) });
 	}
 
 	render() {
@@ -92,7 +107,9 @@ class DialogEditCollection extends React.Component {
 			<Dialog
 				open={this.state.open}
 				onClose={this.handleDialogClose}
-				disableBackdropClick>
+				disableBackdropClick
+				fullWidth
+			>
 				<DialogTitle>{this.state.add ? 'Create Collection' : 'Edit Collection'}</DialogTitle>
 
 				<DialogContent className={classes.root}>
@@ -130,8 +147,8 @@ class DialogEditCollection extends React.Component {
 						<Grid item xs={12} sm={8}>
 							<TextField className={classes.colName}
 								fullWidth
-								id="colName"
-								label="Name"
+								id='colName'
+								label='Name'
 								value={this.state.colName}
 								onChange={this.handleColNameChange}
 							/>
@@ -146,14 +163,14 @@ class DialogEditCollection extends React.Component {
 									fullWidth
 									spellCheck='false'
 									value={folder}
-									id={'folder'+index}
-									key={'folder'+index}
+									id={'folder' + index}
+									key={'folder' + index}
 									onChange={this.handleColNameChange}
 									InputProps={{
 										endAdornment: (<InputAdornment position={'end'}>
-											<Icon>
+											<IconButton onClick={this.handleFolderRemove} data-index={index}>
 												<RemoveIcon />
-											</Icon>
+											</IconButton>
 										</InputAdornment>)
 									}}
 								/>
@@ -162,8 +179,9 @@ class DialogEditCollection extends React.Component {
 							<Button
 								onClick={this.handleAddFolder}
 								color='primary'
-								// disabled={this.state.colType === ''}
-								>
+								variant='raised'
+							// disabled={this.state.colType === ''}
+							>
 								Add folder
 							</Button>
 
@@ -176,6 +194,7 @@ class DialogEditCollection extends React.Component {
 					<Button
 						onClick={this.handleDialogClose}
 						color='primary'
+						variant='raised'
 						disabled={this.state.colType === '' || this.state.colName === '' || this.state.folders.length === 0}
 						autoFocus>
 						Create
@@ -190,4 +209,4 @@ DialogEditCollection.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(withMobileDialog()(DialogEditCollection));
+export default withStyles(styles)(withMobileDialog({ breakpoint: 'xs' })(DialogEditCollection));
