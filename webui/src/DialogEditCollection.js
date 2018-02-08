@@ -24,6 +24,7 @@ import TextField from 'material-ui/TextField';
 import RemoveIcon from 'material-ui-icons/Clear';
 
 import PubSub from 'pubsub-js';
+import Server from 'server';
 
 const styles = theme => ({
 	root: {
@@ -52,6 +53,7 @@ class DialogEditCollection extends React.Component {
 	state = {
 		open: false,
 		add: true,
+		id: undefined,
 		colType: '',
 		colName: '',
 		folders: []
@@ -59,6 +61,16 @@ class DialogEditCollection extends React.Component {
 
 	handleDialogClose = () => {
 		this.setState({ open: false });
+	}
+
+	handleDialogOK = () => {
+		Server.saveCollection({
+			id: this.state.id,			
+			type: this.state.colType,
+			name: this.state.colName,
+			folders: this.state.folders,
+		});
+		this.handleDialogClose();
 	}
 
 	componentDidMount = () => {
@@ -70,6 +82,7 @@ class DialogEditCollection extends React.Component {
 		this.setState({
 			open: true,
 			add: true,
+			id: undefined,
 			colType: '',
 			colName: '',
 			folders: []
@@ -80,6 +93,7 @@ class DialogEditCollection extends React.Component {
 		this.setState({
 			open: true,
 			add: false,
+			id: data.collection.id,
 			colType: data.collection.type,
 			colName: data.collection.name,
 			folders: data.collection.folders.map(x => x),
@@ -130,6 +144,7 @@ class DialogEditCollection extends React.Component {
 								<InputLabel>Collection type</InputLabel>
 								<Select
 									value={this.state.colType}
+									disabled={!!this.add}
 									onChange={this.handleColTypeChange}
 									inputProps={{
 										name: 'colType',
@@ -202,7 +217,7 @@ class DialogEditCollection extends React.Component {
 				<DialogActions>
 					<Button onClick={this.handleDialogClose}>Cancel</Button>
 					<Button
-						onClick={this.handleDialogClose}
+						onClick={this.handleDialogOK}
 						color='primary'
 						variant='raised'
 						disabled={this.state.colType === '' || this.state.colName === '' || this.state.folders.length === 0}

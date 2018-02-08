@@ -30,7 +30,7 @@ const styles = theme => ({
 class NavigationList extends React.Component {
   state = {
     configOpen: true,
-    serverName: "",
+    serverName: '',
     collections: []
   };
 

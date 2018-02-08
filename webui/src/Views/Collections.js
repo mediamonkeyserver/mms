@@ -27,7 +27,7 @@ class Collections extends Component {
 		collections: [],
 	}
 
-	updateList = (path) => {
+	updateList = () => {
 		Server.getCollections().then((collections) => {
 			this.setState({ collections: collections.map(x => x) });
 		});
@@ -35,6 +35,7 @@ class Collections extends Component {
 
 	componentDidMount = () => {
 		this.updateList();
+		PubSub.subscribe('COLLECTIONS_CHANGE', this.updateList.bind(this));
 	}
 
 	handleNewCollection = () => {

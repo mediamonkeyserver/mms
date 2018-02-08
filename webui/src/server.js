@@ -1,14 +1,26 @@
+import PubSub from 'pubsub-js';
+
 var serverInfo, serverInfoPromise;
 
 class Server {
-	static fetchJson = (path) => {
+	static fetchJson = (path, options) => {
 		return new Promise((res, rej) => {
-			fetch('/api' + path).then((result) => {
+			fetch('/api' + path, options).then((result) => {
 				return result.json();
 			}).then((json) => {
 				res(json);
 			});
 		});
+	}
+
+	static postJson = (path, json, options) => {
+		options = options || {};
+		options.method = 'POST';
+		options.headers = new Headers({
+			'Content-Type': 'application/json'
+		});
+		options.body = JSON.stringify(json);
+		return fetch('/api'+path, options);
 	}
 
 	static getInfo = () => {
@@ -31,6 +43,11 @@ class Server {
 		return Server.fetchJson('/collections');
 	}
 
+	static saveCollection = (collection) => {
+		Server.postJson('/collections', collection).then(() => {
+			PubSub.publish('COLLECTIONS_CHANGE');
+		});
+	}
 }
 
 export default Server;
