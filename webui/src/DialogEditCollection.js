@@ -63,6 +63,7 @@ class DialogEditCollection extends React.Component {
 
 	componentDidMount = () => {
 		PubSub.subscribe('ADD_COLLECTION', this.handleAddCollection.bind(this));
+		PubSub.subscribe('EDIT_COLLECTION', this.handleEditCollection.bind(this));
 	}
 
 	handleAddCollection = () => {
@@ -72,6 +73,16 @@ class DialogEditCollection extends React.Component {
 			colType: '',
 			colName: '',
 			folders: []
+		});
+	}
+
+	handleEditCollection = (msg, data) => {
+		this.setState({
+			open: true,
+			add: false,
+			colType: data.collection.type,
+			colName: data.collection.name,
+			folders: data.collection.folders.map(x => x),
 		});
 	}
 
@@ -196,7 +207,7 @@ class DialogEditCollection extends React.Component {
 						variant='raised'
 						disabled={this.state.colType === '' || this.state.colName === '' || this.state.folders.length === 0}
 						autoFocus>
-						Create
+						{this.state.add ? 'Create' : 'OK'}
 					</Button>
 				</DialogActions>
 			</Dialog>

@@ -13,7 +13,8 @@ class CollectionListItem extends Component {
 		return (
 			<ListItem
 				button
-				key={this.props.id}>
+				key={this.props.id}
+				onClick={this.props.onClick}>
 				<Avatar>
 					<CollectionIcon type={this.props.type} />
 				</Avatar>

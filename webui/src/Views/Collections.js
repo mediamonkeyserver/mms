@@ -41,6 +41,10 @@ class Collections extends Component {
 		PubSub.publish('ADD_COLLECTION');
 	}
 
+	handleEditCollection = (index) => {
+		PubSub.publish('EDIT_COLLECTION', {collection: this.state.collections[index]});
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -52,12 +56,13 @@ class Collections extends Component {
 					</Grid>
 
 					<List>
-						{this.state.collections.map((collection) => {
+						{this.state.collections.map((collection, index) => {
 							return <CollectionListItem
 								id={collection.id}
 								type={collection.type}
 								name={collection.name}
 								folder={collection.folders ? collection.folders[0] : ''}
+								onClick={this.handleEditCollection.bind(this, index)}
 							/>;
 						})}
 					</List>
