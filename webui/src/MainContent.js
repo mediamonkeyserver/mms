@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 
-import Home from './Views/Home';
+import Dashboard from './Views/Dashboard';
 import Collections from './Views/Collections';
 import Collection from './Views/Collection';
 
@@ -14,8 +14,8 @@ const styles = {
 };
 
 const pages = {
-	home: {
-		component: React.createElement(Home)
+	dashboard: {
+		component: React.createElement(Dashboard)
 	},
 	collection: {
 		component: React.createElement(Collection)
@@ -27,7 +27,7 @@ const pages = {
 
 class MainContent extends Component {
 	state = {
-		view: 'home',
+		view: 'dashboard',
 	}
 
 	componentDidMount = () => {

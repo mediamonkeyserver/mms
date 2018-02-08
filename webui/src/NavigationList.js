@@ -14,6 +14,7 @@ import PubSub from 'pubsub-js';
 import SettingsIcon from 'material-ui-icons/Settings';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
+import DashboardIcon from 'material-ui-icons/Dashboard';
 
 const styles = theme => ({
   root: {
@@ -80,6 +81,14 @@ class NavigationList extends React.Component {
           </ListItem>
 
           <Divider />
+
+          {/* Dashboard */}
+          <ListItem button data-id='dashboard' onClick={this.handleSelectView}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText inset primary='Dashboard' />
+          </ListItem>
 
           {/* Settings */}
           <ListItem button onClick={this.handleConfigClick}>

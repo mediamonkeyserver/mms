@@ -45,6 +45,7 @@ class Server {
 
 	static saveCollection = (collection) => {
 		Server.postJson('/collections', collection).then(() => {
+			serverInfo = undefined;
 			PubSub.publish('COLLECTIONS_CHANGE');
 		});
 	}
