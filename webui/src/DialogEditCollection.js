@@ -71,6 +71,10 @@ class DialogEditCollection extends React.Component {
 			folders: this.state.folders,
 		});
 		this.handleDialogClose();
+		PubSub.publish('SHOW_SNACKBAR', {
+			message: 'New Collection "'+this.state.colName+'" was created.',
+			autoHide: 5000,
+		})
 	}
 
 	componentDidMount = () => {
