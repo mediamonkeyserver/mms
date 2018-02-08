@@ -20,6 +20,10 @@ const styles = theme => ({
 		bottom: 0,
 		right: 0
 	},
+	emptyBox: {
+		marginTop: 30,
+		marginBottom: 30,
+	}
 });
 
 class Collections extends Component {
@@ -43,7 +47,17 @@ class Collections extends Component {
 	}
 
 	handleEditCollection = (index) => {
-		PubSub.publish('EDIT_COLLECTION', {collection: this.state.collections[index]});
+		PubSub.publish('EDIT_COLLECTION', { collection: this.state.collections[index] });
+	}
+
+	renderEmpty() {
+		return (
+			<Grid container justify='center' className={this.props.classes.emptyBox}>
+				<Typography>
+					There isn't any Collection configured yet. Please create a new one.
+				</Typography>
+			</Grid>
+		);
 	}
 
 	render() {
@@ -68,8 +82,10 @@ class Collections extends Component {
 						})}
 					</List>
 
+					{this.state.collections.length === 0 ? this.renderEmpty() : ''}
+
 					<Grid container justify='center'>
-						<Button onClick={this.handleNewCollection} color="primary" autoFocus>Create new Collection</Button>					
+						<Button onClick={this.handleNewCollection} color="primary" autoFocus>Create new Collection</Button>
 					</Grid>
 				</Grid>
 			</Grid>

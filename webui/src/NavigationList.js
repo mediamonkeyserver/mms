@@ -34,11 +34,16 @@ class NavigationList extends React.Component {
     collections: []
   };
 
-  componentDidMount = () => {
+  updateContent = () => {
     Server.getInfo().then((info) => {
       this.setState({ serverName: info.serverName });
       this.setState({ collections: info.collections.map(x => { return { id: x.id, name: x.name, type: x.type } }) });
     });
+  }
+
+  componentDidMount = () => {
+    this.updateContent();
+    PubSub.subscribe('COLLECTIONS_CHANGE', this.updateContent.bind(this));
   }
 
   handleConfigClick = () => {
