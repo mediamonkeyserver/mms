@@ -9,11 +9,10 @@ import PubSub from 'pubsub-js';
 
 const styles = {
 	card: {
-    marginTop: 20,
-  },
-  cardActions: {
-    justifyContent: 'flex-end',
-  }
+	},
+	cardActions: {
+		justifyContent: 'flex-end',
+	}
 };
 
 class Collection extends Component {
@@ -26,18 +25,18 @@ class Collection extends Component {
 
 	render() {
 		const { classes } = this.props;
-				
+
 		return (
 			<div>
 				<Grid container justify='center'>
 					<Grid item>
 						<Card className={classes.card}>
-							<CardHeader	title='Not implemented' />
+							<CardHeader title='Not implemented' />
 							<CardContent>
 								<Typography component="p">
 									Collection browsing isn't implemented yet. But it will be! ;-)
                 </Typography>
-								<p/>
+								<p />
 								<Typography component="p">
 									You can configure collections though...
                 </Typography>

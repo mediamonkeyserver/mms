@@ -8,6 +8,9 @@ import Collection from './Views/Collection';
 import PubSub from 'pubsub-js';
 
 const styles = {
+	root: {
+		marginTop: 20,
+	}
 };
 
 const pages = {
@@ -36,10 +39,11 @@ class MainContent extends Component {
 	}
 
 	render() {
+		var { classes } = this.props;
 		var activeview = pages[this.state.view].component;
 
 		return (
-			<div>
+			<div className={classes.root}>
 				{activeview}
 			</div>
 		);

@@ -9,7 +9,6 @@ import PubSub from 'pubsub-js';
 
 const styles = {
   card: {
-    marginTop: 20,
   },
   cardActions: {
     justifyContent: 'flex-end',
