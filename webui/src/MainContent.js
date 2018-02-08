@@ -3,6 +3,7 @@ import { withStyles } from 'material-ui/styles';
 
 import Home from './Views/Home';
 import Collections from './Views/Collections';
+import Collection from './Views/Collection';
 
 import PubSub from 'pubsub-js';
 
@@ -12,6 +13,9 @@ const styles = {
 const pages = {
 	home: {
 		component: React.createElement(Home)
+	},
+	collection: {
+		component: React.createElement(Collection)
 	},
 	cfgCollections: {
 		component: React.createElement(Collections)

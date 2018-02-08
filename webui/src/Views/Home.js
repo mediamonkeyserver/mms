@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 
 import PubSub from 'pubsub-js';
@@ -29,8 +29,8 @@ class Home extends Component {
         <Grid container justify='center'>
           <Grid item>
             <Card className={classes.card}>
+              <CardHeader title='New Server' />
               <CardContent>
-                <Typography variant="headline">New Server</Typography>
                 <Typography component="p">
                   There are no collections. Do you want to create one?
                 </Typography>

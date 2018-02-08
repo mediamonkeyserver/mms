@@ -45,7 +45,7 @@ class NavigationList extends React.Component {
     this.setState({ configOpen: !this.state.configOpen });
   };
 
-  handleSettingsClick = (event) => {
+  handleSelectView = (event) => {
     PubSub.publish('SHOW_VIEW', { view: event.currentTarget.dataset.id });
     if (this.props.onItemClicked)
       this.props.onItemClicked(event);
@@ -63,7 +63,7 @@ class NavigationList extends React.Component {
           {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
-            return <ListItem button>
+            return <ListItem button data-id='collection' onClick={this.handleSelectView}>
               <CollectionIcon type={col.type} variant='list' />
               <ListItemText inset primary={col.name} />
             </ListItem>;
@@ -84,7 +84,7 @@ class NavigationList extends React.Component {
               <ListItem button className={classes.nested} data-id='cfgServer'>
                 <ListItemText inset primary='Server' />
               </ListItem>
-              <ListItem button className={classes.nested} data-id='cfgCollections' onClick={this.handleSettingsClick}>
+              <ListItem button className={classes.nested} data-id='cfgCollections' onClick={this.handleSelectView}>
                 <ListItemText inset primary='Collections' />
               </ListItem>
             </List>
