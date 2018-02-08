@@ -47,6 +47,8 @@ class NavigationList extends React.Component {
 
   handleSettingsClick = (event) => {
     PubSub.publish('SHOW_VIEW', { view: event.currentTarget.dataset.id });
+    if (this.props.onItemClicked)
+      this.props.onItemClicked(event);
   }
 
   render() {

@@ -21,13 +21,17 @@ class MainDrawer extends React.Component {
     PubSub.subscribe('TOGGLE_MAIN_DRAWER', this.handleDrawerToggle.bind(this));
   }
 
+  handleNavItemClicked = () => {
+    this.setState({ drawerOpen: false });
+  }
+
   render() {
     return (
       <Drawer
         open={this.state.drawerOpen}
         onClose={this.handleDrawerToggle}
         type="temporary">
-        <NavigationList />
+        <NavigationList onItemClicked={this.handleNavItemClicked}/>
       </Drawer>
     );
   }
