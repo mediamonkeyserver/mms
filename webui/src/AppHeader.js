@@ -14,6 +14,7 @@ import Server from './server';
 const styles = {
   root: {
     width: '100%',
+    zIndex: 100,
   },
   flex: {
     flex: 1,

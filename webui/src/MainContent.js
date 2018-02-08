@@ -35,7 +35,7 @@ class MainContent extends Component {
 	}
 
 	handleShowView = (msg, data) => {
-		this.setState({ view: data.view});
+		this.setState({ view: data.view });
 	}
 
 	render() {

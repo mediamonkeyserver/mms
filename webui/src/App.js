@@ -6,6 +6,9 @@ import MainDrawer from './MainDrawer';
 import Dialogs from './Dialogs';
 import MainContent from './MainContent';
 import Player from './Player';
+import Paper from 'material-ui/Paper';
+
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 const styles = {
   root: {
@@ -23,20 +26,43 @@ const styles = {
   }
 };
 
+const theme = createMuiTheme({
+  // palette: {
+  //   primary: {
+  //     light: '#d05ce3',
+  //     main: '#9c27b0',
+  //     dark: '#6a0080',
+  //     contrastText: '#fff',
+  //   },
+  //   secondary: {
+  //     light: '#9fffe0',
+  //     main: '#69f0ae',
+  //     dark: '#2bbd7e',
+  //     contrastText: '#000',
+  //   },
+  //   type: 'dark',    
+  // },
+  // status: {
+  //   danger: 'orange',
+  // },
+});
+
 class App extends Component {
   render() {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
-        <AppHeader />
-        <div className={classes.mainContent}>
-          <MainContent />
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <AppHeader />
+          <Paper elevation={0} square className={classes.mainContent}>
+            <MainContent />
+          </Paper>
+          <Player />
+          <MainDrawer />
+          <Dialogs />
         </div>
-        <Player/>
-        <MainDrawer />
-        <Dialogs />
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
