@@ -22,6 +22,15 @@
   font-size: large;
 }
 
+/* A hack for CollectionListItem */
+.itemButtonOnHover {
+  visibility: hidden;
+}
+
+.listItem:hover .itemButtonOnHover {
+  visibility: visible;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
