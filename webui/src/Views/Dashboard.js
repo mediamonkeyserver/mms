@@ -59,8 +59,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <div>
         {this.state.collectionExists ? '' : this.renderNoCollection()}

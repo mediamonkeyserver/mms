@@ -6,8 +6,6 @@ import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 
-import AddIcon from 'material-ui-icons/Add';
-
 import CollectionListItem from 'Fragments/CollectionListItem';
 
 import PubSub from 'pubsub-js';
@@ -61,8 +59,6 @@ class Collections extends Component {
 	}
 
 	render() {
-		const { classes } = this.props;
-
 		return (
 			<Grid container justify='center'>
 				<Grid item xs={12} sm={6} lg={4}>
@@ -74,6 +70,7 @@ class Collections extends Component {
 						{this.state.collections.map((collection, index) => {
 							return <CollectionListItem
 								id={collection.id}
+								key={'col'+collection.id}
 								type={collection.type}
 								name={collection.name}
 								folder={collection.folders ? collection.folders[0] : ''}

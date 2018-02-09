@@ -69,7 +69,11 @@ class NavigationList extends React.Component {
           {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
-            return <ListItem button data-id='collection' onClick={this.handleSelectView}>
+            return <ListItem
+              button
+              data-id='collection'
+              key={'navcol'+col.id}
+              onClick={this.handleSelectView}>
               <CollectionIcon type={col.type} variant='list' />
               <ListItemText inset primary={col.name} />
             </ListItem>;
