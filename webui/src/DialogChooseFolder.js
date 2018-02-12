@@ -61,7 +61,7 @@ class DialogChooseFolder extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleDialogClose} color='primary'>Close</Button>
+          <Button onClick={this.handleDialogClose}>Close</Button>
           <Button onClick={this.handleDialogOK} color='primary' autoFocus>Add</Button>          
         </DialogActions>
       </Dialog>

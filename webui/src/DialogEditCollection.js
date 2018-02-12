@@ -65,16 +65,16 @@ class DialogEditCollection extends React.Component {
 
 	handleDialogOK = () => {
 		Server.saveCollection({
-			id: this.state.id,			
+			id: this.state.id,
 			type: this.state.colType,
 			name: this.state.colName,
 			folders: this.state.folders,
 		});
 		this.handleDialogClose();
 		PubSub.publish('SHOW_SNACKBAR', {
-			message: 'New Collection "'+this.state.colName+'" was created.',
+			message: 'New Collection "' + this.state.colName + '" was created.',
 			autoHide: 5000,
-		})
+		});
 	}
 
 	componentDidMount = () => {
@@ -223,7 +223,6 @@ class DialogEditCollection extends React.Component {
 					<Button
 						onClick={this.handleDialogOK}
 						color='primary'
-						variant='raised'
 						disabled={this.state.colType === '' || this.state.colName === '' || this.state.folders.length === 0}
 						autoFocus>
 						{this.state.add ? 'Create' : 'OK'}
