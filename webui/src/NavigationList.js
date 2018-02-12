@@ -66,6 +66,14 @@ class NavigationList extends React.Component {
           component='nav'
           subheader={<ListSubheader component="div" color="primary">{this.state.serverName}</ListSubheader>}
         >
+          {/* Dashboard */}
+          <ListItem button data-id='dashboard' onClick={this.handleSelectView}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText inset primary='Dashboard' />
+          </ListItem>
+
           {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
@@ -85,14 +93,6 @@ class NavigationList extends React.Component {
           </ListItem>
 
           <Divider />
-
-          {/* Dashboard */}
-          <ListItem button data-id='dashboard' onClick={this.handleSelectView}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText inset primary='Dashboard' />
-          </ListItem>
 
           {/* Settings */}
           <ListItem button onClick={this.handleConfigClick}>
