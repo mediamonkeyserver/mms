@@ -4,6 +4,9 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
+import Paper from 'material-ui/Paper';
+
+import LogList from 'Fragments/LogList';
 
 import PubSub from 'pubsub-js';
 import Server from 'server';
@@ -40,7 +43,6 @@ class Dashboard extends Component {
     const { classes } = this.props;
 
     return (
-      <Grid container justify='center'>
       <Grid item>
         <Card className={classes.card}>
           <CardHeader title='New Server' />
@@ -54,15 +56,24 @@ class Dashboard extends Component {
           </CardActions>
         </Card>
       </Grid>
-    </Grid>
     );
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div>
+      <Grid container justify='center'>
         {this.state.collectionExists ? '' : this.renderNoCollection()}
-      </div>
+        <Grid item>
+          <Card className={classes.card}>
+            <CardHeader title='Server Activity' />
+            <CardContent>
+              <LogList />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     );
   }
 }

@@ -73,6 +73,10 @@ class Server {
 			PubSub.publish('COLLECTIONS_CHANGE');
 		});
 	}
+
+	static getLog = () => {
+		return Server.fetchJson('/log');
+	}
 }
 
 export default Server;
