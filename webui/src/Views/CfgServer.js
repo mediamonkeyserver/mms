@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 
-import List from 'material-ui/List';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
 
-import PubSub from 'pubsub-js';
 import Server from 'server';
 
 const styles = theme => ({

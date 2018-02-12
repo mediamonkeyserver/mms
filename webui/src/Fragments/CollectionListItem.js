@@ -10,7 +10,6 @@ import Dialog, {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	withMobileDialog,
 } from 'material-ui/Dialog';
 
 import CollectionIcon from 'Fragments/CollectionIcon';
