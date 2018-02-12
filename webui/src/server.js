@@ -41,6 +41,17 @@ class Server {
 		});
 	}
 
+	static saveCongif = (cfg) => {
+		Server.postJson('/', cfg).then(() => {
+			serverInfo = undefined;			
+			PubSub.publish('CONFIG_CHANGE');
+			PubSub.publish('SHOW_SNACKBAR', {
+				message: 'Server configuration updated',
+				autoHide: 5000,
+			});
+		});
+	}
+
 	static getFolderList = (path) => {
 		return Server.fetchJson('/folders?path=' + path);
 	}

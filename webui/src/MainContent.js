@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Dashboard from './Views/Dashboard';
 import Collections from './Views/Collections';
 import Collection from './Views/Collection';
+import CfgServer from './Views/CfgServer';
 
 import PubSub from 'pubsub-js';
 
@@ -22,6 +23,9 @@ const pages = {
 	},
 	cfgCollections: {
 		component: React.createElement(Collections)
+	},
+	cfgServer: {
+		component: React.createElement(CfgServer)
 	}
 }
 

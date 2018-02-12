@@ -32,10 +32,15 @@ class AppHeader extends React.Component {
     serverName: ""
   };
 
-  componentDidMount = () => {
+  update = () => {
     Server.getInfo().then((info) => {
       this.setState({serverName: info.serverName});
     });
+  }
+
+  componentDidMount = () => {
+    this.update();
+    PubSub.subscribe('CONFIG_CHANGE', this.update);
   }
 
   handleChange = (event, checked) => {
