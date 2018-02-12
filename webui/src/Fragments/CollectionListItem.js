@@ -4,9 +4,20 @@ import { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import Button from 'material-ui/Button';
+import Dialog, {
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	withMobileDialog,
+} from 'material-ui/Dialog';
 
 import CollectionIcon from 'Fragments/CollectionIcon';
 import MenuIcon from 'material-ui-icons/MoreVert';
+
+import PubSub from 'pubsub-js';
+import Server from 'server';
 
 const styles = {
 };
@@ -16,50 +27,89 @@ const styles = {
 class CollectionListItem extends Component {
 	state = {
 		anchorEl: null,
+		confirmOpen: false,
 	}
 
-	handleMenuClick(event) {
+	handleMenuClick = (event) => {
 		event.stopPropagation();
 		event.preventDefault();
 		this.setState({ anchorEl: event.currentTarget });
 	}
 
-	handleMenuClose() {
+	handleMenuClose = () => {
 		this.setState({ anchorEl: null });
 	}
 
-	handleDelete(event) {
+	handleShowConfirm = (event) => {
 		event.stopPropagation();
 		event.preventDefault();
 		this.handleMenuClose();
+		this.setState({ confirmOpen: true });
+	}
+
+	handleDelete = (event) => {
+		Server.deleteCollection({ id: this.props.id });
+		PubSub.publish('SHOW_SNACKBAR', {
+			message: 'Collection "' + this.props.name + '" was deleted.',
+			autoHide: 5000,
+		});
+	}
+
+	handleConfirmClose = () => {
+		this.setState({ confirmOpen: false });
 	}
 
 	render() {
 		return (
-			<ListItem
-				button
-				key={this.props.id}
-				className='listItem'
-				onClick={this.props.onClick}>
-				<Avatar>
-					<CollectionIcon type={this.props.type} />
-				</Avatar>
-				<ListItemText
-					primary={this.props.name}
-					secondary={this.props.folder ? 'Folder: ' + this.props.folder : ''}
-				/>
-				<IconButton aria-label='ItemMenu' className='itemButtonOnHover' onClick={this.handleMenuClick.bind(this)}>
-					<MenuIcon />
-				</IconButton>
-				<Menu
-					id="collectionmenu"
-					anchorEl={this.state.anchorEl}
-					open={Boolean(this.state.anchorEl)}
-					onClose={this.handleMenuClose.bind(this)}
+			<div>
+				<ListItem
+					button
+					key={this.props.id}
+					className='listItem'
+					onClick={this.props.onClick}>
+					<Avatar>
+						<CollectionIcon type={this.props.type} />
+					</Avatar>
+					<ListItemText
+						primary={this.props.name}
+						secondary={this.props.folder ? 'Folder: ' + this.props.folder : ''}
+					/>
+					<IconButton aria-label='ItemMenu' className='itemButtonOnHover' onClick={this.handleMenuClick}>
+						<MenuIcon />
+					</IconButton>
+
+					{/* Menu */}
+					<Menu
+						id='collectionmenu'
+						anchorEl={this.state.anchorEl}
+						open={Boolean(this.state.anchorEl)}
+						onClose={this.handleMenuClose}
+					>
+						<MenuItem onClick={this.handleShowConfirm}>Delete</MenuItem>
+					</Menu>
+				</ListItem>
+
+				{/* Confirmation */}
+				<Dialog
+					open={this.state.confirmOpen}
+					onClose={this.handleConfirmClose}
 				>
-					<MenuItem onClick={this.handleDelete.bind(this)}>Delete</MenuItem>
-				</Menu>
-			</ListItem>
+					<DialogTitle>{'Delete collection "' + this.props.name + '"?'}</DialogTitle>
+					<DialogContent>
+						<DialogContentText>
+							This cannot be undone, the collection will be deleted permanently with all the stored metadata.
+            </DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={this.handleConfirmClose}>
+							Cancel
+            </Button>
+						<Button onClick={this.handleDelete} color='primary' autoFocus>
+							Delete
+            </Button>
+					</DialogActions>
+				</Dialog>
+			</div>
 		);
 	}
 }

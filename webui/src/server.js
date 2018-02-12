@@ -15,12 +15,18 @@ class Server {
 
 	static postJson = (path, json, options) => {
 		options = options || {};
-		options.method = 'POST';
+		options.method = options.method || 'POST';
 		options.headers = new Headers({
 			'Content-Type': 'application/json'
 		});
 		options.body = JSON.stringify(json);
 		return fetch('/api'+path, options);
+	}
+
+	static deleteJson = (path, json, options) => {
+		options = options || {};
+		options.method = options.method || 'DELETE';
+		return Server.postJson(path, json, options);
 	}
 
 	static getInfo = () => {
@@ -46,6 +52,13 @@ class Server {
 	static saveCollection = (collection) => {
 		Server.postJson('/collections', collection).then(() => {
 			serverInfo = undefined;
+			PubSub.publish('COLLECTIONS_CHANGE');
+		});
+	}
+
+	static deleteCollection = (collection) => {
+		Server.deleteJson('/collections', collection).then(() => {
+			serverInfo = undefined;			
 			PubSub.publish('COLLECTIONS_CHANGE');
 		});
 	}
