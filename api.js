@@ -17,6 +17,7 @@ const logger = require('./lib/logger');
 
 const UPNPServer = require('./lib/upnpServer');
 const Repository = require('./lib/repositories/repository');
+const Configuration = require('./lib/configuration');
 
 class API extends events.EventEmitter {
 
@@ -478,8 +479,18 @@ class API extends events.EventEmitter {
 
 			console.log('Ready http://' + hostname + ':' + address.port);
 
-			callback();
+			this._initUIConfigObserver(callback);
 		});
+	}
+
+	_initUIConfigObserver(callback) {
+		var config = Configuration.getBasicConfig();
+		this.upnpServer.name = config.serverName;
+		var observer = Configuration.getConfigObserver();
+		observer.on('change', () => {
+			this.upnpServer.name = config.serverName;
+		});
+		callback();
 	}
 
 	/**
