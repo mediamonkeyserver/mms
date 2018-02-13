@@ -62,25 +62,6 @@ try {
 
 //commander.garbageItems = true;
 
-// LS: add default locations (used also for uploading files from MM5), TODO: be configurable
-directories.push({
-  type : "music",
-  path : os.homedir() + "/Music",
-  mountPoint : "Music"
-});
-
-directories.push({  
-  type : "movie",
-  path : os.homedir() + "/Video",
-  mountPoint : "Video"
-});
-
-directories.push({
-  type : "playlist",
-  path : os.homedir() + "/Playlists",
-  mountPoint : "Playlists"
-});
-
 // Create an UpnpServer with options
 
 var server = new Server(commander, directories);

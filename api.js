@@ -369,10 +369,6 @@ class API extends events.EventEmitter {
 
 		debug("startServer", "Start the server");
 
-		if (!this.repositories.length) {
-			return callback(new Error("No directories defined !"));
-		}
-
 		var configuration = this.configuration;
 		configuration.repositories = this.repositories;
 		configuration.upnpClasses = this._upnpClasses;
