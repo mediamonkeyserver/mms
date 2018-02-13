@@ -4,7 +4,6 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import Paper from 'material-ui/Paper';
 
 import LogList from 'Fragments/LogList';
 
