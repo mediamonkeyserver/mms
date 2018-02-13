@@ -42,7 +42,7 @@ class Dashboard extends Component {
     const { classes } = this.props;
 
     return (
-      <Grid item>
+      <Grid item xs={12} sm={6} md={3}>
         <Card className={classes.card}>
           <CardHeader title='New Server' />
           <CardContent>
@@ -62,9 +62,9 @@ class Dashboard extends Component {
     const { classes } = this.props;
 
     return (
-      <Grid container justify='center'>
+      <Grid container justify='space-around'>
         {this.state.collectionExists ? '' : this.renderNoCollection()}
-        <Grid item>
+        <Grid item xs={12} sm={6}>
           <Card className={classes.card}>
             <CardHeader title='Server Activity' />
             <CardContent>

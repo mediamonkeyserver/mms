@@ -1,20 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List, { ListItem } from 'material-ui/List';
+import Typography from 'material-ui/Typography';
 
 import Server from 'server';
 
 const styles = theme => ({
 	root: {
-		width: 400,
-		height: 450,
-		'overflow-x': 'hidden',
-		'overflow-y': 'auto',
 	}
 });
 
-class FolderList extends React.Component {
+class LogList extends React.Component {
 	state = {
 		log: [],
 	};
@@ -37,7 +34,9 @@ class FolderList extends React.Component {
 				<List component='div' dense>
 					{this.state.log.map((logitem, index) => {
 						return <ListItem key={'log' + index}>
-							<ListItemText primary={logitem.message} />
+							<Typography variant='body1'>
+								{new Date(logitem.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })} &nbsp; {logitem.message}
+							</Typography>
 						</ListItem>;
 					})}
 				</List>
@@ -46,8 +45,8 @@ class FolderList extends React.Component {
 	}
 }
 
-FolderList.propTypes = {
+LogList.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FolderList);
+export default withStyles(styles)(LogList);
