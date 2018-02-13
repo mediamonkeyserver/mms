@@ -74,6 +74,8 @@ class NavigationList extends React.Component {
             <ListItemText inset primary='Dashboard' />
           </ListItem>
 
+          <Divider />
+
           {/* Collections */}
           <ListSubheader>Collections</ListSubheader>
           {this.state.collections.map((col) => {
