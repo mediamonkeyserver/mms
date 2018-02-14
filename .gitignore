@@ -25,3 +25,4 @@ node_modules
 /upnpserver.iml
 /.idea/
 /build-webui/
+/dist/
