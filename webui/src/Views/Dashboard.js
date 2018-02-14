@@ -4,16 +4,13 @@ import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
 
 import LogList from 'Fragments/LogList';
+import CollectionsList from 'Fragments/CollectionsList';
 
 import PubSub from 'pubsub-js';
-import Server from 'server';
 
 const styles = {
-	card: {
-	},
 	cardActions: {
 		justifyContent: 'flex-end',
 	}
@@ -21,42 +18,10 @@ const styles = {
 
 class Dashboard extends Component {
 	state = {
-		collectionExists: true,
-	}
-
-	componentDidMount() {
-		this.updateContent();
-		PubSub.subscribe('COLLECTIONS_CHANGE', this.updateContent.bind(this));
-	}
-
-	updateContent() {
-		Server.getCollections().then((collections) => {
-			this.setState({ collectionExists: collections.length > 0 });
-		});
 	}
 
 	handleNewCollection() {
 		PubSub.publish('ADD_COLLECTION');
-	}
-
-	renderNoCollection() {
-		const { classes } = this.props;
-
-		return (
-			<Grid item xs={12} sm={6} md={3}>
-				<Card className={classes.card}>
-					<CardHeader title='New Server' />
-					<CardContent>
-						<Typography component="p">
-							There are no collections. Do you want to create one?
-						</Typography>
-					</CardContent>
-					<CardActions className={classes.cardActions}>
-						<Button onClick={this.handleNewCollection} color="primary" autoFocus>Create Collection</Button>
-					</CardActions>
-				</Card>
-			</Grid>
-		);
 	}
 
 	render() {
@@ -64,9 +29,22 @@ class Dashboard extends Component {
 
 		return (
 			<Grid container justify='space-around'>
-				{this.state.collectionExists ? '' : this.renderNoCollection()}
+				{/* Collections */}
 				<Grid item xs={12} sm={6}>
-					<Card className={classes.card}>
+					<Card>
+						<CardHeader title='Collections' />
+						<CardContent>
+							<CollectionsList hideCreate />
+						</CardContent>
+						<CardActions className={classes.cardActions}>
+							<Button onClick={this.handleNewCollection} color='primary' autoFocus>Create Collection</Button>
+						</CardActions>
+					</Card>
+				</Grid>
+
+				{/* Server log */}
+				<Grid item xs={12} sm={6}>
+					<Card>
 						<CardHeader title='Server Activity' />
 						<CardContent>
 							<LogList />
