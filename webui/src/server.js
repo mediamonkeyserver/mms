@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js';
 
-var serverInfo, serverInfoPromise;
+var serverInfo;
+// var serverInfoPromise;
 
 class Server {
 	static fetchJson = (path, options) => {

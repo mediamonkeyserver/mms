@@ -64,7 +64,7 @@ class Collections extends Component {
 									disabled={this.state.serverName === this.state.origServerName}
 									color='primary'>
 									Save changes
-                        </Button>
+								</Button>
 							</Grid>
 						</Grid>
 					</Grid>

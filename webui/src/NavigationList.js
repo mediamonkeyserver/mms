@@ -122,6 +122,7 @@ class NavigationList extends React.Component {
 
 NavigationList.propTypes = {
 	classes: PropTypes.object.isRequired,
+	onItemClicked:  PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(NavigationList);

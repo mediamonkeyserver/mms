@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import List from 'material-ui/List';
@@ -52,7 +53,7 @@ class Collections extends Component {
 		return (
 			<Grid container justify='center' className={this.props.classes.emptyBox}>
 				<Typography>
-					There isn't any Collection configured yet. Please create a new one.
+					{'There isn\'t any Collection configured yet. Please create a new one.'}
 				</Typography>
 			</Grid>
 		);
@@ -89,6 +90,10 @@ class Collections extends Component {
 		);
 	}
 }
+
+Collections.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(Collections);
 

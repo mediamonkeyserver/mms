@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -11,70 +12,74 @@ import PubSub from 'pubsub-js';
 import Server from 'server';
 
 const styles = {
-  card: {
-  },
-  cardActions: {
-    justifyContent: 'flex-end',
-  }
+	card: {
+	},
+	cardActions: {
+		justifyContent: 'flex-end',
+	}
 };
 
 class Dashboard extends Component {
-  state = {
-    collectionExists: true,
-  }
+	state = {
+		collectionExists: true,
+	}
 
-  componentDidMount() {
-    this.updateContent();
-    PubSub.subscribe('COLLECTIONS_CHANGE', this.updateContent.bind(this));
-  }
+	componentDidMount() {
+		this.updateContent();
+		PubSub.subscribe('COLLECTIONS_CHANGE', this.updateContent.bind(this));
+	}
 
-  updateContent() {
-    Server.getCollections().then((collections) => {
-      this.setState({ collectionExists: collections.length > 0 });
-    })
-  }
+	updateContent() {
+		Server.getCollections().then((collections) => {
+			this.setState({ collectionExists: collections.length > 0 });
+		});
+	}
 
-  handleNewCollection() {
-    PubSub.publish('ADD_COLLECTION');
-  }
+	handleNewCollection() {
+		PubSub.publish('ADD_COLLECTION');
+	}
 
-  renderNoCollection() {
-    const { classes } = this.props;
+	renderNoCollection() {
+		const { classes } = this.props;
 
-    return (
-      <Grid item xs={12} sm={6} md={3}>
-        <Card className={classes.card}>
-          <CardHeader title='New Server' />
-          <CardContent>
-            <Typography component="p">
-              There are no collections. Do you want to create one?
-            </Typography>
-          </CardContent>
-          <CardActions className={classes.cardActions}>
-            <Button onClick={this.handleNewCollection} color="primary" autoFocus>Create Collection</Button>
-          </CardActions>
-        </Card>
-      </Grid>
-    );
-  }
+		return (
+			<Grid item xs={12} sm={6} md={3}>
+				<Card className={classes.card}>
+					<CardHeader title='New Server' />
+					<CardContent>
+						<Typography component="p">
+							There are no collections. Do you want to create one?
+						</Typography>
+					</CardContent>
+					<CardActions className={classes.cardActions}>
+						<Button onClick={this.handleNewCollection} color="primary" autoFocus>Create Collection</Button>
+					</CardActions>
+				</Card>
+			</Grid>
+		);
+	}
 
-  render() {
-    const { classes } = this.props;
+	render() {
+		const { classes } = this.props;
 
-    return (
-      <Grid container justify='space-around'>
-        {this.state.collectionExists ? '' : this.renderNoCollection()}
-        <Grid item xs={12} sm={6}>
-          <Card className={classes.card}>
-            <CardHeader title='Server Activity' />
-            <CardContent>
-              <LogList />
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    );
-  }
+		return (
+			<Grid container justify='space-around'>
+				{this.state.collectionExists ? '' : this.renderNoCollection()}
+				<Grid item xs={12} sm={6}>
+					<Card className={classes.card}>
+						<CardHeader title='Server Activity' />
+						<CardContent>
+							<LogList />
+						</CardContent>
+					</Card>
+				</Grid>
+			</Grid>
+		);
+	}
 }
+
+Dashboard.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(Dashboard);

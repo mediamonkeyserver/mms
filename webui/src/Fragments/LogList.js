@@ -6,7 +6,7 @@ import Typography from 'material-ui/Typography';
 
 import Server from 'server';
 
-const styles = theme => ({
+const styles = ({
 	root: {
 	}
 });

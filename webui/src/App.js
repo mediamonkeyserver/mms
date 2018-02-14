@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import { withStyles } from 'material-ui/styles';
 import AppHeader from './AppHeader';
@@ -66,5 +67,9 @@ class App extends Component {
 		);
 	}
 }
+
+App.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(App);
