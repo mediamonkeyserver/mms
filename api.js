@@ -446,9 +446,10 @@ class API extends events.EventEmitter {
 		app.use('/api', bodyParser.json());
 		app.use('/api', new restRouter);
 
-		app.use((req, res, next) => {
+		app.use((req, res) => {
 			this._processRequest(req, res);
-			next();
+			// Don't call next(), as we don't expect any further processing
+			// TODO: Rewrite our _processRequest() to be fully handled by express server?
 		});
 
 		// To be used later? Or everything in the middleware use() above?
