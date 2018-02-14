@@ -24,6 +24,8 @@ const styles = {
 	mainContent: {
 		'flex-grow': 100,
 		padding: 10,
+		overflowX: 'hidden',
+		overflowY: 'scroll',
 	}
 };
 
