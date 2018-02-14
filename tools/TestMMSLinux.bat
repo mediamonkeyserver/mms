@@ -1,0 +1,1 @@
+docker run --rm --expose=10293 -p 10293:10293/tcp -v %CD%/../dist/linux:/mms ubuntu /mms/mms

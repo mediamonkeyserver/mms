@@ -16,11 +16,11 @@ call pkg -t node8-win-x86 -o dist\win32\mms.exe .
 copy ..\sqlitebinaries\node-v57-win32-ia32\* dist\win32
 
 mkdir dist\mac
-call pkg -t node8-macos-x64 -o dist\mac\mms.exe .
+call pkg -t node8-macos-x64 -o dist\mac\mms .
 copy ..\sqlitebinaries\node-v57-darwin-x64\* dist\mac
 
 mkdir dist\linux
-call pkg -t node8-linux-x64 -o dist\linux\mms.exe .
+call pkg -t node8-linux-x64 -o dist\linux\mms .
 copy ..\sqlitebinaries\node-v57-linux-x64\* dist\linux
 
 rem Alternatively through:
