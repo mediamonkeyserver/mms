@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true, esversion: 6 */
-"use strict";
+'use strict';
 
 const assert = require('assert');
 const events = require('events');
@@ -41,19 +41,19 @@ class API extends events.EventEmitter {
 		this._contentProviders = {};
 		this._contentHandlersKey = 0;
 
-		if (typeof (paths) === "string") {
-			this.addDirectory("/", paths);
+		if (typeof (paths) === 'string') {
+			this.addDirectory('/', paths);
 
 		} else if (util.isArray(paths)) {
 			paths.forEach((path) => this.initPaths(path));
 		}
 
 		if (this.configuration.noDefaultConfig !== true) {
-			this.loadConfiguration("./default-config.json");
+			this.loadConfiguration('./default-config.json');
 		}
 
 		var cf = this.configuration.configurationFiles;
-		if (typeof (cf) === "string") {
+		if (typeof (cf) === 'string') {
 			var toks = cf.split(',');
 			toks.forEach((tok) => this.loadConfiguration(tok));
 
@@ -69,10 +69,10 @@ class API extends events.EventEmitter {
 	 */
 	get defaultConfiguration() {
 		return {
-			"dlnaSupport": true,
-			"httpPort": 10293,
-			"name": "Node Server",
-			"version": require("./package.json").version
+			'dlnaSupport': true,
+			'httpPort': 10293,
+			'name': 'Node Server',
+			'version': require('./package.json').version
 		};
 	}
 
@@ -84,18 +84,18 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} the created repository
 	 */
 	initPaths(path) {
-		if (typeof (path) === "string") {
-			return this.addDirectory("/", path);
+		if (typeof (path) === 'string') {
+			return this.addDirectory('/', path);
 		}
-		if (typeof (path) === "object") {
-			if (path.type === "video") {
-				path.type = "movie";
+		if (typeof (path) === 'object') {
+			if (path.type === 'video') {
+				path.type = 'movie';
 			}
 
 			return this.declareRepository(path);
 		}
 
-		throw new Error("Invalid path '" + util.inspect(path) + "'");
+		throw new Error('Invalid path \'' + util.inspect(path) + '\'');
 	}
 
 	/**
@@ -108,24 +108,24 @@ class API extends events.EventEmitter {
 	declareRepository(configuration) {
 		var config = Object.assign({}, configuration);
 
-		var mountPath = config.mountPoint || config.mountPath || "/";
+		var mountPath = config.mountPoint || config.mountPath || '/';
 
 		var type = config.type;
 		if (!type) {
-			logger.error("Type is not specified, assume it is a 'directory' type");
-			type = "directory";
+			logger.error('Type is not specified, assume it is a \'directory\' type');
+			type = 'directory';
 		}
 
 		var requirePath = configuration.require;
 		if (!requirePath) {
-			requirePath = "./lib/repositories/" + type;
+			requirePath = './lib/repositories/' + type;
 		}
 
-		debug("declareRepository", "requirePath=", requirePath, "mountPath=", mountPath, "config=", config);
+		debug('declareRepository', 'requirePath=', requirePath, 'mountPath=', mountPath, 'config=', config);
 
 		var clazz = require(requirePath);
 		if (!clazz) {
-			logger.error("Class of repository must be specified");
+			logger.error('Class of repository must be specified');
 			return;
 		}
 
@@ -143,7 +143,7 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addRepository(repository) {
-		assert(repository instanceof Repository, "Invalid repository parameter '" + repository + "'");
+		assert(repository instanceof Repository, 'Invalid repository parameter \'' + repository + '\'');
 
 		this.repositories.push(repository);
 
@@ -161,12 +161,12 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addDirectory(mountPath, path, configuration) {
-		assert.equal(typeof (mountPath), "string", "Invalid mountPoint parameter '" +
-			mountPath + "'");
+		assert.equal(typeof (mountPath), 'string', 'Invalid mountPoint parameter \'' +
+			mountPath + '\'');
 
-		assert.equal(typeof (path), "string", "Invalid path parameter '" + path + "'");
+		assert.equal(typeof (path), 'string', 'Invalid path parameter \'' + path + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: "directory" });
+		configuration = Object.assign({}, configuration, { mountPath, path, type: 'directory' });
 
 		return this.declareRepository(configuration);
 	}
@@ -182,11 +182,11 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addMusicDirectory(mountPath, path, configuration) {
-		assert.equal(typeof mountPath, "string", "Invalid mountPath parameter '" +
-			mountPath + "'");
-		assert.equal(typeof path, "string", "Invalid path parameter '" + mountPath + "'");
+		assert.equal(typeof mountPath, 'string', 'Invalid mountPath parameter \'' +
+			mountPath + '\'');
+		assert.equal(typeof path, 'string', 'Invalid path parameter \'' + mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: "music" });
+		configuration = Object.assign({}, configuration, { mountPath, path, type: 'music' });
 
 		return this.declareRepository(configuration);
 	}
@@ -202,10 +202,10 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addVideoDirectory(mountPath, path, configuration) {
-		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" + mountPath + "'");
-		assert.equal(typeof path, "string", "Invalid path parameter '" + path + "'");
+		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' + mountPath + '\'');
+		assert.equal(typeof path, 'string', 'Invalid path parameter \'' + path + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: "movie" });
+		configuration = Object.assign({}, configuration, { mountPath, path, type: 'movie' });
 
 		return this.declareRepository(configuration);
 	}
@@ -219,9 +219,9 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addHistoryDirectory(mountPath, configuration) {
-		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" + mountPath + "'");
+		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' + mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, type: "history" });
+		configuration = Object.assign({}, configuration, { mountPath, type: 'history' });
 
 		return this.declareRepository(configuration);
 	}
@@ -237,10 +237,10 @@ class API extends events.EventEmitter {
 	 * @returns {Repository} a Repository object
 	 */
 	addIceCast(mountPath, configuration) {
-		assert.equal(typeof mountPath, "string", "Invalid mountPoint parameter '" +
-			mountPath + "'");
+		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' +
+			mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, type: "iceCast" });
+		configuration = Object.assign({}, configuration, { mountPath, type: 'iceCast' });
 
 		return this.declareRepository(configuration);
 	}
@@ -278,16 +278,16 @@ class API extends events.EventEmitter {
 
 				var requirePath = contentHandler.require;
 				if (!requirePath) {
-					requirePath = "./lib/contentHandlers/" + contentHandler.type;
+					requirePath = './lib/contentHandlers/' + contentHandler.type;
 				}
 				if (!requirePath) {
-					logger.error("Require path is not defined !");
+					logger.error('Require path is not defined !');
 					return;
 				}
 
 				var clazz = require(requirePath);
 				if (!clazz) {
-					logger.error("Class of contentHandler must be specified");
+					logger.error('Class of contentHandler must be specified');
 					return;
 				}
 
@@ -306,11 +306,11 @@ class API extends events.EventEmitter {
 			contentProviders.forEach((contentProvider) => {
 				var protocol = contentProvider.protocol;
 				if (!protocol) {
-					logger.error("Protocol property must be defined for contentProvider " + contentProvider.id + "'.");
+					logger.error('Protocol property must be defined for contentProvider ' + contentProvider.id + '\'.');
 					return;
 				}
 				if (protocol in this._contentProviders) {
-					logger.error("Protocol '" + protocol + "' is already known");
+					logger.error('Protocol \'' + protocol + '\' is already known');
 					return;
 				}
 
@@ -320,16 +320,16 @@ class API extends events.EventEmitter {
 				if (!requirePath) {
 					var type = contentProvider.type || protocol;
 
-					requirePath = "./lib/contentProviders/" + type;
+					requirePath = './lib/contentProviders/' + type;
 				}
 				if (!requirePath) {
-					logger.error("Require path is not defined !");
+					logger.error('Require path is not defined !');
 					return;
 				}
 
 				var clazz = require(requirePath);
 				if (!clazz) {
-					logger.error("Class of contentHandler must be specified");
+					logger.error('Class of contentHandler must be specified');
 					return;
 				}
 
@@ -367,7 +367,7 @@ class API extends events.EventEmitter {
 		callback = callback || (() => {
 		});
 
-		debug("startServer", "Start the server");
+		debug('startServer', 'Start the server');
 
 		var configuration = this.configuration;
 		configuration.repositories = this.repositories;
@@ -385,12 +385,12 @@ class API extends events.EventEmitter {
 
 		var upnpServer = new UPNPServer(configuration.httpPort, configuration, (error, upnpServer) => {
 			if (error) {
-				logger.error("Can not start UPNPServer", error);
+				logger.error('Can not start UPNPServer', error);
 
 				return callback(error);
 			}
 
-			debug("startServer", "Server started ...");
+			debug('startServer', 'Server started ...');
 
 			this._upnpServerStarted(upnpServer, callback);
 		});
@@ -406,21 +406,21 @@ class API extends events.EventEmitter {
 	 */
 	_upnpServerStarted(upnpServer, callback) {
 
-		this.emit("starting");
+		this.emit('starting');
 
 		this.upnpServer = upnpServer;
 
-		var locationURL = 'http://' + ip.address() + ':' + this.configuration.httpPort + "/description.xml";
+		var locationURL = 'http://' + ip.address() + ':' + this.configuration.httpPort + '/description.xml';
 
 		var config = {
 			udn: this.upnpServer.uuid,
-			description: "/description.xml",
+			description: '/description.xml',
 			location: locationURL,
-			ssdpSig: "Node/" + process.versions.node + " UPnP/1.0 " + "UPnPServer/" +
-				require("./package.json").version
+			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
+				require('./package.json').version
 		};
 
-		debug("_upnpServerStarted", "New SSDP server config=", config);
+		debug('_upnpServerStarted', 'New SSDP server config=', config);
 
 		var ssdpServer = new SSDP.Server(config);
 		this.ssdpServer = ssdpServer;
@@ -435,7 +435,7 @@ class API extends events.EventEmitter {
 			}
 		}
 
-		debug("_upnpServerStarted", "New Http server port=", upnpServer.port);
+		debug('_upnpServerStarted', 'New Http server port=', upnpServer.port);
 
 		var app = express();
 		var httpServer = http.createServer(app);
@@ -448,6 +448,7 @@ class API extends events.EventEmitter {
 
 		app.use((req, res, next) => {
 			this._processRequest(req, res);
+			next();
 		});
 
 		// To be used later? Or everything in the middleware use() above?
@@ -462,18 +463,18 @@ class API extends events.EventEmitter {
 
 			this.ssdpServer.start();
 
-			this.emit("waiting");
+			this.emit('waiting');
 
 			var address = httpServer.address();
 
-			debug("_upnpServerStarted", "Http server is listening on address=", address);
+			debug('_upnpServerStarted', 'Http server is listening on address=', address);
 
 			var hostname = address.address;
 			if (address.family === 'IPv6') {
 				hostname = '[' + hostname + ']';
 			}
 
-			console.log('Ready http://' + hostname + ':' + address.port);
+			logger.info('Ready http://' + hostname + ':' + address.port);
 
 			this._initUIConfigObserver(callback);
 		});
@@ -518,7 +519,7 @@ class API extends events.EventEmitter {
 					response.writeHead(500, 'Server error: ' + error);
 					response.end();
 
-					this.emit("code:500", error, stats);
+					this.emit('code:500', error, stats);
 					return;
 				}
 
@@ -526,16 +527,16 @@ class API extends events.EventEmitter {
 					response.writeHead(404, 'Resource not found: ' + path);
 					response.end();
 
-					this.emit("code:404", stats);
+					this.emit('code:404', stats);
 					return;
 				}
 
-				this.emit("code:200", stats);
+				this.emit('code:200', stats);
 			});
 
 		} catch (error) {
-			logger.error("Process request exception", error);
-			this.emit("error", error);
+			logger.error('Process request exception', error);
+			this.emit('error', error);
 		}
 	}
 
@@ -546,7 +547,7 @@ class API extends events.EventEmitter {
 	 *          callback
 	 */
 	stop(callback) {
-		debug("stop", "Stopping ...");
+		debug('stop', 'Stopping ...');
 
 		callback = callback || (() => {
 			return false;
@@ -561,7 +562,7 @@ class API extends events.EventEmitter {
 			stopped = true;
 
 			try {
-				debug("stop", "Stop ssdp server ...");
+				debug('stop', 'Stop ssdp server ...');
 
 				ssdpServer.stop();
 
@@ -575,7 +576,7 @@ class API extends events.EventEmitter {
 			stopped = true;
 
 			try {
-				debug("stop", "Stop http server ...");
+				debug('stop', 'Stop http server ...');
 
 				httpServer.close();
 
@@ -584,10 +585,10 @@ class API extends events.EventEmitter {
 			}
 		}
 
-		debug("stop", "Stopped");
+		debug('stop', 'Stopped');
 
 		if (stopped) {
-			this.emit("stopped");
+			this.emit('stopped');
 		}
 
 		callback(null, stopped);
