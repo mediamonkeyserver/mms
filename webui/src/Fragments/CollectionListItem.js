@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
@@ -46,7 +47,7 @@ class CollectionListItem extends Component {
 		this.setState({ confirmOpen: true });
 	}
 
-	handleDelete = (event) => {
+	handleDelete = () => {
 		Server.deleteCollection({ id: this.props.id });
 		PubSub.publish('SHOW_SNACKBAR', {
 			message: 'Collection "' + this.props.name + '" was deleted.',
@@ -107,20 +108,28 @@ class CollectionListItem extends Component {
 					<DialogContent>
 						<DialogContentText>
 							This cannot be undone, the collection will be deleted permanently with all the stored metadata.
-            </DialogContentText>
+						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={this.handleConfirmClose}>
 							Cancel
-            </Button>
+						</Button>
 						<Button onClick={this.handleDelete} color='primary' autoFocus>
 							Delete
-            </Button>
+						</Button>
 					</DialogActions>
 				</Dialog>
 			</div>
 		);
 	}
 }
+
+CollectionListItem.propTypes = {
+	classes: PropTypes.object.isRequired,
+	id: PropTypes.object.isRequired,
+	name: PropTypes.object.isRequired,
+	type: PropTypes.object.isRequired,
+	folders: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(CollectionListItem);

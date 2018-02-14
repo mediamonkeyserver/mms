@@ -11,60 +11,60 @@ import Paper from 'material-ui/Paper';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 const styles = {
-  root: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    display: 'flex',
-    'flex-direction': 'column',
-  },
-  mainContent: {
-    'flex-grow': 100,
-    padding: 10,
-  }
+	root: {
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		display: 'flex',
+		'flex-direction': 'column',
+	},
+	mainContent: {
+		'flex-grow': 100,
+		padding: 10,
+	}
 };
 
 const theme = createMuiTheme({
-  // palette: {
-  //   primary: {
-  //     light: '#d05ce3',
-  //     main: '#9c27b0',
-  //     dark: '#6a0080',
-  //     contrastText: '#fff',
-  //   },
-  //   secondary: {
-  //     light: '#9fffe0',
-  //     main: '#69f0ae',
-  //     dark: '#2bbd7e',
-  //     contrastText: '#000',
-  //   },
-  //   type: 'dark',    
-  // },
-  // status: {
-  //   danger: 'orange',
-  // },
+	// palette: {
+	//   primary: {
+	//     light: '#d05ce3',
+	//     main: '#9c27b0',
+	//     dark: '#6a0080',
+	//     contrastText: '#fff',
+	//   },
+	//   secondary: {
+	//     light: '#9fffe0',
+	//     main: '#69f0ae',
+	//     dark: '#2bbd7e',
+	//     contrastText: '#000',
+	//   },
+	//   type: 'dark',    
+	// },
+	// status: {
+	//   danger: 'orange',
+	// },
 });
 
 class App extends Component {
-  render() {
-    const { classes } = this.props;
+	render() {
+		const { classes } = this.props;
 
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <AppHeader />
-          <Paper elevation={0} square className={classes.mainContent}>
-            <MainContent />
-          </Paper>
-          <Player />
-          <MainDrawer />
-          <Dialogs />
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+		return (
+			<MuiThemeProvider theme={theme}>
+				<div className={classes.root}>
+					<AppHeader />
+					<Paper elevation={0} square className={classes.mainContent}>
+						<MainContent />
+					</Paper>
+					<Player />
+					<MainDrawer />
+					<Dialogs />
+				</div>
+			</MuiThemeProvider>
+		);
+	}
 }
 
 export default withStyles(styles)(App);
