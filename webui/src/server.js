@@ -5,7 +5,7 @@ var serverInfo;
 
 class Server {
 	static fetchJson = (path, options) => {
-		return new Promise((res, rej) => {
+		return new Promise((res) => {
 			fetch('/api' + path, options).then((result) => {
 				return result.json();
 			}).then((json) => {
@@ -31,7 +31,7 @@ class Server {
 	}
 
 	static getInfo = () => {
-		return new Promise((res, rej) => {
+		return new Promise((res) => {
 			if (serverInfo)
 				res(serverInfo);
 

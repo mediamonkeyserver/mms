@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 
 import Server from 'server';
 
-const styles = theme => ({
+const styles = ({
 });
 
 class Collections extends Component {
