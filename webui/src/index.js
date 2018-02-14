@@ -15,8 +15,8 @@ import registerServiceWorker from './registerServiceWorker';
 // let store = createStore(mmsReducers);
 
 ReactDOM.render(
-    // <Provider store={store}>
-    <App />
-    // </Provider>
-    , document.getElementById('root'));
+	// <Provider store={store}>
+	<App />
+	// </Provider>
+	, document.getElementById('root'));
 registerServiceWorker();
