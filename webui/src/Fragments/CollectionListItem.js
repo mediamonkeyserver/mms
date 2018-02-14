@@ -58,6 +58,16 @@ class CollectionListItem extends Component {
 		this.setState({ confirmOpen: false });
 	}
 
+	formatFoldersString = () => {
+		var res = '';
+		const folders = this.props.folders;
+		if (folders) {
+			res += (folders.length > 1 ? 'Folders:' : 'Folder:') + ' ';
+			res += folders.join(', ');
+		}
+		return res;
+	}
+
 	render() {
 		return (
 			<div>
@@ -71,7 +81,7 @@ class CollectionListItem extends Component {
 					</Avatar>
 					<ListItemText
 						primary={this.props.name}
-						secondary={this.props.folder ? 'Folder: ' + this.props.folder : ''}
+						secondary={this.formatFoldersString()}
 					/>
 					<IconButton aria-label='ItemMenu' className='itemButtonOnHover' onClick={this.handleMenuClick}>
 						<MenuIcon />

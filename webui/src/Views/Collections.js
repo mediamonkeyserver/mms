@@ -73,7 +73,7 @@ class Collections extends Component {
 								key={'col'+collection.id}
 								type={collection.type}
 								name={collection.name}
-								folder={collection.folders ? collection.folders[0] : ''}
+								folders={collection.folders}
 								onClick={this.handleEditCollection.bind(this, index)}
 							/>;
 						})}
