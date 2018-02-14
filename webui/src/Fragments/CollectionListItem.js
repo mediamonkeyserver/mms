@@ -126,10 +126,11 @@ class CollectionListItem extends Component {
 
 CollectionListItem.propTypes = {
 	classes: PropTypes.object.isRequired,
-	id: PropTypes.object.isRequired,
-	name: PropTypes.object.isRequired,
-	type: PropTypes.object.isRequired,
-	folders: PropTypes.object.isRequired,
+	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	folders: PropTypes.array.isRequired,
+	onClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(CollectionListItem);

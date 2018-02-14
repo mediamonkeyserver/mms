@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import MusicIcon from 'material-ui-icons/MusicNote';
@@ -33,5 +34,11 @@ class CollectionIcon extends Component {
 		}
 	}
 }
+
+CollectionIcon.propTypes = {
+	classes: PropTypes.object.isRequired,
+	type: PropTypes.string.isRequired,
+	variant: PropTypes.string,
+};
 
 export default withStyles(styles)(CollectionIcon);
