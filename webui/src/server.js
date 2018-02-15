@@ -21,7 +21,7 @@ class Server {
 			'Content-Type': 'application/json'
 		});
 		options.body = JSON.stringify(json);
-		return fetch('/api'+path, options);
+		return fetch('/api' + path, options);
 	}
 
 	static deleteJson = (path, json, options) => {
@@ -44,7 +44,7 @@ class Server {
 
 	static saveCongif = (cfg) => {
 		Server.postJson('/', cfg).then(() => {
-			serverInfo = undefined;			
+			serverInfo = undefined;
 			PubSub.publish('CONFIG_CHANGE');
 			PubSub.publish('SHOW_SNACKBAR', {
 				message: 'Server configuration updated',
@@ -70,13 +70,24 @@ class Server {
 
 	static deleteCollection = (collection) => {
 		Server.deleteJson('/collections', collection).then(() => {
-			serverInfo = undefined;			
+			serverInfo = undefined;
 			PubSub.publish('COLLECTIONS_CHANGE');
 		});
 	}
 
 	static getLog = () => {
 		return Server.fetchJson('/log');
+	}
+
+	static getTracklist = () => {
+		return Server.fetchJson('/tracks');
+		// return new Promise((res) => {
+		// 	var ret = [];
+		// 	for (var i = 1; i <= 5000; i++) {
+		// 		ret.push({ title: 'Title' + i, artist: 'Artist' + i, album: 'Album' + i });
+		// 	}
+		// 	res(ret);
+		// });
 	}
 }
 
