@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import Dashboard from './Views/Dashboard';
 import Collections from './Views/Collections';
 import Collection from './Views/Collection';
+import Playlists from './Views/Playlists';
 import CfgServer from './Views/CfgServer';
 
 import PubSub from 'pubsub-js';
@@ -21,6 +22,9 @@ const pages = {
 	},
 	collection: {
 		component: Collection
+	},
+	playlists: {
+		component: Playlists
 	},
 	cfgCollections: {
 		component: Collections

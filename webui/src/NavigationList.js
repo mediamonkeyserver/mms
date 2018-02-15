@@ -95,7 +95,7 @@ class NavigationList extends React.Component {
 						</ListItem>;
 					})}
 
-					<ListItem button data-id='collection' onClick={this.handleSelectView}>
+					<ListItem button data-id='playlists' onClick={this.handleSelectView}>
 						<CollectionIcon type={'playlists'} variant='list' />
 						<ListItemText inset primary={'Playlists'} />
 					</ListItem>
