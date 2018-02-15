@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
-import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
+
+import { AutoSizer } from 'react-virtualized';
 import MuiTable from 'mui-table';
 
-import PubSub from 'pubsub-js';
 import Server from 'server';
 
 const styles = {
@@ -40,51 +37,39 @@ class Collection extends Component {
 		}
 	}
 
-	handleEditCollections = () => {
-		PubSub.publish('SHOW_VIEW', { view: 'cfgCollections' });
+	renderArtists = (track) => {
+		return track.artists ? track.artists.join('; ') : '';
 	}
 
-	renderNotImplemented() {
-		const { classes } = this.props;
-
-		return (
-			<Grid container justify='center'>
-				<Grid item>
-					<Card className={classes.card}>
-						<CardHeader title='Not implemented' />
-						<CardContent>
-							<Typography component='p'>
-								{'Collection browsing isn\'t implemented yet. But it will be! ;-)'}
-							</Typography>
-							<p />
-							<Typography component='p'>
-								You can configure collections though...
-							</Typography>
-						</CardContent>
-						<CardActions className={classes.cardActions}>
-							<Button onClick={this.handleEditCollections} color='primary' autoFocus>Edit Collections</Button>
-						</CardActions>
-					</Card>
-				</Grid>
-			</Grid>
-		);
+	renderLength = (track) => {
+		if (track.duration >= 0) {
+			var min = String(Math.trunc(track.duration / 60) + ':');
+			var sec = String(Math.trunc(track.duration % 60));
+			while (sec.length < 2)
+				sec = '0' + sec;
+			return min + sec;
+		} else
+			return '';
 	}
 
 	render() {
 		// const { classes } = this.props;
 
 		return (
-			<div>
-				<MuiTable
-					data={this.state.tracks}
-					columns={[
-						{ name: 'title' },
-						{ name: 'artist' },
-						{ name: 'album' },
-					]}
-					width={800}
-					height={500} />
-			</div>
+			<AutoSizer>
+				{({ height, width }) => (
+					<MuiTable
+						data={this.state.tracks}
+						columns={[
+							{ name: 'title' },
+							{ name: 'artist', cell: this.renderArtists },
+							{ name: 'album' },
+							{ name: 'duration', cell: this.renderLength }
+						]}
+						width={width}
+						height={height} />
+				)}
+			</AutoSizer>
 		);
 	}
 }
