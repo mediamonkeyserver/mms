@@ -38,7 +38,7 @@ class NavigationList extends React.Component {
 	updateContent = () => {
 		Server.getInfo().then((info) => {
 			this.setState({ serverName: info.serverName });
-			this.setState({ collections: info.collections.map(x => { return { id: x.id, name: x.name, type: x.type }; }) });
+			this.setState({ collections: info.collections.map(x => x) });
 		});
 	}
 
@@ -58,7 +58,7 @@ class NavigationList extends React.Component {
 	}
 
 	handleShowCollection = (event) => {
-		PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: event.currentTarget.dataset.collection} });
+		PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: this.state.collections[event.currentTarget.dataset.index]} });
 		if (this.props.onItemClicked)
 			this.props.onItemClicked(event);
 	}
@@ -84,10 +84,10 @@ class NavigationList extends React.Component {
 
 					{/* Collections */}
 					<ListSubheader>Collections</ListSubheader>
-					{this.state.collections.map((col) => {
+					{this.state.collections.map((col, index) => {
 						return <ListItem
 							button
-							data-collection={col}
+							data-index={index}
 							key={'navcol' + col.id}
 							onClick={this.handleShowCollection}>
 							<CollectionIcon type={col.type} variant='list' />
