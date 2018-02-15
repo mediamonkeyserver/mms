@@ -19,7 +19,7 @@ class Collections extends Component {
 						<Typography variant='display1'>Collections</Typography>
 					</Grid>
 
-					<CollectionsList />
+					<CollectionsList click='edit'/>
 				</Grid>
 			</Grid>
 		);

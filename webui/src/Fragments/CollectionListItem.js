@@ -40,6 +40,21 @@ class CollectionListItem extends Component {
 		this.setState({ anchorEl: null });
 	}
 
+	handleItemClick = () => {
+		if (this.props.click === 'edit') {
+			PubSub.publish('EDIT_COLLECTION', { collection: this.props.collection });
+		} else {
+			PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: this.props.collection} });
+		}
+	}
+
+	handleEdit = (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		this.handleMenuClose();
+		PubSub.publish('EDIT_COLLECTION', { collection: this.props.collection });
+	}
+
 	handleShowConfirm = (event) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -48,9 +63,9 @@ class CollectionListItem extends Component {
 	}
 
 	handleDelete = () => {
-		Server.deleteCollection({ id: this.props.id });
+		Server.deleteCollection({ id: this.props.collection.id });
 		PubSub.publish('SHOW_SNACKBAR', {
-			message: 'Collection "' + this.props.name + '" was deleted.',
+			message: 'Collection "' + this.props.collection.name + '" was deleted.',
 			autoHide: 5000,
 		});
 	}
@@ -61,7 +76,7 @@ class CollectionListItem extends Component {
 
 	formatFoldersString = () => {
 		var res = '';
-		const folders = this.props.folders;
+		const folders = this.props.collection.folders;
 		if (folders) {
 			res += (folders.length > 1 ? 'Folders:' : 'Folder:') + ' ';
 			res += folders.join(', ');
@@ -74,14 +89,14 @@ class CollectionListItem extends Component {
 			<div>
 				<ListItem
 					button
-					key={this.props.id}
+					key={this.props.collection.id}
 					className='listItem'
-					onClick={this.props.onClick}>
+					onClick={this.handleItemClick}>
 					<Avatar>
-						<CollectionIcon type={this.props.type} />
+						<CollectionIcon type={this.props.collection.type} />
 					</Avatar>
 					<ListItemText
-						primary={this.props.name}
+						primary={this.props.collection.name}
 						secondary={this.formatFoldersString()}
 					/>
 					<IconButton aria-label='ItemMenu' className='itemButtonOnHover' onClick={this.handleMenuClick}>
@@ -95,6 +110,7 @@ class CollectionListItem extends Component {
 						open={Boolean(this.state.anchorEl)}
 						onClose={this.handleMenuClose}
 					>
+						<MenuItem onClick={this.handleEdit}>Edit</MenuItem>
 						<MenuItem onClick={this.handleShowConfirm}>Delete</MenuItem>
 					</Menu>
 				</ListItem>
@@ -104,7 +120,7 @@ class CollectionListItem extends Component {
 					open={this.state.confirmOpen}
 					onClose={this.handleConfirmClose}
 				>
-					<DialogTitle>{'Delete collection "' + this.props.name + '"?'}</DialogTitle>
+					<DialogTitle>{'Delete collection "' + this.props.collection.name + '"?'}</DialogTitle>
 					<DialogContent>
 						<DialogContentText>
 							This cannot be undone, the collection will be deleted permanently with all the stored metadata.
@@ -126,11 +142,8 @@ class CollectionListItem extends Component {
 
 CollectionListItem.propTypes = {
 	classes: PropTypes.object.isRequired,
-	id: PropTypes.number.isRequired,
-	name: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	folders: PropTypes.array.isRequired,
-	onClick: PropTypes.func.isRequired,
+	collection: PropTypes.object.isRequired,
+	click: PropTypes.string,
 };
 
 export default withStyles(styles)(CollectionListItem);

@@ -57,6 +57,12 @@ class NavigationList extends React.Component {
 			this.props.onItemClicked(event);
 	}
 
+	handleShowCollection = (event) => {
+		PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: event.currentTarget.dataset.collection} });
+		if (this.props.onItemClicked)
+			this.props.onItemClicked(event);
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -64,7 +70,7 @@ class NavigationList extends React.Component {
 			<div className={classes.root}>
 				<List
 					component='nav'
-					subheader={<ListSubheader component="div" color="primary">{this.state.serverName}</ListSubheader>}
+					subheader={<ListSubheader component='div' color='primary'>{this.state.serverName}</ListSubheader>}
 				>
 					{/* Dashboard */}
 					<ListItem button data-id='dashboard' onClick={this.handleSelectView}>
@@ -81,9 +87,9 @@ class NavigationList extends React.Component {
 					{this.state.collections.map((col) => {
 						return <ListItem
 							button
-							data-id='collection'
+							data-collection={col}
 							key={'navcol' + col.id}
-							onClick={this.handleSelectView}>
+							onClick={this.handleShowCollection}>
 							<CollectionIcon type={col.type} variant='list' />
 							<ListItemText inset primary={col.name} />
 						</ListItem>;
@@ -122,7 +128,7 @@ class NavigationList extends React.Component {
 
 NavigationList.propTypes = {
 	classes: PropTypes.object.isRequired,
-	onItemClicked:  PropTypes.func.isRequired,
+	onItemClicked: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(NavigationList);

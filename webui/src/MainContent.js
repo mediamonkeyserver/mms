@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 import Dashboard from './Views/Dashboard';
@@ -16,22 +17,23 @@ const styles = {
 
 const pages = {
 	dashboard: {
-		component: React.createElement(Dashboard)
+		component: Dashboard
 	},
 	collection: {
-		component: React.createElement(Collection)
+		component: Collection
 	},
 	cfgCollections: {
-		component: React.createElement(Collections)
+		component: Collections
 	},
 	cfgServer: {
-		component: React.createElement(CfgServer)
+		component: CfgServer
 	}
-}
+};
 
 class MainContent extends Component {
 	state = {
 		view: 'dashboard',
+		props: {},
 	}
 
 	componentDidMount = () => {
@@ -39,12 +41,15 @@ class MainContent extends Component {
 	}
 
 	handleShowView = (msg, data) => {
-		this.setState({ view: data.view });
+		this.setState({
+			view: data.view,
+			props: data.props,
+		});
 	}
 
 	render() {
 		var { classes } = this.props;
-		var activeview = pages[this.state.view].component;
+		var activeview = React.createElement(pages[this.state.view].component, this.state.props);
 
 		return (
 			<div className={classes.root}>
@@ -53,5 +58,9 @@ class MainContent extends Component {
 		);
 	}
 }
+
+MainContent.propTypes = {
+	classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(MainContent);

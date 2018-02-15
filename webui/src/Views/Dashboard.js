@@ -34,7 +34,7 @@ class Dashboard extends Component {
 					<Card>
 						<CardHeader title='Collections' />
 						<CardContent>
-							<CollectionsList hideCreate />
+							<CollectionsList hideCreate click='show'/>
 						</CardContent>
 						<CardActions className={classes.cardActions}>
 							<Button onClick={this.handleNewCollection} color='primary' autoFocus>Create Collection</Button>

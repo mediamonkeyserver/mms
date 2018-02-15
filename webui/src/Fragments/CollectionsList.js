@@ -67,14 +67,11 @@ class CollectionsList extends Component {
 		return (
 			<div>
 				<List>
-					{this.state.collections.map((collection, index) => {
+					{this.state.collections.map((collection) => {
 						return <CollectionListItem
-							id={collection.id}
+							collection={collection}
 							key={'col' + collection.id}
-							type={collection.type}
-							name={collection.name}
-							folders={collection.folders}
-							onClick={this.handleEditCollection.bind(this, index)}
+							click={this.props.click}
 						/>;
 					})}
 				</List>
@@ -90,6 +87,7 @@ class CollectionsList extends Component {
 CollectionsList.propTypes = {
 	classes: PropTypes.object.isRequired,
 	hideCreate: PropTypes.bool,
+	click: PropTypes.string,
 };
 
 export default withStyles(styles)(CollectionsList);
