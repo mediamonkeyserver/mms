@@ -126,7 +126,7 @@ class CollectionListItem extends Component {
 
 CollectionListItem.propTypes = {
 	classes: PropTypes.object.isRequired,
-	id: PropTypes.string.isRequired,
+	id: PropTypes.number.isRequired,
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
 	folders: PropTypes.array.isRequired,
