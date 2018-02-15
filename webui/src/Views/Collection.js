@@ -23,10 +23,21 @@ class Collection extends Component {
 		tracks: [],
 	}
 
-	componentDidMount = () => {
-		Server.getTracklist().then(tracklist =>
+	updateContent = (collection) => {
+		this.setState({ tracks: [] });
+		Server.getTracklist(collection).then(tracklist =>
 			this.setState({ tracks: tracklist })
 		);
+	}
+
+	componentDidMount = () => {
+		this.updateContent(this.props.collection);
+	}
+
+	componentWillReceiveProps = (nextProps) => {
+		if (this.props.collection.id !== nextProps.collection.id) {
+			this.updateContent(nextProps.collection);
+		}
 	}
 
 	handleEditCollections = () => {
@@ -65,14 +76,14 @@ class Collection extends Component {
 		return (
 			<div>
 				<MuiTable
-					data={this.state.tracks} 
+					data={this.state.tracks}
 					columns={[
 						{ name: 'title' },
 						{ name: 'artist' },
 						{ name: 'album' },
 					]}
 					width={800}
-					height={500}/>
+					height={500} />
 			</div>
 		);
 	}
@@ -80,6 +91,7 @@ class Collection extends Component {
 
 Collection.propTypes = {
 	classes: PropTypes.object.isRequired,
+	collection: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Collection);

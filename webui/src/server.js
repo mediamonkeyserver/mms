@@ -79,15 +79,8 @@ class Server {
 		return Server.fetchJson('/log');
 	}
 
-	static getTracklist = () => {
-		return Server.fetchJson('/tracks');
-		// return new Promise((res) => {
-		// 	var ret = [];
-		// 	for (var i = 1; i <= 5000; i++) {
-		// 		ret.push({ title: 'Title' + i, artist: 'Artist' + i, album: 'Album' + i });
-		// 	}
-		// 	res(ret);
-		// });
+	static getTracklist = (collection) => {
+		return Server.fetchJson('/tracks/'+collection.id);
 	}
 }
 
