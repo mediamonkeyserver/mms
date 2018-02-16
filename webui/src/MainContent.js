@@ -11,9 +11,6 @@ import CfgServer from './Views/CfgServer';
 import PubSub from 'pubsub-js';
 
 const styles = {
-	root: {
-		marginTop: 20,
-	}
 };
 
 const pages = {
@@ -52,14 +49,9 @@ class MainContent extends Component {
 	}
 
 	render() {
-		var { classes } = this.props;
-		var activeview = React.createElement(pages[this.state.view].component, this.state.props);
+		var activeview = React.createElement(pages[this.state.view].component, { key: this.state.view, ...this.state.props });
 
-		return (
-			<div className={classes.root}>
-				{activeview}
-			</div>
-		);
+		return [activeview];
 	}
 }
 

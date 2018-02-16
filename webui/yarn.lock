@@ -4428,14 +4428,6 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-mui-table@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/mui-table/-/mui-table-0.0.6.tgz#da1a8f8994539e741c820a3a27b3559967438e55"
-  dependencies:
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-    react-virtualized "^9.12.0"
-
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"
@@ -5542,7 +5534,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.5.8"
     warning "^3.0.0"
 
-react-virtualized@^9.12.0, react-virtualized@^9.18.5:
+react-virtualized@^9.18.5:
   version "9.18.5"
   resolved "https://registry.yarnpkg.com/react-virtualized/-/react-virtualized-9.18.5.tgz#42dd390ebaa7ea809bfcaf775d39872641679b89"
   dependencies:

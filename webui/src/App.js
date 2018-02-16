@@ -23,9 +23,11 @@ const styles = {
 	},
 	mainContent: {
 		'flex-grow': 100,
+		marginTop: 10,
 		padding: 10,
 		overflowX: 'hidden',
-		overflowY: 'scroll',
+		overflowY: 'auto',
+		position: 'relative',
 	}
 };
 
