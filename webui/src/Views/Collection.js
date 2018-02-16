@@ -15,7 +15,7 @@ const styles = theme => ({
 		top: 0,
 		right: 0,
 		bottom: 0,
-		overflowY: 'hidden',
+		overflow: 'hidden',
 	},
 	table: {
 		boxSizing: 'border-box',
@@ -27,6 +27,18 @@ const styles = theme => ({
 	},
 	row: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
+	},
+	artwork: {
+		width: '100%',
+		height: '100%',
+		objectFit: 'contain',
+		objectPosition: 'center center',
+		maxWidth: '100%',
+		maxHeight: '100%',
+	},
+	cellArtwork: {
+		padding: '2px 0px 2px 0px',
+		height: 48, // Not sure why this is needed explicitly here, otherwise image is offset few pixels up
 	},
 	cell: {
 		textAlign: 'left',
@@ -93,6 +105,15 @@ class Collection extends Component {
 			return '';
 	}
 
+	renderArtwork = ({ rowData }) => {
+		if (rowData.artworkURL)
+			return (<img
+				src={rowData.artworkURL}
+				className={this.props.classes.artwork} />);
+		else
+			return (<div />);
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -112,6 +133,15 @@ class Collection extends Component {
 							rowGetter={({ index }) => this.state.tracks[index]}
 							rowClassName={classes.row}
 						>
+							<Column
+								label='Artwork'
+								dataKey='artworkURL'
+								className={classes.cellArtwork}
+								width={48}
+								flexGrow={0}
+								flexShrink={0}
+								cellRenderer={this.renderArtwork}
+							/>
 							<Column
 								label='Name'
 								dataKey='title'
@@ -137,8 +167,9 @@ class Collection extends Component {
 							<Column
 								label='Length'
 								dataKey='duration'
-								width={70}
+								width={40}
 								flexGrow={0}
+								flexShrink={0}
 								className={classes.cellRight}
 								cellDataGetter={this.getDurationCellData}
 							/>
