@@ -7,6 +7,7 @@ import { AutoSizer } from 'react-virtualized';
 import { Table, Column } from 'react-virtualized';
 
 import Server from 'server';
+import PubSub from 'pubsub-js';
 
 const styles = theme => ({
 	root: {
@@ -27,6 +28,8 @@ const styles = theme => ({
 	},
 	row: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
+		outline: 0,
+		cursor: 'default',
 	},
 	artwork: {
 		width: '100%',
@@ -114,6 +117,13 @@ class Collection extends Component {
 			return (<div />);
 	}
 
+	handleTrackClick = ({ rowData }) => {
+		PubSub.publish('PLAY', { 
+			url: rowData.streamURL,
+			title: (rowData.artists ? rowData.artists.join('; ') : '') + ' - ' + rowData.title,
+		});
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -132,6 +142,7 @@ class Collection extends Component {
 							rowCount={this.state.tracks.length}
 							rowGetter={({ index }) => this.state.tracks[index]}
 							rowClassName={classes.row}
+							onRowClick={this.handleTrackClick}
 						>
 							<Column
 								label='Artwork'
