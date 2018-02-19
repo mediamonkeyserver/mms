@@ -95,7 +95,7 @@ class Collection extends Component {
 		}
 	}
 
-	handleChangeSort = (msg, data) => {
+	handleChangeSort = (data) => {
 		if (this.props.collection.id === data.collection.id) {
 			this.sort = data.newSort;
 			this.updateContent();

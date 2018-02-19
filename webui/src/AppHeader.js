@@ -49,7 +49,7 @@ class AppHeader extends React.Component {
 		subscribeViewChange(this.handleViewChange);
 	}
 
-	handleViewChange = (msg, data) => {
+	handleViewChange = (data) => {
 		this.setState({
 			view: data.view,
 			viewProps: data.props,
