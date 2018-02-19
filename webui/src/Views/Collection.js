@@ -125,6 +125,7 @@ class Collection extends Component {
 		if (rowData.artworkURL)
 			return (<img
 				src={rowData.artworkURL}
+				alt='artwork'
 				className={this.props.classes.artwork} />);
 		else
 			return (<div />);
