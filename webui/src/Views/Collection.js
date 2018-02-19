@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-
 import 'react-virtualized/styles.css';
 import { AutoSizer } from 'react-virtualized';
 import { Table, Column } from 'react-virtualized';
+import Avatar from 'material-ui/Avatar';
 
 import Server from 'server';
 import PubSub from 'pubsub-js';
@@ -65,6 +65,9 @@ const styles = theme => ({
 	},
 	footer: {
 		borderTop: `1px solid ${theme.palette.text.divider}`,
+	},
+	albumAvatar: {
+		margin: 4,
 	}
 });
 
@@ -127,8 +130,12 @@ class Collection extends Component {
 				src={rowData.artworkURL}
 				alt='artwork'
 				className={this.props.classes.artwork} />);
-		else
-			return (<div />);
+		else {
+			var short = (rowData.album || '').slice(0, 2);
+			return (
+				<Avatar className={this.props.classes.albumAvatar}>{short}</Avatar>
+			);
+		}
 	}
 
 	handleTrackClick = ({ rowData }) => {
