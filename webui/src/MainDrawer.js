@@ -9,36 +9,36 @@ const styles = {
 };
 
 class MainDrawer extends React.Component {
-  state = {
-    drawerOpen: false
-  };
+	state = {
+		drawerOpen: false
+	};
 
-  handleDrawerToggle = () => {
-    this.setState({ drawerOpen: !this.state.drawerOpen });
-  };
+	handleDrawerToggle = () => {
+		this.setState({ drawerOpen: !this.state.drawerOpen });
+	};
 
-  componentDidMount = () => {
-    PubSub.subscribe('TOGGLE_MAIN_DRAWER', this.handleDrawerToggle.bind(this));
-  }
+	componentDidMount = () => {
+		PubSub.subscribe('TOGGLE_MAIN_DRAWER', this.handleDrawerToggle.bind(this));
+	}
 
-  handleNavItemClicked = () => {
-    this.setState({ drawerOpen: false });
-  }
+	handleNavItemClicked = () => {
+		this.setState({ drawerOpen: false });
+	}
 
-  render() {
-    return (
-      <Drawer
-        open={this.state.drawerOpen}
-        onClose={this.handleDrawerToggle}
-        type="temporary">
-        <NavigationList onItemClicked={this.handleNavItemClicked}/>
-      </Drawer>
-    );
-  }
+	render() {
+		return (
+			<Drawer
+				open={this.state.drawerOpen}
+				onClose={this.handleDrawerToggle}
+				type='temporary'>
+				<NavigationList onItemClicked={this.handleNavItemClicked} />
+			</Drawer>
+		);
+	}
 }
 
 MainDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
+	classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(MainDrawer);
