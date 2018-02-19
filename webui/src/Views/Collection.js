@@ -8,6 +8,7 @@ import { Table, Column } from 'react-virtualized';
 
 import Server from 'server';
 import PubSub from 'pubsub-js';
+import { subscribeCollectionSort } from 'actions';
 
 const styles = theme => ({
 	root: {
@@ -29,7 +30,7 @@ const styles = theme => ({
 	row: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
 		outline: 0,
-		cursor: 'default',
+		cursor: 'pointer',
 	},
 	artwork: {
 		width: '100%',
@@ -71,21 +72,33 @@ class Collection extends Component {
 	state = {
 		tracks: [],
 	}
+	collection = {};
+	sort = null;
 
-	updateContent = (collection) => {
+	updateContent = () => {
 		this.setState({ tracks: [] });
-		Server.getTracklist(collection).then(tracklist =>
+		Server.getTracklist(this.collection, this.sort).then(tracklist =>
 			this.setState({ tracks: tracklist })
 		);
 	}
 
 	componentDidMount = () => {
-		this.updateContent(this.props.collection);
+		this.collection = this.props.collection;
+		this.updateContent();
+		subscribeCollectionSort(this.handleChangeSort);
 	}
 
 	componentWillReceiveProps = (nextProps) => {
 		if (this.props.collection.id !== nextProps.collection.id) {
-			this.updateContent(nextProps.collection);
+			this.collection = nextProps.collection;
+			this.updateContent();
+		}
+	}
+
+	handleChangeSort = (msg, data) => {
+		if (this.props.collection.id === data.collection.id) {
+			this.sort = data.newSort;
+			this.updateContent();
 		}
 	}
 
@@ -118,7 +131,7 @@ class Collection extends Component {
 	}
 
 	handleTrackClick = ({ rowData }) => {
-		PubSub.publish('PLAY', { 
+		PubSub.publish('PLAY', {
 			url: rowData.streamURL,
 			title: (rowData.artists ? rowData.artists.join('; ') : '') + ' - ' + rowData.title,
 		});

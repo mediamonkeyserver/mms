@@ -79,8 +79,11 @@ class Server {
 		return Server.fetchJson('/log');
 	}
 
-	static getTracklist = (collection) => {
-		return Server.fetchJson('/tracks/'+collection.id);
+	static getTracklist = (collection, sort) => {
+		var path = '/tracks/' + collection.id;
+		if (sort)
+			path += '?sort=' + sort;
+		return Server.fetchJson(path);
 	}
 }
 
