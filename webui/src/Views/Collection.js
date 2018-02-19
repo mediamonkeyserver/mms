@@ -23,6 +23,7 @@ const styles = theme => ({
 		boxSizing: 'border-box',
 		border: `0px solid ${theme.palette.divider}`,
 		fontSize: theme.typography.pxToRem(14),
+		color: theme.palette.text.primary,
 	},
 	grid: {
 		outline: 0,
