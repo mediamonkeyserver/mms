@@ -36,7 +36,8 @@ class CollectionListItem extends Component {
 		this.setState({ anchorEl: event.currentTarget });
 	}
 
-	handleMenuClose = () => {
+	handleMenuClose = (event) => {
+		event.stopPropagation();
 		this.setState({ anchorEl: null });
 	}
 
