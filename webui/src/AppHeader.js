@@ -6,6 +6,8 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import CollectionSorting from 'Fragments/CollectionSorting';
+import CollectionFilter from 'Fragments/CollectionFilter';
+import CollectionFilterButton from 'Fragments/CollectionFilterButton';
 
 import MenuIcon from 'material-ui-icons/Menu';
 import LoginIcon from './LoginIcon';
@@ -14,19 +16,25 @@ import PubSub from 'pubsub-js';
 import Server from './server';
 import { subscribeViewChange } from './actions';
 
-const styles = {
+const styles = theme => ({
 	root: {
 		width: '100%',
 		zIndex: 100,
 	},
-	flex: {
+	expand: {
 		flex: 1,
+		display: 'flex',
+		alignItems: 'center',
 	},
 	menuButton: {
-		marginLeft: -12,
-		marginRight: 20,
+		marginLeft: -1.5*theme.spacing.unit,
+		marginRight: 1.5*theme.spacing.unit,
 	},
-};
+	toolbarItem: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+	}
+});
 
 class AppHeader extends React.Component {
 	state = {
@@ -73,18 +81,16 @@ class AppHeader extends React.Component {
 	}
 
 	renderTitle = () => {
-		const { classes } = this.props;
-
 		switch (this.state.view) {
 			case 'collection':
 				return (
-					<Typography variant='title' color='inherit' className={classes.flex}>
+					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
 						{this.state.viewProps.collection.name}
 					</Typography>
 				);
 			default:
 				return (
-					<Typography variant='title' color='inherit' className={classes.flex}>
+					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
 						{this.state.serverName}
 					</Typography>
 				);
@@ -94,7 +100,19 @@ class AppHeader extends React.Component {
 	renderCollectionSort() {
 		if (this.state.view === 'collection') {
 			return (
-				<CollectionSorting collection={this.state.viewProps.collection} />
+				<div className={this.props.classes.toolbarItem}>
+					<CollectionSorting collection={this.state.viewProps.collection} />
+				</div>
+			);
+		}
+	}
+
+	renderFilterState() {
+		if (this.state.view === 'collection') {
+			return (
+				<div className={this.props.classes.toolbarItem}>
+					<CollectionFilter collection={this.state.viewProps.collection} />
+				</div>
 			);
 		}
 	}
@@ -109,9 +127,13 @@ class AppHeader extends React.Component {
 						<IconButton className={classes.menuButton} color='inherit' aria-label='Menu' onClick={this.handleMainDrawer}>
 							<MenuIcon />
 						</IconButton>
-						{this.renderTitle()}
+						<div className={classes.expand}>
+							{this.renderTitle()}
+							{this.renderFilterState()}
+						</div>
 
 						{this.renderCollectionSort()}
+						{this.state.view === 'collection' ? <CollectionFilterButton collection={this.state.viewProps.collection}/> : null}
 						<LoginIcon />
 					</Toolbar>
 				</AppBar>
