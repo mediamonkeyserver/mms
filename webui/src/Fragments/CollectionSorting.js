@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
 import { MenuItem } from 'material-ui/Menu';
 import { changeCollectionSort } from 'actions';
@@ -11,12 +12,7 @@ const audioSorts = {
 	length: 'by Length',
 };
 
-export default class CollectionSorting extends Component {
-	propTypes = {
-		classes: PropTypes.object.isRequired,
-		collection: PropTypes.object.isRequired,
-	}
-
+class CollectionSorting extends Component {
 	state = {
 		sort: null,
 		openDrop: false,
@@ -51,3 +47,10 @@ export default class CollectionSorting extends Component {
 		);
 	}
 }
+
+CollectionSorting.propTypes = {
+	classes: PropTypes.object.isRequired,
+	collection: PropTypes.object.isRequired,
+};
+
+export default withStyles()(CollectionSorting);
