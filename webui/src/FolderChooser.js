@@ -86,6 +86,8 @@ class FolderChooser extends React.Component {
 
 FolderChooser.propTypes = {
 	classes: PropTypes.object.isRequired,
+	path: PropTypes.string,
+	onPathChange: PropTypes.function,
 };
 
 export default withStyles(styles)(FolderChooser);
