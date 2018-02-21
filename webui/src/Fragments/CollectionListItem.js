@@ -56,9 +56,7 @@ class CollectionListItem extends Component {
 	}
 
 	handleShowConfirm = (event) => {
-		event.stopPropagation();
-		event.preventDefault();
-		this.handleMenuClose();
+		this.handleMenuClose(event);
 		this.setState({ confirmOpen: true });
 	}
 
