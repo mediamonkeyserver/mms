@@ -38,6 +38,7 @@ class CollectionListItem extends Component {
 
 	handleMenuClose = (event) => {
 		event.stopPropagation();
+		event.preventDefault();
 		this.setState({ anchorEl: null });
 	}
 
@@ -50,9 +51,7 @@ class CollectionListItem extends Component {
 	}
 
 	handleEdit = (event) => {
-		event.stopPropagation();
-		event.preventDefault();
-		this.handleMenuClose();
+		this.handleMenuClose(event);
 		PubSub.publish('EDIT_COLLECTION', { collection: this.props.collection });
 	}
 
