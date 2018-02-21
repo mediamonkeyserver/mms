@@ -9,7 +9,7 @@ const audioSorts = {
 	title: 'by Title',
 	artist: 'by Artist',
 	album: 'by Album',
-	length: 'by Length',
+	duration: 'by Length',
 };
 
 class CollectionSorting extends Component {

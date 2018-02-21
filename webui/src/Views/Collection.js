@@ -8,7 +8,7 @@ import Avatar from 'material-ui/Avatar';
 
 import Server from 'server';
 import PubSub from 'pubsub-js';
-import { subscribeCollectionSort } from 'actions';
+import { subscribeCollectionSort, subscribeCollectionChangeFilters, getCollectionFilters } from 'actions';
 
 const styles = theme => ({
 	root: {
@@ -78,18 +78,21 @@ class Collection extends Component {
 	}
 	collection = {};
 	sort = null;
+	filters = [];
 
 	updateContent = () => {
 		this.setState({ tracks: [] });
-		Server.getTracklist(this.collection, this.sort).then(tracklist =>
+		Server.getTracklist(this.collection, this.sort, this.filters).then(tracklist =>
 			this.setState({ tracks: tracklist })
 		);
 	}
 
 	componentDidMount = () => {
 		this.collection = this.props.collection;
+		this.filters = getCollectionFilters();
 		this.updateContent();
 		subscribeCollectionSort(this.handleChangeSort);
+		subscribeCollectionChangeFilters(this.handleChangeFilters);
 	}
 
 	componentWillReceiveProps = (nextProps) => {
@@ -102,6 +105,13 @@ class Collection extends Component {
 	handleChangeSort = (data) => {
 		if (this.props.collection.id === data.collection.id) {
 			this.sort = data.newSort;
+			this.updateContent();
+		}
+	}
+
+	handleChangeFilters = (data) => {
+		if (this.props.collection.id === data.collection.id) {
+			this.filters = data.filters;
 			this.updateContent();
 		}
 	}

@@ -79,10 +79,18 @@ class Server {
 		return Server.fetchJson('/log');
 	}
 
-	static getTracklist = (collection, sort) => {
+	static getTracklist = (collection, sort, filters) => {
 		var path = '/tracks/' + collection.id;
+		var params = '';
 		if (sort)
-			path += '?sort=' + sort;
+			params += 'sort=' + sort;
+		if (filters && filters.length > 0) {
+			if (params.length>0)
+				params += '&';
+			params += 'filter=' + JSON.stringify(filters);
+		}
+		if (params.length > 0)
+			path += '?' + params;
 		return Server.fetchJson(path);
 	}
 }
