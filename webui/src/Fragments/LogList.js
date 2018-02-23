@@ -6,6 +6,8 @@ import Typography from 'material-ui/Typography';
 
 import Server from 'server';
 
+const DEFAULT_MAX_ITEMS = 100000;
+
 const styles = ({
 	root: {
 	}
@@ -18,7 +20,8 @@ class LogList extends React.Component {
 
 	updateList = () => {
 		Server.getLog().then(log => {
-			this.setState({ log: log.map(x => x) });
+			const maxItems = this.props.maxItems || DEFAULT_MAX_ITEMS;
+			this.setState({ log: log.slice(-maxItems).reverse().map(x => x) });
 		});
 	}
 
@@ -47,6 +50,7 @@ class LogList extends React.Component {
 
 LogList.propTypes = {
 	classes: PropTypes.object.isRequired,
+	maxItems: PropTypes.number,
 };
 
 export default withStyles(styles)(LogList);

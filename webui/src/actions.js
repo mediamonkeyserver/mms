@@ -4,6 +4,15 @@ import PubSub from 'pubsub-js';
 
 // == View changes ==
 
+export const VIEWS = {
+	Log: 'log',
+	Collection: 'collection',
+};
+
+export function showView(view, props) {
+	PubSub.publish('SHOW_VIEW', {view: view, props: props});
+}
+
 export function subscribeViewChange(callback) {
 	return PubSub.subscribe('SHOW_VIEW', (msg, data) => callback(data));
 }

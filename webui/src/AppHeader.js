@@ -27,8 +27,8 @@ const styles = theme => ({
 		alignItems: 'center',
 	},
 	menuButton: {
-		marginLeft: -1.5*theme.spacing.unit,
-		marginRight: 1.5*theme.spacing.unit,
+		marginLeft: -1.5 * theme.spacing.unit,
+		marginRight: 1.5 * theme.spacing.unit,
 	},
 	toolbarItem: {
 		marginLeft: theme.spacing.unit,
@@ -88,6 +88,12 @@ class AppHeader extends React.Component {
 						{this.state.viewProps.collection.name}
 					</Typography>
 				);
+			case 'log':
+				return (
+					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+						{'Server Log'}
+					</Typography>
+				);
 			default:
 				return (
 					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
@@ -133,7 +139,7 @@ class AppHeader extends React.Component {
 						</div>
 
 						{this.renderCollectionSort()}
-						{this.state.view === 'collection' ? <CollectionFilterButton collection={this.state.viewProps.collection}/> : null}
+						{this.state.view === 'collection' ? <CollectionFilterButton collection={this.state.viewProps.collection} /> : null}
 						<LoginIcon />
 					</Toolbar>
 				</AppBar>

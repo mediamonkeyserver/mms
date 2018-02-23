@@ -9,6 +9,7 @@ import CollectionIcon from 'Fragments/CollectionIcon';
 
 import Server from './server';
 import PubSub from 'pubsub-js';
+import { showView, VIEWS } from 'actions';
 
 // icons
 import SettingsIcon from 'material-ui-icons/Settings';
@@ -52,13 +53,13 @@ class NavigationList extends React.Component {
 	};
 
 	handleSelectView = (event) => {
-		PubSub.publish('SHOW_VIEW', { view: event.currentTarget.dataset.id });
+		showView(event.currentTarget.dataset.id);
 		if (this.props.onItemClicked)
 			this.props.onItemClicked(event);
 	}
 
 	handleShowCollection = (event) => {
-		PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: this.state.collections[event.currentTarget.dataset.index]} });
+		showView(VIEWS.Collection, { collection: this.state.collections[event.currentTarget.dataset.index] });
 		if (this.props.onItemClicked)
 			this.props.onItemClicked(event);
 	}
@@ -101,6 +102,10 @@ class NavigationList extends React.Component {
 					</ListItem>
 
 					<Divider />
+
+					<ListItem button data-id={VIEWS.Log} onClick={this.handleSelectView}>
+						<ListItemText inset primary={'Server Log'} />
+					</ListItem>
 
 					{/* Settings */}
 					<ListItem button onClick={this.handleConfigClick}>

@@ -9,6 +9,9 @@ import LogList from 'Fragments/LogList';
 import CollectionsList from 'Fragments/CollectionsList';
 
 import PubSub from 'pubsub-js';
+import { showView, VIEWS } from 'actions';
+
+const MAX_LOG_ITEMS = 15;
 
 const styles = {
 	cardActions: {
@@ -24,6 +27,10 @@ class Dashboard extends Component {
 		PubSub.publish('ADD_COLLECTION');
 	}
 
+	handleShowLog = () => {
+		showView(VIEWS.Log);
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -34,10 +41,10 @@ class Dashboard extends Component {
 					<Card>
 						<CardHeader title='Collections' />
 						<CardContent>
-							<CollectionsList hideCreate click='show'/>
+							<CollectionsList hideCreate click='show' />
 						</CardContent>
 						<CardActions className={classes.cardActions}>
-							<Button onClick={this.handleNewCollection} color='primary' autoFocus>Create Collection</Button>
+							<Button onClick={this.handleNewCollection} color='primary'>Create Collection</Button>
 						</CardActions>
 					</Card>
 				</Grid>
@@ -47,8 +54,11 @@ class Dashboard extends Component {
 					<Card>
 						<CardHeader title='Server Activity' />
 						<CardContent>
-							<LogList />
+							<LogList maxItems={MAX_LOG_ITEMS} />
 						</CardContent>
+						<CardActions className={classes.cardActions}>
+							<Button onClick={this.handleShowLog} color='primary'>Show Full Log</Button>
+						</CardActions>
 					</Card>
 				</Grid>
 			</Grid>

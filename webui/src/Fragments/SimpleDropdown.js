@@ -36,7 +36,7 @@ class SimpleDropdown extends React.Component {
 		const { classes } = this.props;
 
 		return (
-			<div className={classes.root} onClick={this.handleDropShow}>
+			<span className={classes.root} onClick={this.handleDropShow}>
 				<Typography variant='body2' color='inherit' className={classes.flex}>
 					{this.props.text}
 				</Typography>
@@ -49,7 +49,7 @@ class SimpleDropdown extends React.Component {
 				>
 					{this.props.children}
 				</Menu>
-			</div>
+			</span>
 		);
 	}
 }
