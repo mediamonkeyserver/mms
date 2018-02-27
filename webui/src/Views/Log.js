@@ -6,6 +6,8 @@ import { withStyles } from 'material-ui/styles';
 import { MenuItem } from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
+import { FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 
 import LogList from 'Fragments/LogList';
 
@@ -13,6 +15,10 @@ const styles = {
 	headerRow: {
 		display: 'flex',
 		flexFlow: 'row',
+		alignItems: 'center',
+	},
+	flexGrow: {
+		flexGrow: 1,
 	}
 };
 
@@ -24,8 +30,9 @@ const logTypes = {
 
 class Log extends Component {
 	state = {
-		logType: null,
+		logType: 'messages',
 		openTypeDrop: false,
+		reversed: true,
 	}
 
 	closeTypeDrop = (event) => {
@@ -38,6 +45,11 @@ class Log extends Component {
 		this.closeTypeDrop(event);
 		this.setState({ logType: event.currentTarget.dataset.id });
 	};
+
+	handleReverseClick = (event) => {
+		event.stopPropagation();
+		this.setState({ reversed: event.target.checked });
+	}
 
 	render() {
 		const { classes } = this.props;
@@ -58,8 +70,19 @@ class Log extends Component {
 							</MenuItem>
 						))}
 					</SimpleDropdown>
+					<div className={classes.flexGrow} />
+					<FormControlLabel
+						control={
+							<Switch
+								checked={this.state.reversed}
+								onChange={this.handleReverseClick}
+								color='primary'
+							/>
+						}
+						label='Reverse'
+					/>
 				</div>
-				<LogList maxItems={1000} />
+				<LogList logType={logType} maxItems={1000} reversed={this.state.reversed} dense />
 			</div>
 		);
 	}
