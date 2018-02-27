@@ -75,8 +75,8 @@ class Server {
 		});
 	}
 
-	static getLog = () => {
-		return Server.fetchJson('/log');
+	static getLog = (logType) => {
+		return Server.fetchJson('/log/' + (logType ? logType : 'messages'));
 	}
 
 	static getTracklist = (collection, sort, filters) => {
@@ -85,7 +85,7 @@ class Server {
 		if (sort)
 			params += 'sort=' + sort;
 		if (filters && filters.length > 0) {
-			if (params.length>0)
+			if (params.length > 0)
 				params += '&';
 			params += 'filter=' + JSON.stringify(filters);
 		}

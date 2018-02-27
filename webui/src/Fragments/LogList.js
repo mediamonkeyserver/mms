@@ -9,48 +9,71 @@ import Server from 'server';
 const DEFAULT_MAX_ITEMS = 100000;
 
 const styles = ({
-	root: {
-	}
 });
 
 class LogList extends React.Component {
 	state = {
 		log: [],
 	};
+	reversed = false;
 
-	updateList = () => {
-		Server.getLog().then(log => {
+	updateList = (logType) => {
+		logType = logType || 'messages';
+		Server.getLog(logType).then(log => {
 			const maxItems = this.props.maxItems || DEFAULT_MAX_ITEMS;
-			this.setState({ log: log.slice(-maxItems).reverse().map(x => x) });
+			this.reversed = false;
+			this.setState({ log: log.slice(-maxItems).map(x => x) });
 		});
 	}
 
 	componentDidMount = () => {
-		this.updateList();
+		this.updateList(this.props.logType);
+	}
+
+	componentWillUpdate = (nextProps) => {
+		if (nextProps.logType !== this.props.logType) {
+			this.updateList(nextProps.logType);
+		}
 	}
 
 	render() {
-		const { classes } = this.props;
+		var items = this.state.log;
+		if (this.props.reversed !== this.reversed) {
+			items = items.reverse();
+			this.reversed = !this.reversed;
+		}
 
-		return (
-			<div className={classes.root}>
-				<List component='div' dense>
-					{this.state.log.map((logitem, index) => {
-						return <ListItem key={'log' + index}>
+		if (this.props.dense)
+			return (
+				<Typography variant='body1'>
+					{items.map((logitem, index) => {
+						return <span key={index}>
+							{new Date(logitem.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' })} &nbsp; {logitem.message} <br />
+						</span>;
+					})}
+				</Typography>
+			);
+		else
+			return (
+				<List component='div'>
+					{items.map((logitem, index) => {
+						return <ListItem key={'log' + index} dense>
 							<Typography variant='body1'>
 								{new Date(logitem.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })} &nbsp; {logitem.message}
 							</Typography>
 						</ListItem>;
 					})}
 				</List>
-			</div>
-		);
+			);
 	}
 }
 
 LogList.propTypes = {
 	classes: PropTypes.object.isRequired,
+	logType: PropTypes.string,
 	maxItems: PropTypes.number,
+	reversed: PropTypes.bool,
+	dense: PropTypes.bool,
 };
 
 export default withStyles(styles)(LogList);
