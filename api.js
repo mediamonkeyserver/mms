@@ -454,11 +454,13 @@ class API extends events.EventEmitter {
 			// TODO: Rewrite our _processRequest() to be fully handled by express server?
 		});
 
-		// To be used later? Or everything in the middleware use() above?
-		// app.get('/\*', (req, res) => {
-		// 	this._processRequest(req, res);
-		// });
-
+		httpServer.on('error', (err) => {
+			if (err.code == 'EADDRINUSE') {
+				logger.error('Could not start server, port ' + err.port + ' is already in use !!!');
+				logger.error('Probably another instance of this server is already running?');
+			} else
+				logger.error('httpServer error: ' + err);
+		});
 		httpServer.listen(upnpServer.port, (error) => {
 			if (error) {
 				return callback(error);
