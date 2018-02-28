@@ -95,7 +95,7 @@ class Log extends Component {
 						label='Reverse'
 					/>
 				</div>
-				<LogList logType={logType} maxItems={1000} reversed={this.state.reversed} dense />
+				<LogList logType={logType} maxItems={10000} reversed={this.state.reversed} dense />
 			</div>
 		);
 	}
