@@ -1,4 +1,11 @@
 import PubSub from 'pubsub-js';
+import io from 'socket.io-client';
+
+// Connect to the server
+const socket = io();
+socket.on('new_log_item', () => {
+	PubSub.publish('NEW_LOG_ITEM');
+});
 
 // export const toggleMainDrawer = () => {return {type: 'TOGGLE_MAIN_DRAWER'}}
 
@@ -52,4 +59,10 @@ export function getCollectionFilters() {
 export function removeCollectionFilter(collection, index) {
 	filters.splice(index, 1);
 	PubSub.publish('COLLECTION_CHANGE_FILTERS', { collection: collection, filters: filters });	
+}
+
+// == Logs ==
+
+export function subscribeLogChanges(callback) {
+	return PubSub.subscribe('NEW_LOG_ITEM', (msg, data) => callback(data));
 }

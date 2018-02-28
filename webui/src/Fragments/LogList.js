@@ -5,6 +5,7 @@ import List, { ListItem } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 
 import Server from 'server';
+import { subscribeLogChanges } from 'actions';
 
 const DEFAULT_MAX_ITEMS = 100000;
 
@@ -28,12 +29,17 @@ class LogList extends React.Component {
 
 	componentDidMount = () => {
 		this.updateList(this.props.logType);
+		subscribeLogChanges(this.logChanged);
 	}
 
 	componentWillUpdate = (nextProps) => {
 		if (nextProps.logType !== this.props.logType) {
 			this.updateList(nextProps.logType);
 		}
+	}
+
+	logChanged = () => {
+		this.updateList(this.props.logType);
 	}
 
 	render() {

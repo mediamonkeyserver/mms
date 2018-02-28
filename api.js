@@ -11,6 +11,7 @@ const util = require('util');
 const express = require('express');
 const bodyParser = require('body-parser');
 const restRouter = require('./lib/api/rest');
+const clients = require('./lib/clients');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -439,6 +440,7 @@ class API extends events.EventEmitter {
 
 		var app = express();
 		var httpServer = http.createServer(app);
+		clients.initialize(httpServer);
 
 		this.httpServer = httpServer;
 
