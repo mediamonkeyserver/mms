@@ -66,3 +66,7 @@ export function removeCollectionFilter(collection, index) {
 export function subscribeLogChanges(callback) {
 	return PubSub.subscribe('NEW_LOG_ITEM', (msg, data) => callback(data));
 }
+
+export function forceLogRefresh() {
+	PubSub.publish('NEW_LOG_ITEM');
+}

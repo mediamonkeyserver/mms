@@ -8,8 +8,12 @@ import Typography from 'material-ui/Typography';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
 import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import IconButton from 'material-ui/IconButton';
+import RefreshIcon from 'material-ui-icons/Refresh';
 
 import LogList from 'Fragments/LogList';
+
+import { forceLogRefresh } from 'actions';
 
 const styles = {
 	headerRow: {
@@ -51,6 +55,10 @@ class Log extends Component {
 		this.setState({ reversed: event.target.checked });
 	}
 
+	handleRefresh = () => {
+		forceLogRefresh();
+	}
+
 	render() {
 		const { classes } = this.props;
 		var logType = this.state.logType || 'messages';
@@ -58,6 +66,7 @@ class Log extends Component {
 		return (
 			<div>
 				<div className={classes.headerRow}>
+					{/* Left  side */}
 					<Typography variant='body2'>Show: &nbsp;</Typography>
 					<SimpleDropdown text={logTypes[logType]} open={this.state.openTypeDrop}>
 						{Object.keys(logTypes).map(logtype => (
@@ -70,7 +79,11 @@ class Log extends Component {
 							</MenuItem>
 						))}
 					</SimpleDropdown>
+					{logType === 'messages' ? null : <IconButton aria-label='Refresh' onClick={this.handleRefresh}><RefreshIcon /></IconButton>}
+
 					<div className={classes.flexGrow} />
+
+					{/* Right side */}
 					<FormControlLabel
 						control={
 							<Switch
