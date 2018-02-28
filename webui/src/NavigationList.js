@@ -31,7 +31,7 @@ const styles = theme => ({
 
 class NavigationList extends React.Component {
 	state = {
-		configOpen: true,
+		configOpen: false,
 		serverName: '',
 		collections: []
 	};
@@ -101,10 +101,12 @@ class NavigationList extends React.Component {
 						<ListItemText inset primary={'Playlists'} />
 					</ListItem>
 
+					{/* Server */}
 					<Divider />
+					<ListSubheader>Server</ListSubheader>
 
 					<ListItem button data-id={VIEWS.Log} onClick={this.handleSelectView}>
-						<ListItemText inset primary={'Server Log'} />
+						<ListItemText inset primary={'Log'} />
 					</ListItem>
 
 					{/* Settings */}
