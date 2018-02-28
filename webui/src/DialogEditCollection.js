@@ -26,7 +26,7 @@ import RemoveIcon from 'material-ui-icons/Clear';
 import PubSub from 'pubsub-js';
 import Server from 'server';
 
-const styles = theme => ({
+const styles = ({
 	root: {
 	},
 	colType: {
@@ -47,7 +47,7 @@ const colTypes = {
 	music: 'Music',
 	classical: 'Classical',
 	movies: 'Movies',
-}
+};
 
 class DialogEditCollection extends React.Component {
 	state = {
@@ -159,15 +159,15 @@ class DialogEditCollection extends React.Component {
 										{/* TODO: Icons commented out, since their rendering in Select isn't perfect yet. */}
 										{/* <ListItemIcon><MusicIcon /></ListItemIcon> */}
 										Music
-                  </MenuItem>
+									</MenuItem>
 									<MenuItem value={'classical'}>
 										{/* <ListItemIcon><MusicIcon /></ListItemIcon> */}
 										Classical
-                  </MenuItem>
+									</MenuItem>
 									<MenuItem value={'movies'}>
 										{/* <ListItemIcon><MovieIcon /></ListItemIcon> */}
 										Movies
-                  </MenuItem>
+									</MenuItem>
 								</Select>
 							</FormControl>
 						</Grid>
@@ -190,11 +190,11 @@ class DialogEditCollection extends React.Component {
 							{this.state.folders.map((folder, index) => {
 								return <TextField className={classes.folder}
 									fullWidth
+									disabled
 									spellCheck='false'
 									value={folder}
 									id={'folder' + index}
 									key={'folder' + index}
-									onChange={this.handleColNameChange}
 									InputProps={{
 										endAdornment: (<InputAdornment position={'end'}>
 											<IconButton onClick={this.handleFolderRemove} data-index={index}>
@@ -202,7 +202,7 @@ class DialogEditCollection extends React.Component {
 											</IconButton>
 										</InputAdornment>)
 									}}
-								/>
+								/>;
 							})}
 
 							<Button
