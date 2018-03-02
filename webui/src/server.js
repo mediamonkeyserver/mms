@@ -1,15 +1,30 @@
 import PubSub from 'pubsub-js';
+import io from 'socket.io-client';
+import { forceLogRefresh } from 'actions';
 
 var serverInfo;
 // var serverInfoPromise;
 
+// Connect to the server
+const socket = io();
+socket.on('new_log_item', () => {
+	forceLogRefresh();
+});
+
+var this_client_id;
+socket.on('id_assigned', (id) => {
+	this_client_id = id;
+});
+
 class Server {
 	static fetchJson = (path, options) => {
-		return new Promise((res) => {
+		return new Promise((res, rej) => {
 			fetch('/api' + path, options).then((result) => {
 				return result.json();
 			}).then((json) => {
 				res(json);
+			}).catch(err => {
+				rej(err);
 			});
 		});
 	}
@@ -92,6 +107,15 @@ class Server {
 		if (params.length > 0)
 			path += '?' + params;
 		return Server.fetchJson(path);
+	}
+
+	static getPlayers = () => {
+		return new Promise((res) => {
+			Server.fetchJson('/players/').then((players) => {
+				// Return all players, except this one
+				res(players.filter(player => player.id !== this_client_id));
+			});
+		});
 	}
 }
 

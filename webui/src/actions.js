@@ -1,11 +1,4 @@
 import PubSub from 'pubsub-js';
-import io from 'socket.io-client';
-
-// Connect to the server
-const socket = io();
-socket.on('new_log_item', () => {
-	PubSub.publish('NEW_LOG_ITEM');
-});
 
 // export const toggleMainDrawer = () => {return {type: 'TOGGLE_MAIN_DRAWER'}}
 

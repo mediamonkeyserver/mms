@@ -24,6 +24,16 @@ const styles = {
 	}
 };
 
+var castingClientID;
+
+export function getCastingClientID() {
+	return castingClientID;
+}
+
+export function setCastingClientID(newClientID) {
+	castingClientID = newClientID;
+}
+
 class Player extends React.Component {
 	state = {
 		playing: false,
@@ -40,7 +50,7 @@ class Player extends React.Component {
 		this.setState({
 			playing: true,
 			trackTitle: data.title,
-		});		
+		});
 	}
 
 	handlePlayPauseClick = () => {

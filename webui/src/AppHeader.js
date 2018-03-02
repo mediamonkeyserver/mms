@@ -11,6 +11,7 @@ import CollectionFilterButton from 'Fragments/CollectionFilterButton';
 
 import MenuIcon from 'material-ui-icons/Menu';
 import LoginIcon from './LoginIcon';
+import CastingButton from 'Fragments/CastingButton';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -140,6 +141,7 @@ class AppHeader extends React.Component {
 
 						{this.renderCollectionSort()}
 						{this.state.view === 'collection' ? <CollectionFilterButton collection={this.state.viewProps.collection} /> : null}
+						<CastingButton />
 						<LoginIcon />
 					</Toolbar>
 				</AppBar>
