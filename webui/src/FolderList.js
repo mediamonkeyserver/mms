@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Path from './utils';
+import { LinearProgress } from 'material-ui/Progress';
 
 import Server from './server';
 
@@ -17,12 +18,17 @@ const styles = {
 
 class FolderList extends React.Component {
 	state = {
-		folders: []
+		folders: [],
+		loading: true,
 	};
 
 	updateList = (path) => {
+		this.setState({ folders: [], loading: true }); // Clean the list until the content is loaded
 		Server.getFolderList(path).then((folders) => {
-			this.setState({ folders: folders.map(x => x) });
+			this.setState({
+				folders: folders.map(x => x),
+				loading: false,
+			});
 		});
 	}
 
@@ -47,6 +53,10 @@ class FolderList extends React.Component {
 
 		return (
 			<div className={classes.root}>
+				{/* Loading progress */}
+				{this.state.loading ? <LinearProgress /> : null}
+
+				{/* The folder list */}
 				<List component='nav' dense>
 					{this.state.folders.map((folder) => {
 						return <ListItem button key={folder} data-folder={folder} onClick={this.onFolderClick}>
