@@ -446,6 +446,10 @@ class API extends events.EventEmitter {
 
 		app.use('/api', bodyParser.urlencoded({ extended: true }));
 		app.use('/api', bodyParser.json());
+		app.use('/', (req, res, next) => {
+			logger.verbose('HTTP ' + req.method + ' ' + req.url);
+			next();
+		});
 		app.use('/api', new restRouter);
 
 		app.use((req, res) => {
