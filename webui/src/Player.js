@@ -9,7 +9,7 @@ import Button from 'material-ui/Button';
 import PlayIcon from 'material-ui-icons/PlayArrow';
 import PauseIcon from 'material-ui-icons/Pause';
 
-import PubSub from 'pubsub-js';
+import Playback from 'playback';
 
 const styles = {
 	root: {
@@ -24,16 +24,6 @@ const styles = {
 	}
 };
 
-var castingClientID;
-
-export function getCastingClientID() {
-	return castingClientID;
-}
-
-export function setCastingClientID(newClientID) {
-	castingClientID = newClientID;
-}
-
 class Player extends React.Component {
 	state = {
 		playing: false,
@@ -41,30 +31,19 @@ class Player extends React.Component {
 	};
 
 	componentDidMount() {
-		PubSub.subscribe('PLAY', this.playAudio);
+		Playback.subscribePlaybackStateChange(this.stateChange);
 	}
 
-	playAudio = (msg, data) => {
-		this.audioPlayer.src = data.url;
-		this.audioPlayer.play();
+	stateChange = () => {
+		var mediaItem = Playback.getCurrentMediaItem();
 		this.setState({
-			playing: true,
-			trackTitle: data.title,
+			playing: Playback.getAudioPlaying(),
+			trackTitle: (mediaItem.artists ? mediaItem.artists.join('; ') : '') + ' - ' + mediaItem.title,
 		});
 	}
 
 	handlePlayPauseClick = () => {
-		var newPlaying = this.state.playing;
-		if (this.audioPlayer.paused) {
-			this.audioPlayer.play();
-			newPlaying = true;
-		} else {
-			this.audioPlayer.pause();
-			newPlaying = false;
-		}
-		this.setState({
-			playing: newPlaying,
-		});
+		Playback.playPause();		
 	}
 
 	render() {
@@ -82,9 +61,6 @@ class Player extends React.Component {
 						</Typography>
 					</Toolbar>
 				</AppBar>
-				<audio
-					ref={(audio) => this.audioPlayer = audio}>
-				</audio>
 			</div>
 		);
 	}

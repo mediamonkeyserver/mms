@@ -10,7 +10,7 @@ export const VIEWS = {
 };
 
 export function showView(view, props) {
-	PubSub.publish('SHOW_VIEW', {view: view, props: props});
+	PubSub.publish('SHOW_VIEW', { view: view, props: props });
 }
 
 export function subscribeViewChange(callback) {
@@ -34,7 +34,7 @@ var filters = [];
 
 export function addCollectionFilter(collection, newFilter) {
 	var replace = filters.findIndex(f => f.field === newFilter.field);
-	if (replace<0)
+	if (replace < 0)
 		filters.push(newFilter);
 	else
 		filters[replace] = newFilter;
@@ -51,7 +51,7 @@ export function getCollectionFilters() {
 
 export function removeCollectionFilter(collection, index) {
 	filters.splice(index, 1);
-	PubSub.publish('COLLECTION_CHANGE_FILTERS', { collection: collection, filters: filters });	
+	PubSub.publish('COLLECTION_CHANGE_FILTERS', { collection: collection, filters: filters });
 }
 
 // == Logs ==

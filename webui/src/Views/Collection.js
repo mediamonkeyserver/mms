@@ -7,7 +7,7 @@ import { Table, Column } from 'react-virtualized';
 import Avatar from 'material-ui/Avatar';
 
 import Server from 'server';
-import PubSub from 'pubsub-js';
+import Playback from 'playback';
 import { subscribeCollectionSort, subscribeCollectionChangeFilters, getCollectionFilters } from 'actions';
 
 const styles = theme => ({
@@ -150,10 +150,7 @@ class Collection extends Component {
 	}
 
 	handleTrackClick = ({ rowData }) => {
-		PubSub.publish('PLAY', {
-			url: rowData.streamURL,
-			title: (rowData.artists ? rowData.artists.join('; ') : '') + ' - ' + rowData.title,
-		});
+		Playback.playMediaItem(rowData);
 	}
 
 	render() {

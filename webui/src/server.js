@@ -117,6 +117,18 @@ class Server {
 			});
 		});
 	}
+
+	static playItem = (playerID, mediaItem) => {
+		Server.postJson('/players/' + playerID + '/play_item', mediaItem).then(() => {
+
+		});
+	}
+
+	static addEventHandler = (event, handler) => {
+		socket.on(event, function() {
+			handler(...arguments);
+		});
+	}
 }
 
 export default Server;

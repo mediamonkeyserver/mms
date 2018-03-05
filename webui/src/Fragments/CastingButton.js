@@ -12,7 +12,7 @@ import CastConnectedIcon from 'material-ui-icons/CastConnected';
 import ComputerIcon from 'material-ui-icons/Computer';
 
 import Server from 'server';
-import { getCastingClientID, setCastingClientID } from 'Player';
+import { getCastingClientID, setCastingClientID } from 'playback';
 
 const styles = {
 	menuRoot: {

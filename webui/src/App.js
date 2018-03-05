@@ -7,6 +7,7 @@ import MainDrawer from './MainDrawer';
 import Dialogs from './Dialogs';
 import MainContent from './MainContent';
 import Player from './Player';
+import AudioPlayer from './Fragments/AudioPlayer';
 
 const styles = theme => ({
 	root: {
@@ -40,8 +41,11 @@ class App extends Component {
 					<MainContent />
 				</div>
 				<Player />
+
+				{/* Items not visible by default */}
 				<MainDrawer />
 				<Dialogs />
+				<AudioPlayer />
 			</div>
 		);
 	}
