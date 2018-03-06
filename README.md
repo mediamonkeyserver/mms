@@ -34,7 +34,7 @@ Server constructor accepts an optional configuration object. At the moment, the 
 - `name` _String_ Name of server. Default 'Node Server'
 - `uuid` _String_ UUID of server. (If not specified, a UUID v4 will be generated)
 - `hostname` _String_ Hostname to bind the server. Default: 0.0.0.0
-- `httpPort` _Number_ Http port. Default: 10293
+- `httpPort` _Number_ Http port. Default: 10222
 - `dlnaSupport` _Boolean_ Enable/disable dlna support. Default: true
 - `strict` _Boolean_ Use only official UPnP attributes. Default: false
 - `lang` _String_ Specify the language (en, fr) for virtual folder names. Default: en
