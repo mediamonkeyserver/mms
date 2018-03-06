@@ -417,7 +417,7 @@ class API extends events.EventEmitter {
 			udn: this.upnpServer.uuid,
 			description: '/description.xml',
 			location: locationURL,
-			sourcePort: 1900, // is needed for multicast to work correctly
+			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
 				require('./package.json').version
 		};
