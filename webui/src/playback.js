@@ -17,11 +17,11 @@ export function setCastingClientID(newClientID) {
 // == Server events ==
 
 Server.addEventHandler('play_item', (mediaItem) => {
-	playItemLocally(mediaItem);
+	LocalPlayback.playItem(mediaItem);
 });
 
 Server.addEventHandler('play_pause', () => {
-	playPause();
+	LocalPlayback.pause();
 });
 
 Server.addEventHandler('playback_state', (playerID) => {
@@ -49,25 +49,27 @@ function notifyPlaybackState() {
 	PubSub.publish('PLAYBACK_STATE', state);
 }
 
-function playItemLocally(mediaItem) {
-	audioPlayer.src = mediaItem.streamURL;
-	audioPlayer.play();
-	state.audioPlaying = true;
-	state.mediaItem = mediaItem;
-	notifyPlaybackState();
-	Server.updatePlaybackState('play', state.mediaItem);
-}
-
-function playPause() {
-	if (audioPlayer.paused) {
+class LocalPlayback {
+	static playItem(mediaItem) {
+		audioPlayer.src = mediaItem.streamURL;
 		audioPlayer.play();
 		state.audioPlaying = true;
-	} else {
-		audioPlayer.pause();
-		state.audioPlaying = false;
+		state.mediaItem = mediaItem;
+		notifyPlaybackState();
+		Server.updatePlaybackState('play', state.mediaItem);
 	}
-	notifyPlaybackState();
-	Server.updatePlaybackState(state.audioPlaying ? 'play' : 'pause', state.mediaItem);
+
+	static pause() {
+		if (audioPlayer.paused) {
+			audioPlayer.play();
+			state.audioPlaying = true;
+		} else {
+			audioPlayer.pause();
+			state.audioPlaying = false;
+		}
+		notifyPlaybackState();
+		Server.updatePlaybackState(state.audioPlaying ? 'play' : 'pause', state.mediaItem);
+	}
 }
 
 class Playback {
@@ -75,7 +77,7 @@ class Playback {
 		if (castingClientID) {
 			Server.playItem(castingClientID, mediaItem);
 		} else {
-			playItemLocally(mediaItem);
+			LocalPlayback.playItem(mediaItem);
 		}
 	}
 
@@ -83,9 +85,9 @@ class Playback {
 		if (castingClientID) {
 			Server.playPause(castingClientID);
 		} else {
-			playPause();
+			LocalPlayback.pause();
 		}
-	}		
+	}
 
 	static getAudioPlaying() {
 		return state.audioPlaying;
