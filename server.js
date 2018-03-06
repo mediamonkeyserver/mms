@@ -1,6 +1,5 @@
 var util = require('util');
 var commander = require("commander");
-const os = require('os');
 
 var Server = require("./api");
 
