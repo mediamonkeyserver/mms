@@ -11,7 +11,7 @@ module.exports = {
         "indent": [
             "warn",
             "tab",
-            {"SwitchCase": 1}
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "warn",
@@ -24,6 +24,12 @@ module.exports = {
         "semi": [
             "warn",
             "always"
-        ]
+        ],
+        // "prefer-template": "warn",
+        "template-curly-spacing": [
+            "warn",
+            "never"
+        ],
+        "prefer-rest-params": "warn",
     }
 };

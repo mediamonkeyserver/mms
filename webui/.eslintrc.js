@@ -29,6 +29,12 @@ module.exports = {
             "warn",
             "always"
         ],
-        "strict": 0
+        "strict": 0,
+        // "prefer-template": "warn",
+        "template-curly-spacing": [
+            "warn",
+            "never"
+        ],
+        "prefer-rest-params": "warn",
     }
 };

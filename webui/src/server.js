@@ -136,8 +136,8 @@ class Server {
 	}
 
 	static addEventHandler = (event, handler) => {
-		socket.on(event, function () {
-			handler(...arguments);
+		socket.on(event, function (...args) {
+			handler(...args);
 		});
 	}
 }
