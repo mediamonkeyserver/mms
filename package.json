@@ -19,7 +19,7 @@
     "mkdirp": "0.5.1",
     "moviedb": "^0.2.2",
     "music-metadata": "^0.9.8",
-    "node-ssdp": "^2.7.0",
+    "node-ssdp": "^3.2.5",
     "range-parser": "^1.0.3",
     "request": "^2.69.0",
     "sax": "0.4.2",
