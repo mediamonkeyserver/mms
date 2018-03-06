@@ -120,12 +120,23 @@ class Server {
 
 	static playItem = (playerID, mediaItem) => {
 		Server.postJson('/players/' + playerID + '/play_item', mediaItem).then(() => {
+		});
+	}
 
+	static playPause = (playerID) => {
+		Server.postJson('/players/' + playerID + '/play_pause').then(() => {
+		});
+	}
+
+	static updatePlaybackState = (action, mediaItem) => {
+		socket.emit('playback', {
+			action: action,
+			mediaItem: mediaItem
 		});
 	}
 
 	static addEventHandler = (event, handler) => {
-		socket.on(event, function() {
+		socket.on(event, function () {
 			handler(...arguments);
 		});
 	}
