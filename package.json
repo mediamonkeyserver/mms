@@ -18,7 +18,7 @@
     "mime": "1.2",
     "mkdirp": "0.5.1",
     "moviedb": "^0.2.2",
-    "music-metadata": "^0.9.5",
+    "music-metadata": "^0.9.8",
     "node-ssdp": "^2.7.0",
     "range-parser": "^1.0.3",
     "request": "^2.69.0",
@@ -30,9 +30,9 @@
   },
   "description": "MediaMonkey Server",
   "devDependencies": {
-    "eslint": "^4.18.1",
+    "eslint": "^4.18.2",
     "jshint": "^2.6.0",
-    "mocha": "^5.0.1"
+    "mocha": "^5.0.2"
   },
   "repository": {
     "type": "git",
