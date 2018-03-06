@@ -71,7 +71,7 @@ class API extends events.EventEmitter {
 	get defaultConfiguration() {
 		return {
 			'dlnaSupport': true,
-			'httpPort': 10293,
+			'httpPort': 10222,
 			'name': 'Node Server',
 			'version': require('./package.json').version
 		};
