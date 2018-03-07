@@ -4,7 +4,6 @@
 const assert = require('assert');
 const events = require('events');
 const http = require('http');
-const ip = require('ip');
 const SSDP = require('./lib/node-ssdp');
 const url = require('url');
 const util = require('util');
