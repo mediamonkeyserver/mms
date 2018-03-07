@@ -1,0 +1,79 @@
+{
+  "_from": "node-ssdp@3.2.5",
+  "_id": "node-ssdp@3.2.5",
+  "_inBundle": false,
+  "_integrity": "sha1-zrnHrmxg5PEIuKqBpGf9uOYDobs=",
+  "_location": "/node-ssdp",
+  "_phantomChildren": {
+    "ms": "2.0.0"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "node-ssdp@3.2.5",
+    "name": "node-ssdp",
+    "escapedName": "node-ssdp",
+    "rawSpec": "3.2.5",
+    "saveSpec": null,
+    "fetchSpec": "3.2.5"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-ssdp/-/node-ssdp-3.2.5.tgz",
+  "_shasum": "ceb9c7ae6c60e4f108b8aa81a467fdb8e603a1bb",
+  "_spec": "node-ssdp@3.2.5",
+  "_where": "C:\\github\\mms",
+  "author": {
+    "name": "Ilya Shaisultanov",
+    "email": "ilya.shaisultanov@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/diversario/node-ssdp/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "async": "^2.1.4",
+    "bluebird": "^3.4.7",
+    "debug": "^2.3.3",
+    "extend": "^3.0.0",
+    "ip": "^1.1.4"
+  },
+  "deprecated": false,
+  "description": "A node.js SSDP client and server library.",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.2",
+    "mocha-istanbul": "^0.3.0",
+    "sinon": "^1.17.6"
+  },
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "homepage": "https://github.com/diversario/node-ssdp#readme",
+  "keywords": [
+    "ssdp",
+    "multicast",
+    "media",
+    "device",
+    "upnp"
+  ],
+  "license": "MIT",
+  "main": "./index",
+  "name": "node-ssdp",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/diversario/node-ssdp.git"
+  },
+  "scripts": {
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- test/lib --recursive",
+    "test": "mocha --recursive test"
+  },
+  "version": "3.2.5"
+}
