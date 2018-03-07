@@ -1,3 +1,3 @@
-REM call npm update
+REM yarn install
 REM set DEBUG=*
 mms
