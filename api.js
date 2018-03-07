@@ -418,6 +418,7 @@ class API extends events.EventEmitter {
 			description: '/description.xml',
 			location: locationURL,
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
+			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
 				require('./package.json').version
 		};
