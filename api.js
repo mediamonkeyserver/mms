@@ -409,14 +409,12 @@ class API extends events.EventEmitter {
 
 		this.emit('starting');
 
-		this.upnpServer = upnpServer;
-
-		var locationURL = 'http://' + ip.address() + ':' + this.configuration.httpPort + '/description.xml';
+		this.upnpServer = upnpServer;		
 
 		var config = {
 			udn: this.upnpServer.uuid,
-			description: '/description.xml',
-			location: locationURL,
+			description: '/description.xml',			
+			locationPort: this.configuration.httpPort,
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
