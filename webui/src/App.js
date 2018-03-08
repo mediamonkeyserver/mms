@@ -8,6 +8,9 @@ import Dialogs from './Dialogs';
 import MainContent from './MainContent';
 import Player from './Player';
 import AudioPlayer from './Fragments/AudioPlayer';
+import VideoPlayer from './Fragments/VideoPlayer';
+
+import { subscribeVideoState } from 'actions';
 
 const styles = theme => ({
 	root: {
@@ -27,20 +30,61 @@ const styles = theme => ({
 		overflowX: 'hidden',
 		overflowY: 'auto',
 		position: 'relative',
+	},
+	videoWrapper: {
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: 'black',
+		zIndex: 10000,
+	},
+	bottomBar: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		opacity: 0.5,
+		zIndex: 10001,
 	}
 });
 
 class App extends Component {
+	state = {
+		video: false,
+	}
+
+	constructor(props) {
+		super(props);
+		subscribeVideoState(this.onVideoState);
+	}
+
+	onVideoState = (state) => {
+		this.setState({ video: (state === 'show') });
+	}
+
 	render() {
 		const { classes } = this.props;
+		const videoShown = this.state.video ? '' : 'none';
 
 		return (
+
 			<div className={classes.root}>
-				<AppHeader />
-				<div className={classes.mainContent}>
-					<MainContent />
+				{/* Standard view */}
+				<React.Fragment>
+					<AppHeader />
+					<div className={classes.mainContent}>
+						<MainContent />
+					</div>
+					<Player />
+				</React.Fragment>
+
+				{/* Video playback layer */}
+				<div className={classes.videoWrapper} style={{ display: videoShown }}>
+					<VideoPlayer />
+					<Player classes={{ root: classes.bottomBar }} />
 				</div>
-				<Player />
 
 				{/* Items not visible by default */}
 				<MainDrawer />

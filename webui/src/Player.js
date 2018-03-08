@@ -8,8 +8,10 @@ import Button from 'material-ui/Button';
 
 import PlayIcon from 'material-ui-icons/PlayArrow';
 import PauseIcon from 'material-ui-icons/Pause';
+import StopIcon from 'material-ui-icons/Stop';
 
 import Playback from 'playback';
+import { subscribePlaybackStateChange } from 'actions';
 
 const styles = {
 	root: {
@@ -27,23 +29,29 @@ const styles = {
 class Player extends React.Component {
 	state = {
 		playing: false,
+		playbackActive: false,
 		trackTitle: '',
 	};
 
 	componentDidMount() {
-		Playback.subscribePlaybackStateChange(this.stateChange);
+		subscribePlaybackStateChange(this.stateChange);
 	}
 
 	stateChange = () => {
 		var mediaItem = Playback.getCurrentMediaItem();
 		this.setState({
-			playing: Playback.getAudioPlaying(),
+			playing: Playback.getPlaying(),
+			playbackActive: Playback.getActive(),
 			trackTitle: (mediaItem.artists ? mediaItem.artists.join('; ') : '') + ' - ' + mediaItem.title,
 		});
 	}
 
 	handlePlayPauseClick = () => {
-		Playback.playPause();		
+		Playback.playPause();
+	}
+
+	handleStopClick = () => {
+		Playback.stop();
 	}
 
 	render() {
@@ -59,6 +67,11 @@ class Player extends React.Component {
 						<Typography type='title' color='inherit' className={classes.flex}>
 							{this.state.trackTitle}
 						</Typography>
+
+						{this.state.playbackActive ?
+							<Button variant='fab' mini color='secondary' aria-label='stop' className={classes.playButton} onClick={this.handleStopClick}>
+								<StopIcon />
+							</Button> : null}
 					</Toolbar>
 				</AppBar>
 			</div>

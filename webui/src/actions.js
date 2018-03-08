@@ -63,3 +63,25 @@ export function subscribeLogChanges(callback) {
 export function forceLogRefresh() {
 	PubSub.publish('NEW_LOG_ITEM');
 }
+
+// == Playback ==
+
+export function notifyPlaybackState() {
+	PubSub.publish('PLAYBACK_STATE');
+}
+
+export function subscribePlaybackStateChange(callback) {
+	return PubSub.subscribe('PLAYBACK_STATE', (msg, data) => callback(data));
+}
+
+export function subscribeVideoState(callback) {
+	return PubSub.subscribe('VIDEO', (msg, data) => callback(data));
+}
+
+export function notifyVideoShow() {
+	PubSub.publish('VIDEO', 'show');
+}
+
+export function notifyVideoHide() {
+	PubSub.publish('VIDEO', 'hide');
+}

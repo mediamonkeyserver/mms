@@ -128,6 +128,11 @@ class Server {
 		});
 	}
 
+	static stop = (playerID) => {
+		Server.postJson('/players/' + playerID + '/stop').then(() => {
+		});
+	}
+
 	static updatePlaybackState = (action, mediaItem) => {
 		socket.emit('playback', {
 			action: action,

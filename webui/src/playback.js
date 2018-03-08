@@ -1,10 +1,11 @@
-import PubSub from 'pubsub-js';
 import Server from 'server';
 import { audioPlayer } from 'Fragments/AudioPlayer';
+import { videoPlayer } from 'Fragments/VideoPlayer';
+import { notifyPlaybackState, notifyVideoShow, notifyVideoHide } from 'actions';
 
 // == Casting ==
 
-var castingClientID;
+var castingClientID = null;
 
 export function getCastingClientID() {
 	return castingClientID;
@@ -24,12 +25,17 @@ Server.addEventHandler('play_pause', () => {
 	LocalPlayback.pause();
 });
 
+Server.addEventHandler('stop', () => {
+	LocalPlayback.stop();
+});
+
 Server.addEventHandler('playback_state', (playerID) => {
 	if (playerID === castingClientID) {
 		Server.getPlayers().then(players => {
 			for (var player of players) {
 				if (player.id === playerID) {
-					state.audioPlaying = player.status === 'playing';
+					state.castingPlaying = (player.status === 'playing');
+					state.castingActive = (player.status === 'playing' || player.status === 'paused');
 					state.mediaItem = player.mediaItem;
 					notifyPlaybackState();
 				}
@@ -41,34 +47,64 @@ Server.addEventHandler('playback_state', (playerID) => {
 // == Playback ==
 
 var state = {
-	audioPlaying: false,
+	activeAVPlayer: null,
 	mediaItem: null,
+	getPlaying: function () { return castingClientID ? this.castingPlaying : this.activeAVPlayer && !this.activeAVPlayer.ended && !this.activeAVPlayer.paused; },
+	getActive: function () { return castingClientID ? this.castingActive : this.activeAVPlayer && !this.activeAVPlayer.ended; },
+	castingPlaying: false,
+	castingActive: false,
 };
-
-function notifyPlaybackState() {
-	PubSub.publish('PLAYBACK_STATE', state);
-}
 
 class LocalPlayback {
 	static playItem(mediaItem) {
-		audioPlayer.src = mediaItem.streamURL;
-		audioPlayer.play();
-		state.audioPlaying = true;
+		if (state.getActive())
+			LocalPlayback.stop(); // To close any existing player
+
+		var video = mediaItem.mimeType.startsWith('video/');
+
+		if (video) {
+			state.activeAVPlayer = videoPlayer;
+			notifyVideoShow();
+		} else {
+			state.activeAVPlayer = audioPlayer;
+		}
+		state.activeAVPlayer.src = mediaItem.streamURL;
+		state.activeAVPlayer.play();
 		state.mediaItem = mediaItem;
 		notifyPlaybackState();
-		Server.updatePlaybackState('play', state.mediaItem);
+		Server.updatePlaybackState('playing', state.mediaItem);
 	}
 
 	static pause() {
-		if (audioPlayer.paused) {
-			audioPlayer.play();
-			state.audioPlaying = true;
+		if (!state.activeAVPlayer) {
+			// We are in 'stopped' state
+			if (state.mediaItem) {
+				// There was an item played, restart the playback
+				LocalPlayback.playItem(state.mediaItem);
+			}
+			return;
+		}
+
+		if (state.activeAVPlayer.paused) {
+			state.activeAVPlayer.play();
 		} else {
-			audioPlayer.pause();
-			state.audioPlaying = false;
+			state.activeAVPlayer.pause();
 		}
 		notifyPlaybackState();
-		Server.updatePlaybackState(state.audioPlaying ? 'play' : 'pause', state.mediaItem);
+		Server.updatePlaybackState(state.getPlaying() ? 'playing' : 'paused', state.mediaItem);
+	}
+
+	static stop() {
+		if (!state.activeAVPlayer)
+			return;
+
+		state.activeAVPlayer.pause();
+		if (state.activeAVPlayer === videoPlayer)
+			notifyVideoHide();
+		state.activeAVPlayer = null;
+
+		notifyPlaybackState();
+		Server.updatePlaybackState('stopped', state.mediaItem);
 	}
 }
 
@@ -89,16 +125,24 @@ class Playback {
 		}
 	}
 
-	static getAudioPlaying() {
-		return state.audioPlaying;
+	static stop() {
+		if (castingClientID) {
+			Server.stop(castingClientID);
+		} else {
+			LocalPlayback.stop();
+		}
+	}
+
+	static getPlaying() {
+		return state.getPlaying();
+	}
+
+	static getActive() {
+		return state.getActive();
 	}
 
 	static getCurrentMediaItem() {
 		return state.mediaItem;
-	}
-
-	static subscribePlaybackStateChange(callback) {
-		return PubSub.subscribe('PLAYBACK_STATE', (msg, data) => callback(data));
 	}
 }
 
