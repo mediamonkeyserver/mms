@@ -14,6 +14,7 @@
     "react-scripts": "^1.1.1",
     "react-virtualized": "^9.18.5",
     "redux": "^3.7.2",
+    "screenfull": "^3.3.2",
     "socket.io-client": "^2.0.4",
     "typeface-roboto": "^0.0.54"
   },

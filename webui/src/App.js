@@ -9,6 +9,7 @@ import MainContent from './MainContent';
 import Player from './Player';
 import AudioPlayer from './Fragments/AudioPlayer';
 import VideoPlayer from './Fragments/VideoPlayer';
+import screenfull from 'screenfull';
 
 import { subscribeVideoState } from 'actions';
 
@@ -50,6 +51,8 @@ const styles = theme => ({
 	}
 });
 
+var videoWrapper;
+
 class App extends Component {
 	state = {
 		video: false,
@@ -62,6 +65,10 @@ class App extends Component {
 
 	onVideoState = (state) => {
 		this.setState({ video: (state === 'show') });
+		if (state === 'show')
+			screenfull.request(videoWrapper);
+		else
+			screenfull.exit();
 	}
 
 	render() {
@@ -81,7 +88,7 @@ class App extends Component {
 				</React.Fragment>
 
 				{/* Video playback layer */}
-				<div className={classes.videoWrapper} style={{ display: videoShown }}>
+				<div className={classes.videoWrapper} style={{ display: videoShown }} ref={(div) => videoWrapper = div}>
 					<VideoPlayer />
 					<Player classes={{ root: classes.bottomBar }} />
 				</div>
@@ -90,7 +97,7 @@ class App extends Component {
 				<MainDrawer />
 				<Dialogs />
 				<AudioPlayer />
-			</div>
+			</div >
 		);
 	}
 }
