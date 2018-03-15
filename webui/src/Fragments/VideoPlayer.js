@@ -12,6 +12,7 @@ function initVideoPlayer() {
 		videoPlayer.addEventListener('paused', () => notifyPlaybackState(), true);
 		videoPlayer.addEventListener('play', () => notifyPlaybackState(), true);
 		videoPlayer.addEventListener('playing', () => notifyPlaybackState(), true);
+		videoPlayer.addEventListener('ended', () => notifyPlaybackState(), true);
 	}
 }
 

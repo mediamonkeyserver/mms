@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
+import 'rc-slider/assets/index.css';
 import { withStyles } from 'material-ui/styles';
 import AppHeader from './AppHeader';
 import MainDrawer from './MainDrawer';

@@ -9,6 +9,7 @@ function initAudioPlayer() {
 		audioPlayer.addEventListener('paused', () => notifyPlaybackState(), true);
 		audioPlayer.addEventListener('play', () => notifyPlaybackState(), true);
 		audioPlayer.addEventListener('playing', () => notifyPlaybackState(), true);
+		audioPlayer.addEventListener('ended', () => notifyPlaybackState(), true);
 	}
 }
 

@@ -144,6 +144,40 @@ class Playback {
 	static getCurrentMediaItem() {
 		return state.mediaItem;
 	}
+
+	static getDuration() {
+		var res = null;
+		if (castingClientID) {
+			res = null;
+		} else {
+			if (state.activeAVPlayer) {
+				res = state.activeAVPlayer.duration;
+			}
+		}
+		return res;
+	}
+
+	static getCurrentTime() {
+		var res = null;
+		if (castingClientID) {
+			res = null;
+		} else {
+			if (state.activeAVPlayer) {
+				res = state.activeAVPlayer.currentTime;
+			}
+		}
+		return res;
+	}
+
+	static setCurrentTime(newTime) {
+		if (castingClientID) {
+			//
+		} else {
+			if (state.activeAVPlayer) {
+				state.activeAVPlayer.currentTime = newTime;
+			}
+		}
+	}
 }
 
 export default Playback;
