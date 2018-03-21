@@ -1,15 +1,13 @@
 import React from 'react';
-import { notifyPlaybackState } from 'actions';
+import { addPlayerListeners } from 'playback';
 
 export var audioPlayer;
 
 var initialized = false;
 function initAudioPlayer() {
 	if (!initialized && audioPlayer) {
-		audioPlayer.addEventListener('paused', () => notifyPlaybackState(), true);
-		audioPlayer.addEventListener('play', () => notifyPlaybackState(), true);
-		audioPlayer.addEventListener('playing', () => notifyPlaybackState(), true);
-		audioPlayer.addEventListener('ended', () => notifyPlaybackState(), true);
+		initialized = true;
+		addPlayerListeners(audioPlayer);
 	}
 }
 

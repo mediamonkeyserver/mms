@@ -1,7 +1,7 @@
 import Server from 'server';
 import { audioPlayer } from 'Fragments/AudioPlayer';
 import { videoPlayer } from 'Fragments/VideoPlayer';
-import { notifyPlaybackState, notifyVideoShow, notifyVideoHide } from 'actions';
+import { notifyPlaybackState, subscribePlaybackStateChange, notifyVideoShow, notifyVideoHide } from 'actions';
 
 // == Casting ==
 
@@ -29,18 +29,55 @@ Server.addEventHandler('stop', () => {
 	LocalPlayback.stop();
 });
 
+Server.addEventHandler('seek', (newTime) => {
+	LocalPlayback.seek(newTime);
+});
+
+
 Server.addEventHandler('playback_state', (playerID) => {
 	if (playerID === castingClientID) {
+		// We are notified about playback state of the Player we Cast to => refresh our UI
 		Server.getPlayers().then(players => {
 			for (var player of players) {
 				if (player.id === playerID) {
 					state.castingPlaying = (player.status === 'playing');
 					state.castingActive = (player.status === 'playing' || player.status === 'paused');
 					state.mediaItem = player.mediaItem;
+					state.castingCurrentTime = player.currentTime;
+					state.castingLastUpdate = performance.now();
+
 					notifyPlaybackState();
 				}
 			}
 		});
+	}
+});
+
+// == Server notifications ==
+
+var lastStateSent = null;
+var lastMediaItem = null;
+
+// TODO: Send notifications about playback position every ~10 seconds.
+
+subscribePlaybackStateChange((data) => {
+	if (castingClientID)
+		return;	// Don't notify server in case we're casting to another player
+
+	var newstate = data.state;
+	var mediaItem = data.mediaItem || state.mediaItem;
+	var send = (data.state !== lastStateSent) ||	// Different state => send notification
+		((lastMediaItem || {}).db_id !== (mediaItem || {}).db_id); // Diffent item playing => send notification
+
+	if (newstate === 'seeked') {
+		send = true; // We need to notify about the seek right away
+		newstate = 'playing';
+	}
+
+	if (send) {
+		lastStateSent = newstate;
+		lastMediaItem = Object.assign({}, mediaItem);
+		Server.updatePlaybackState(newstate, mediaItem, Playback.getCurrentTime());
 	}
 });
 
@@ -53,6 +90,8 @@ var state = {
 	getActive: function () { return castingClientID ? this.castingActive : this.activeAVPlayer && !this.activeAVPlayer.ended; },
 	castingPlaying: false,
 	castingActive: false,
+	castingCurrentTime: null,
+	castingLastUpdate: null,
 };
 
 class LocalPlayback {
@@ -71,8 +110,8 @@ class LocalPlayback {
 		state.activeAVPlayer.src = mediaItem.streamURL;
 		state.activeAVPlayer.play();
 		state.mediaItem = mediaItem;
-		notifyPlaybackState();
-		Server.updatePlaybackState('playing', state.mediaItem);
+
+		notifyPlaybackState('playing', state.mediaItem);
 	}
 
 	static pause() {
@@ -90,8 +129,8 @@ class LocalPlayback {
 		} else {
 			state.activeAVPlayer.pause();
 		}
-		notifyPlaybackState();
-		Server.updatePlaybackState(state.getPlaying() ? 'playing' : 'paused', state.mediaItem);
+
+		notifyPlaybackState(state.getPlaying() ? 'playing' : 'paused', state.mediaItem);
 	}
 
 	static stop() {
@@ -103,14 +142,29 @@ class LocalPlayback {
 			notifyVideoHide();
 		state.activeAVPlayer = null;
 
-		notifyPlaybackState();
-		Server.updatePlaybackState('stopped', state.mediaItem);
+		notifyPlaybackState('stopped');
+	}
+
+	static seek(newTime) {
+		if (!state.activeAVPlayer)
+			return;
+
+		state.activeAVPlayer.currentTime = newTime;
 	}
 }
+
+// == Global Playback ==   (including Casting)
 
 class Playback {
 	static playMediaItem(mediaItem) {
 		if (castingClientID) {
+			// Temporarily set the casting state, until we're notified from the target player about the actual state
+			state.mediaItem = mediaItem;
+			state.currentCurrentTime = 0;
+			state.castingLastUpdate = performance.now();
+			state.castingActive = true;
+			state.castingPlaying = true;
+
 			Server.playItem(castingClientID, mediaItem);
 		} else {
 			LocalPlayback.playItem(mediaItem);
@@ -148,7 +202,8 @@ class Playback {
 	static getDuration() {
 		var res = null;
 		if (castingClientID) {
-			res = null;
+			if (state.mediaItem)
+				res = state.mediaItem.duration;
 		} else {
 			if (state.activeAVPlayer) {
 				res = state.activeAVPlayer.duration;
@@ -160,7 +215,7 @@ class Playback {
 	static getCurrentTime() {
 		var res = null;
 		if (castingClientID) {
-			res = null;
+			res = state.castingCurrentTime + (state.castingPlaying ? performance.now() - state.castingLastUpdate : 0) / 1000;
 		} else {
 			if (state.activeAVPlayer) {
 				res = state.activeAVPlayer.currentTime;
@@ -171,13 +226,42 @@ class Playback {
 
 	static setCurrentTime(newTime) {
 		if (castingClientID) {
-			//
+			Server.seek(castingClientID, newTime);
 		} else {
 			if (state.activeAVPlayer) {
 				state.activeAVPlayer.currentTime = newTime;
 			}
 		}
 	}
+}
+
+// == HTML Playback events ==
+
+export function addPlayerListeners(player) {
+	player.addEventListener('paused', () => notifyPlaybackState('paused'), true);
+	player.addEventListener('play', () => notifyPlaybackState('playing'), true);
+	player.addEventListener('seeked', () => notifyPlaybackState('seeked'), true);
+
+	player.addEventListener('playing', () => {
+		// Update duration from the player (in case is isn't known yet, or incorrectly).
+		if (player.duration) {
+			const mediaItem = Playback.getCurrentMediaItem();
+			if (mediaItem)
+				mediaItem.duration = player.duration;
+		}
+
+		notifyPlaybackState('playing');
+	}, true);
+
+	player.addEventListener('ended', () => {
+		notifyVideoHide();
+		notifyPlaybackState('stopped');
+	}, true);
+
+	player.addEventListener('error', () => {
+		notifyVideoHide();
+		notifyPlaybackState('stopped');
+	}, true);
 }
 
 export default Playback;

@@ -66,8 +66,11 @@ export function forceLogRefresh() {
 
 // == Playback ==
 
-export function notifyPlaybackState() {
-	PubSub.publish('PLAYBACK_STATE');
+export function notifyPlaybackState(state, mediaItem) {
+	PubSub.publish('PLAYBACK_STATE', {
+		state: state,
+		mediaItem: mediaItem,
+	});
 }
 
 export function subscribePlaybackStateChange(callback) {

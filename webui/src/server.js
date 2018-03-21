@@ -133,10 +133,16 @@ class Server {
 		});
 	}
 
-	static updatePlaybackState = (action, mediaItem) => {
+	static seek = (playerID, newTime) => {
+		Server.postJson(`/players/${playerID}/seek/${newTime}`).then(() => {
+		});
+	}
+
+	static updatePlaybackState = (action, mediaItem, currentTime) => {
 		socket.emit('playback', {
 			action: action,
-			mediaItem: mediaItem
+			mediaItem: mediaItem,
+			currentTime: currentTime,
 		});
 	}
 

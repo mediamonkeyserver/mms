@@ -5,7 +5,7 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
-import Slider from 'rc-slider';
+import Slider from 'rc-slider'; // We use this non-Material UI Slider until there's one included in the material-ui library.
 import { withTheme } from 'material-ui/styles';
 
 import PlayIcon from 'material-ui-icons/PlayArrow';
@@ -54,7 +54,7 @@ class Player extends React.Component {
 		this.setState({
 			playing: Playback.getPlaying(),
 			playbackActive: Playback.getActive(),
-			trackTitle: (mediaItem.artists ? mediaItem.artists.join('; ') : '') + ' - ' + mediaItem.title,
+			trackTitle: mediaItem ? (mediaItem.artists ? mediaItem.artists.join('; ') : '') + ' - ' + mediaItem.title : '',
 		});
 		this.setSeekUpdater();
 	}

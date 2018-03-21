@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { notifyPlaybackState } from 'actions';
+import { addPlayerListeners } from 'playback';
 
 export var videoPlayer;
 
@@ -9,10 +9,7 @@ var initialized = false;
 function initVideoPlayer() {
 	if (!initialized && videoPlayer) {
 		initialized = true;
-		videoPlayer.addEventListener('paused', () => notifyPlaybackState(), true);
-		videoPlayer.addEventListener('play', () => notifyPlaybackState(), true);
-		videoPlayer.addEventListener('playing', () => notifyPlaybackState(), true);
-		videoPlayer.addEventListener('ended', () => notifyPlaybackState(), true);
+		addPlayerListeners(videoPlayer);
 	}
 }
 
