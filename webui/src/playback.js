@@ -3,6 +3,14 @@ import { audioPlayer } from 'Fragments/AudioPlayer';
 import { videoPlayer } from 'Fragments/VideoPlayer';
 import { notifyPlaybackState, subscribePlaybackStateChange, notifyVideoShow, notifyVideoHide } from 'actions';
 
+import Hls from 'hls.js';
+
+import Debug from 'debug';
+const debug = Debug('mms:playback');
+const debugError = Debug('mms:error:playback');
+
+// TODO: USe https://github.com/mediaelement/mediaelement for playback? Offers several renderers, etc.
+
 // == Casting ==
 
 var castingClientID = null;
@@ -94,24 +102,80 @@ var state = {
 	castingLastUpdate: null,
 };
 
+var hls;
+
+function isHLSMimeType(mimeType) {
+	return ['application/x-mpegurl', 'application/vnd.apple.mpegurl', 'audio/mpegurl', 'video/mpegurl', 'audio/hls', 'video/hls'].indexOf(mimeType.toLowerCase()) > -1;
+}
+
 class LocalPlayback {
+	static startHls(video, url) {
+		if (Hls.isSupported()) {
+			hls = new Hls();
+			hls.loadSource(url);
+			hls.attachMedia(video);
+			hls.on(Hls.Events.MANIFEST_PARSED, function () {
+				video.play().catch((error) => {
+					debugError(`HLS playback failed (${error})`);
+					LocalPlayback.stop();
+				});
+			});
+			hls.on(Hls.Events.ERROR, (error) => {
+				debugError(`HLS playback failed (${error})`);
+				LocalPlayback.stop();
+			});
+		}
+		// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+		// This is using the built-in support of the plain video element, without using hls.js.
+		else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+			video.src = url;
+			video.addEventListener('canplay', function () {
+				video.play().catch((error) => {
+					debugError(`Native HLS playback failed (${error})`);
+					LocalPlayback.stop();
+				});
+			});
+		}
+	}
+
 	static playItem(mediaItem) {
+		debug(`playItem: ${mediaItem}`);
+
 		if (state.getActive())
 			LocalPlayback.stop(); // To close any existing player
 
+		// Prepare audio or video player
 		var video = mediaItem.mimeType.startsWith('video/');
-
 		if (video) {
 			state.activeAVPlayer = videoPlayer;
 			notifyVideoShow();
 		} else {
 			state.activeAVPlayer = audioPlayer;
 		}
-		state.activeAVPlayer.src = mediaItem.streamURL;
-		state.activeAVPlayer.play();
+
 		state.mediaItem = mediaItem;
 
 		notifyPlaybackState('playing', state.mediaItem);
+
+		// Get info about the format
+		Server.getMediaStreamInfo(mediaItem).then(info => {
+		
+			if (isHLSMimeType(info.stream.mimeType)) {
+				// HLS is handled by the hls.js library
+				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem));
+			} else {
+				// Everything else is handled natively by HTML5 <audio>/<video> elements
+				state.activeAVPlayer.src = Server.getMediaStreamURL(mediaItem);//mediaItem.streamURL;
+				state.activeAVPlayer.play().catch((error) => {
+					debugError(`Playback failed (${error})`);
+					LocalPlayback.stop();
+				});
+			}
+		}).catch((err) => {
+			debugError(`Playback info not received (${err})`);
+			LocalPlayback.stop();
+		});
 	}
 
 	static pause() {
@@ -141,6 +205,10 @@ class LocalPlayback {
 		if (state.activeAVPlayer === videoPlayer)
 			notifyVideoHide();
 		state.activeAVPlayer = null;
+		if (hls) {
+			hls.destroy();
+			hls = undefined;
+		}
 
 		notifyPlaybackState('stopped');
 	}

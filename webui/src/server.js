@@ -118,6 +118,14 @@ class Server {
 		});
 	}
 
+	static getMediaStreamURL = (mediaItem) => {
+		return `/api/stream/${mediaItem.db_id}`;
+	}
+
+	static getMediaStreamInfo = (mediaItem) => {
+		return Server.fetchJson(`/stream/${mediaItem.db_id}/info`);
+	}
+
 	static playItem = (playerID, mediaItem) => {
 		Server.postJson('/players/' + playerID + '/play_item', mediaItem).then(() => {
 		});
