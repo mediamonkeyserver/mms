@@ -119,7 +119,7 @@ class Server {
 	}
 
 	static getMediaStreamURL = (mediaItem) => {
-		return `/api/stream/${mediaItem.db_id}`;
+		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}`;
 	}
 
 	static getMediaStreamInfo = (mediaItem) => {

@@ -23,6 +23,7 @@
     "node-ssdp": "^3.2.5",
     "range-parser": "^1.0.3",
     "request": "^2.69.0",
+    "rimraf": "^2.6.2",
     "sax": "^1.2.4",
     "send": "^0.16.2",
     "socket.io": "^2.0.4",
