@@ -35,7 +35,7 @@ class Dashboard extends Component {
 		const { classes } = this.props;
 
 		return (
-			<Grid container justify='space-around'>
+			<Grid container justify='space-around' spacing={16}>
 				{/* Collections */}
 				<Grid item xs={12} sm={6}>
 					<Card>
