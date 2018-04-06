@@ -124,7 +124,8 @@ class LocalPlayback {
 				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
 					playRes.catch((error) => {
 						debugError(`HLS playback failed (${error})`);
-						LocalPlayback.stop();
+						if (error.name !== 'NotAllowedError')	// Don't stop, so that user can restart playback on mobile devices, where play() fails beause it's execute async (not in click event).
+							LocalPlayback.stop();
 					});
 			});
 
@@ -166,7 +167,8 @@ class LocalPlayback {
 				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
 					playRes.catch((error) => {
 						debugError(`Native HLS playback failed (${error})`);
-						LocalPlayback.stop();
+						if (error.name !== 'NotAllowedError')	// Don't stop, so that user can restart playback on mobile devices, where play() fails beause it's execute async (not in click event).
+							LocalPlayback.stop();
 					});
 			});
 		}
@@ -204,7 +206,8 @@ class LocalPlayback {
 				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
 					playRes.catch((error) => {
 						debugError(`Playback failed (${error})`);
-						LocalPlayback.stop();
+						if (error.name !== 'NotAllowedError')	// Don't stop, so that user can restart playback on mobile devices, where play() fails beause it's execute async (not in click event).
+							LocalPlayback.stop();
 					});
 			}
 		}).catch((err) => {
