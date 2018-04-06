@@ -120,15 +120,17 @@ class LocalPlayback {
 			hls.attachMedia(video);
 
 			hls.on(Hls.Events.MANIFEST_PARSED, function () {
-				video.play().catch((error) => {
-					debugError(`HLS playback failed (${error})`);
-					LocalPlayback.stop();
-				});
+				const playRes = video.play();
+				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
+					playRes.catch((error) => {
+						debugError(`HLS playback failed (${error})`);
+						LocalPlayback.stop();
+					});
 			});
 
 			hls.on(Hls.Events.ERROR, (msg, error) => {
 				debugError(`HLS playback failed (${error})`);
-				switch(error.type) {
+				switch (error.type) {
 					case Hls.ErrorTypes.MEDIA_ERROR:
 						// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
 						if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
@@ -150,7 +152,7 @@ class LocalPlayback {
 						break;
 
 					default:
-						LocalPlayback.stop();	
+						LocalPlayback.stop();
 				}
 			});
 		}
@@ -160,10 +162,12 @@ class LocalPlayback {
 		else if (video.canPlayType('application/vnd.apple.mpegurl') || video.canPlayType('application/x-mpegURL')) {
 			video.src = url;
 			video.addEventListener('canplay', function () {
-				video.play().catch((error) => {
-					debugError(`Native HLS playback failed (${error})`);
-					LocalPlayback.stop();
-				});
+				const playRes = video.play();
+				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
+					playRes.catch((error) => {
+						debugError(`Native HLS playback failed (${error})`);
+						LocalPlayback.stop();
+					});
 			});
 		}
 	}
@@ -196,10 +200,12 @@ class LocalPlayback {
 			} else {
 				// Everything else is handled natively by HTML5 <audio>/<video> elements
 				state.activeAVPlayer.src = Server.getMediaStreamURL(mediaItem);//mediaItem.streamURL;
-				state.activeAVPlayer.play().catch((error) => {
-					debugError(`Playback failed (${error})`);
-					LocalPlayback.stop();
-				});
+				const playRes = state.activeAVPlayer.play();
+				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
+					playRes.catch((error) => {
+						debugError(`Playback failed (${error})`);
+						LocalPlayback.stop();
+					});
 			}
 		}).catch((err) => {
 			debugError(`Playback info not received (${err})`);

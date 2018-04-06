@@ -14,7 +14,7 @@ function initAudioPlayer() {
 class AudioPlayer extends React.Component {
 	render() {
 		return (
-			<audio
+			<audio autoPlay="" crossOrigin="anonymous" // eslint-disable-line
 				ref={(audio) => { audioPlayer = audio; initAudioPlayer(); }}>
 			</audio>
 		);
