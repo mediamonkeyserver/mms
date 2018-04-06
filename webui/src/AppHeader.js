@@ -49,7 +49,7 @@ class AppHeader extends React.Component {
 	updateServerName = () => {
 		Server.getInfo().then((info) => {
 			this.setState({ serverName: info.serverName });
-		});
+		}).catch(() => { });
 	}
 
 	componentDidMount = () => {

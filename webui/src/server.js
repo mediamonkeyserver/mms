@@ -46,13 +46,15 @@ class Server {
 	}
 
 	static getInfo = () => {
-		return new Promise((res) => {
+		return new Promise((res, rej) => {
 			if (serverInfo)
 				res(serverInfo);
 
 			Server.fetchJson('/').then(json => {
 				serverInfo = json;
 				res(serverInfo);
+			}).catch(err => {
+				rej(err);
 			});
 		});
 	}
