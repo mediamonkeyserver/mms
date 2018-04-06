@@ -120,6 +120,8 @@ class LocalPlayback {
 			hls.attachMedia(video);
 
 			hls.on(Hls.Events.MANIFEST_PARSED, function () {
+				debug('HLS manifest parsed, going to play');
+
 				const playRes = video.play();
 				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
 					playRes.catch((error) => {
@@ -138,12 +140,14 @@ class LocalPlayback {
 							lastHlsRecoverMedia = Date.now();
 							debug('HLS recovering media error');
 							hls.recoverMediaError();
+							video.play();
 							break;
 						}
 						if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
 							lastHlsAudioCodecSwap = Date.now();
 							debug('HLS swapping audio codec');
 							hls.swapAudioCodec();
+							video.play();
 						}
 						break;
 
@@ -217,6 +221,8 @@ class LocalPlayback {
 	}
 
 	static pause() {
+		debug('Local playback pause');
+
 		if (!state.activeAVPlayer) {
 			// We are in 'stopped' state
 			if (state.mediaItem) {
@@ -236,6 +242,8 @@ class LocalPlayback {
 	}
 
 	static stop() {
+		debug('Local playback stop');
+
 		if (!state.activeAVPlayer)
 			return;
 
