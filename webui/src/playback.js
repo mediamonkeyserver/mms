@@ -103,32 +103,61 @@ var state = {
 };
 
 var hls;
+var lastHlsRecoverMedia;
+var lastHlsAudioCodecSwap;
 
 function isHLSMimeType(mimeType) {
 	return ['application/x-mpegurl', 'application/vnd.apple.mpegurl', 'audio/mpegurl', 'video/mpegurl', 'audio/hls', 'video/hls'].indexOf(mimeType.toLowerCase()) > -1;
 }
 
 class LocalPlayback {
+
+	// HLS playback start
 	static startHls(video, url) {
 		if (Hls.isSupported()) {
 			hls = new Hls();
 			hls.loadSource(url);
 			hls.attachMedia(video);
+
 			hls.on(Hls.Events.MANIFEST_PARSED, function () {
 				video.play().catch((error) => {
 					debugError(`HLS playback failed (${error})`);
 					LocalPlayback.stop();
 				});
 			});
-			hls.on(Hls.Events.ERROR, (error) => {
+
+			hls.on(Hls.Events.ERROR, (msg, error) => {
 				debugError(`HLS playback failed (${error})`);
-				LocalPlayback.stop();
+				switch(error.type) {
+					case Hls.ErrorTypes.MEDIA_ERROR:
+						// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
+						if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
+							lastHlsRecoverMedia = Date.now();
+							debug('HLS recovering media error');
+							hls.recoverMediaError();
+							break;
+						}
+						if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
+							lastHlsAudioCodecSwap = Date.now();
+							debug('HLS swapping audio codec');
+							hls.swapAudioCodec();
+						}
+						break;
+
+					case Hls.ErrorTypes.NETWORK_ERROR:
+						hls.destroy();
+						hls.startLoad();
+						break;
+
+					default:
+						LocalPlayback.stop();	
+				}
 			});
 		}
 		// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
 		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
 		// This is using the built-in support of the plain video element, without using hls.js.
-		else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+		else if (video.canPlayType('application/vnd.apple.mpegurl') || video.canPlayType('application/x-mpegURL')) {
 			video.src = url;
 			video.addEventListener('canplay', function () {
 				video.play().catch((error) => {
@@ -160,7 +189,7 @@ class LocalPlayback {
 
 		// Get info about the format
 		Server.getMediaStreamInfo(mediaItem).then(info => {
-		
+
 			if (isHLSMimeType(info.stream.mimeType)) {
 				// HLS is handled by the hls.js library
 				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem));
@@ -204,11 +233,17 @@ class LocalPlayback {
 		state.activeAVPlayer.pause();
 		if (state.activeAVPlayer === videoPlayer)
 			notifyVideoHide();
-		state.activeAVPlayer = null;
+
 		if (hls) {
+			hls.detachMedia();
 			hls.destroy();
 			hls = undefined;
+		} else {
+			if (state.activeAVPlayer)
+				state.activeAVPlayer.src = '';
 		}
+
+		state.activeAVPlayer = null;
 
 		notifyPlaybackState('stopped');
 	}
