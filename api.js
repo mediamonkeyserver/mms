@@ -4,7 +4,7 @@
 const assert = require('assert');
 const events = require('events');
 const http = require('http');
-const SSDP = require('./lib/node-ssdp');
+const SSDP = require('node-ssdp');
 const url = require('url');
 const util = require('util');
 const express = require('express');
@@ -413,9 +413,8 @@ class API extends events.EventEmitter {
 		this.upnpServer = upnpServer;		
 
 		var config = {
-			udn: this.upnpServer.uuid,
-			description: '/description.xml',			
-			locationPort: this.configuration.httpPort,
+			udn: this.upnpServer.uuid,			
+			location: { port: this.configuration.httpPort, path: '/description.xml' },
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
