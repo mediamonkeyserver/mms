@@ -40,11 +40,6 @@
     "type": "ffprobe",
     "priority": 25
   }, {
-    "key": "matroska",
-    "mimeType": "video/x-matroska",
-    "type": "video_matroska",
-      "priority": 20
-  }, {
     "key": "musicmetadata",
     "mimeType": "audio/*",
     "type": "audio_musicmetadata",

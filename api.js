@@ -49,16 +49,16 @@ class API extends events.EventEmitter {
 		}
 
 		if (this.configuration.noDefaultConfig !== true) {
-			this.loadConfiguration('./default-config.json');
+			this.loadConfiguration(require('./default-config.json'));
 		}
 
 		var cf = this.configuration.configurationFiles;
 		if (typeof (cf) === 'string') {
 			var toks = cf.split(',');
-			toks.forEach((tok) => this.loadConfiguration(tok));
+			toks.forEach((tok) => this.loadConfiguration(require(tok)));
 
 		} else if (util.isArray(cf)) {
-			cf.forEach((c) => this.loadConfiguration(c));
+			cf.forEach((c) => this.loadConfiguration(require(c)));
 		}
 	}
 
@@ -248,18 +248,17 @@ class API extends events.EventEmitter {
 	/**
 	 * Load a JSON configuration
 	 *
-	 * @param {string}
-	 *          path - The path of the JSON file
+	 * @param {object}
+	 *          config - JSON read from file
 	 */
-	loadConfiguration(path) {
-		var config = require(path);
-
+	loadConfiguration(config) {
 		var upnpClasses = config.upnpClasses;
 		if (upnpClasses) {
 			for (var upnpClassName in upnpClasses) {
-				var p = upnpClasses[upnpClassName];
+				// var p = upnpClasses[upnpClassName];
 
-				var clazz = require(p);
+				// var clazz = require(p);
+				var clazz = require(`./lib/class/${upnpClassName}`);
 
 				this._upnpClasses[upnpClassName] = new clazz();
 			}
@@ -276,7 +275,7 @@ class API extends events.EventEmitter {
 					mimeTypes.push(contentHandler.mimeType);
 				}
 
-				var requirePath = contentHandler.require;
+				/*var requirePath = contentHandler.require;
 				if (!requirePath) {
 					requirePath = './lib/contentHandlers/' + contentHandler.type;
 				}
@@ -285,7 +284,9 @@ class API extends events.EventEmitter {
 					return;
 				}
 
-				var clazz = require(requirePath);
+				var clazz = require(requirePath);*/
+
+				var clazz = require(`./lib/contentHandlers/${contentHandler.type}`);
 				if (!clazz) {
 					logger.error('Class of contentHandler must be specified');
 					return;
@@ -316,7 +317,7 @@ class API extends events.EventEmitter {
 
 				var name = contentProvider.name || protocol;
 
-				var requirePath = contentProvider.require;
+				/*var requirePath = contentProvider.require;
 				if (!requirePath) {
 					var type = contentProvider.type || protocol;
 
@@ -327,7 +328,8 @@ class API extends events.EventEmitter {
 					return;
 				}
 
-				var clazz = require(requirePath);
+				var clazz = require(requirePath);*/
+				var clazz = require(`./lib/contentProviders/${contentProvider.type || protocol}`)
 				if (!clazz) {
 					logger.error('Class of contentHandler must be specified');
 					return;
