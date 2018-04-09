@@ -329,7 +329,7 @@ class API extends events.EventEmitter {
 				}
 
 				var clazz = require(requirePath);*/
-				var clazz = require(`./lib/contentProviders/${contentProvider.type || protocol}`)
+				var clazz = require(`./lib/contentProviders/${contentProvider.type || protocol}`);
 				if (!clazz) {
 					logger.error('Class of contentHandler must be specified');
 					return;
