@@ -1,9 +1,0 @@
-{
-  "repositories": [
-    {
-      "type": "directory",
-      "mountPath": "/directory",
-      "path": "C:\\temp\\scanner"
-    }
-  ]
-}
