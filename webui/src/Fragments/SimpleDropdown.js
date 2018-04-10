@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-import DropdownIcon from 'material-ui-icons/KeyboardArrowDown';
+import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Menu from 'material-ui/Menu';
 
 const styles = ({

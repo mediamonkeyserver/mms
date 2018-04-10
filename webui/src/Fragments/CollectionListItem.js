@@ -14,7 +14,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 import CollectionIcon from 'Fragments/CollectionIcon';
-import MenuIcon from 'material-ui-icons/MoreVert';
+import MenuIcon from '@material-ui/icons/MoreVert';
 
 import PubSub from 'pubsub-js';
 import Server from 'server';

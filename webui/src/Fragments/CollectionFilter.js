@@ -5,8 +5,8 @@ import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
-import StarIcon from 'material-ui-icons/Star';
-import DurationIcon from 'material-ui-icons/AccessTime';
+import StarIcon from '@material-ui/icons/Star';
+import DurationIcon from '@material-ui/icons/AccessTime';
 
 import { subscribeCollectionChangeFilters, getCollectionFilters, removeCollectionFilter } from 'actions';
 

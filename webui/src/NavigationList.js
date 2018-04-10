@@ -12,10 +12,10 @@ import PubSub from 'pubsub-js';
 import { showView, VIEWS } from 'actions';
 
 // icons
-import SettingsIcon from 'material-ui-icons/Settings';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import DashboardIcon from 'material-ui-icons/Dashboard';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const styles = theme => ({
 	root: {

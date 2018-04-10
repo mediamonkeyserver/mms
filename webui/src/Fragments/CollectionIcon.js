@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-import MusicIcon from 'material-ui-icons/MusicNote';
-import MovieIcon from 'material-ui-icons/Movie';
-import PlaylistIcon from 'material-ui-icons/PlaylistPlay';
+import MusicIcon from '@material-ui/icons/MusicNote';
+import MovieIcon from '@material-ui/icons/Movie';
+import PlaylistIcon from '@material-ui/icons/PlaylistPlay';
 
 import { ListItemIcon } from 'material-ui/List';
 

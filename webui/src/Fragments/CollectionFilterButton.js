@@ -9,11 +9,11 @@ import Divider from 'material-ui/Divider';
 import { ListItemIcon } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 
-import FilterIcon from 'material-ui-icons/FilterList';
-import StarIcon from 'material-ui-icons/Star';
-import BackArrow from 'material-ui-icons/KeyboardBackspace';
-import DurationIcon from 'material-ui-icons/AccessTime';
-import CheckIcon from 'material-ui-icons/Check';
+import FilterIcon from '@material-ui/icons/FilterList';
+import StarIcon from '@material-ui/icons/Star';
+import BackArrow from '@material-ui/icons/KeyboardBackspace';
+import DurationIcon from '@material-ui/icons/AccessTime';
+import CheckIcon from '@material-ui/icons/Check';
 
 import { addCollectionFilter } from 'actions';
 

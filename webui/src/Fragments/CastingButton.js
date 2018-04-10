@@ -7,9 +7,9 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import { ListItemIcon } from 'material-ui/List';
 
-import CastIcon from 'material-ui-icons/Cast';
-import CastConnectedIcon from 'material-ui-icons/CastConnected';
-import ComputerIcon from 'material-ui-icons/Computer';
+import CastIcon from '@material-ui/icons/Cast';
+import CastConnectedIcon from '@material-ui/icons/CastConnected';
+import ComputerIcon from '@material-ui/icons/Computer';
 
 import Server from 'server';
 import { getCastingClientID, setCastingClientID } from 'playback';

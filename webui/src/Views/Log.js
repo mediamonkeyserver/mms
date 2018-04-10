@@ -9,7 +9,7 @@ import SimpleDropdown from 'Fragments/SimpleDropdown';
 import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 import IconButton from 'material-ui/IconButton';
-import RefreshIcon from 'material-ui-icons/Refresh';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import LogList from 'Fragments/LogList';
 

@@ -8,9 +8,9 @@ import Button from 'material-ui/Button';
 import Slider from 'rc-slider'; // We use this non-Material UI Slider until there's one included in the material-ui library.
 import { withTheme } from 'material-ui/styles';
 
-import PlayIcon from 'material-ui-icons/PlayArrow';
-import PauseIcon from 'material-ui-icons/Pause';
-import StopIcon from 'material-ui-icons/Stop';
+import PlayIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import StopIcon from '@material-ui/icons/Stop';
 
 import Playback from 'playback';
 import { subscribePlaybackStateChange } from 'actions';

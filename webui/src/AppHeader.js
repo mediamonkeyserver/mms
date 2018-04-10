@@ -9,7 +9,7 @@ import CollectionSorting from 'Fragments/CollectionSorting';
 import CollectionFilter from 'Fragments/CollectionFilter';
 import CollectionFilterButton from 'Fragments/CollectionFilterButton';
 
-import MenuIcon from 'material-ui-icons/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
 import LoginIcon from './LoginIcon';
 import CastingButton from 'Fragments/CastingButton';
 

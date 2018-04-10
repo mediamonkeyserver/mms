@@ -18,10 +18,10 @@ import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import TextField from 'material-ui/TextField';
 
-// import MusicIcon from 'material-ui-icons/MusicNote';
-// import MovieIcon from 'material-ui-icons/Movie';
-// import PlaylistIcon from 'material-ui-icons/PlaylistPlay';
-import RemoveIcon from 'material-ui-icons/Clear';
+// import MusicIcon from '@material-ui/icons/MusicNote';
+// import MovieIcon from '@material-ui/icons/Movie';
+// import PlaylistIcon from '@material-ui/icons/PlaylistPlay';
+import RemoveIcon from '@material-ui/icons/Clear';
 
 import PubSub from 'pubsub-js';
 import Server from 'server';
