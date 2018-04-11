@@ -1,3 +1,7 @@
+// ts-check
+/* eslint-disable no-console */
+'use strict';
+
 var util = require('util');
 var commander = require('commander');
 
@@ -5,7 +9,7 @@ var Server = require('./api');
 
 var directories = [];
 
-commander.option('-d, --directory <path>', 'Mount directory', function(path) {
+commander.option('-d, --directory <path>', 'Mount directory', function (path) {
 	var mountPoint = null;
 	var idx = path.indexOf('=');
 	if (idx > 0) {
@@ -14,11 +18,11 @@ commander.option('-d, --directory <path>', 'Mount directory', function(path) {
 	}
 
 	directories.push({
-		path : path,
-		mountPoint : mountPoint
+		path: path,
+		mountPoint: mountPoint
 	});
 });
-commander.option('-m, --music <path>', 'Mount music directory', function(path) {
+commander.option('-m, --music <path>', 'Mount music directory', function (path) {
 	var mountPoint = null;
 	var idx = path.indexOf('=');
 	if (idx > 0) {
@@ -27,9 +31,9 @@ commander.option('-m, --music <path>', 'Mount music directory', function(path) {
 	}
 
 	directories.push({
-		type : 'music',
-		path : path,
-		mountPoint : mountPoint
+		type: 'music',
+		path: path,
+		mountPoint: mountPoint
 	});
 });
 
@@ -44,7 +48,7 @@ commander.option('--ssdpLogLevel <level>', 'Log level of SSDP engine');
 commander.option('--profiler', 'Enable memory profiler dump');
 commander.option('--heapDump', 'Enable heap dump (require heapdump)');
 
-commander.option('-p, --httpPort <port>', 'Http port', function(v) {
+commander.option('-p, --httpPort <port>', 'Http port', function (v) {
 	return parseInt(v, 10);
 });
 
@@ -68,27 +72,27 @@ var server = new Server(commander, directories);
 server.start();
 
 server.on('waiting',
-	function() {
+	function () {
 		console.log('Waiting connexions on port ' +
-          server.httpServer.address().port);
+			server.httpServer.address().port);
 	});
 
 // Catch nodejs problem or signals
 
 var stopped = false;
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
 	console.log('disconnecting...');
 	stopped = true;
 
 	server.stop();
 
-	setTimeout(function() {
+	setTimeout(function () {
 		process.exit();
 	}, 1000);
 });
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
 	if (stopped) {
 		process.exit(0);
 		return;
@@ -98,17 +102,18 @@ process.on('uncaughtException', function(err) {
 
 // Try to profile upnpserver manually !
 
-if (commander.profiler) {	
-	setInterval(function() {
-	  console.log(util.inspect(process.memoryUsage()));
+if (commander.profiler) {
+	setInterval(function () {
+		console.log(util.inspect(process.memoryUsage()));
 	}, 1000 * 30);
 }
 
 if (commander.headDump) {
 	var heapdump = require('heapdump');
 	console.log('***** HEAPDUMP enabled **************');
+	var nextMBThreshold = 0;
 
-	setInterval(function() {
+	setInterval(function () {
 		var memMB = process.memoryUsage().rss / 1048576;
 		if (memMB > nextMBThreshold) {
 			heapdump.writeSnapshot();

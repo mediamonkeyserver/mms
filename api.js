@@ -1,4 +1,5 @@
-/*jslint node: true, nomen: true, esversion: 6 */
+//@ts-check
+
 'use strict';
 
 const assert = require('assert');
@@ -24,10 +25,8 @@ class API extends events.EventEmitter {
 	/**
 	 * upnpserver API.
 	 *
-	 * @param {object}
-	 *          configuration
-	 * @param {array}
-	 *          paths
+	 * @param {object} configuration
+	 * @param {array} paths
 	 *
 	 * @constructor
 	 */
@@ -49,6 +48,7 @@ class API extends events.EventEmitter {
 		}
 
 		if (this.configuration.noDefaultConfig !== true) {
+			// @ts-ignore
 			this.loadConfiguration(require('./default-config.json'));
 		}
 
@@ -72,6 +72,7 @@ class API extends events.EventEmitter {
 			'dlnaSupport': true,
 			'httpPort': 10222,
 			'name': 'Node Server',
+			// @ts-ignore
 			'version': require('./package.json').version
 		};
 	}
@@ -79,8 +80,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Initialize paths.
 	 *
-	 * @param {string|object}
-	 *          path
+	 * @param {string|object} path
 	 * @returns {Repository} the created repository
 	 */
 	initPaths(path) {
@@ -101,8 +101,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Declare a repository
 	 *
-	 * @param {object}
-	 *          the configuration
+	 * @param {object} configuration
 	 * @returns {Repository} the new repository
 	 */
 	declareRepository(configuration) {
@@ -137,8 +136,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Add a repository.
 	 *
-	 * @param {Repository}
-	 *          repository
+	 * @param {Repository} repository
 	 *
 	 * @returns {Repository} a Repository object
 	 */
@@ -153,11 +151,9 @@ class API extends events.EventEmitter {
 	/**
 	 * Add simple directory.
 	 *
-	 * @param {string}
-	 *          mountPath
-	 * @param {string}
-	 *          path
-	 *
+	 * @param {string} mountPath
+	 * @param {string} path
+	 * @param {Object} [configuration]
 	 * @returns {Repository} a Repository object
 	 */
 	addDirectory(mountPath, path, configuration) {
@@ -174,10 +170,8 @@ class API extends events.EventEmitter {
 	/**
 	 * Add music directory.
 	 *
-	 * @param {string}
-	 *          mountPath
-	 * @param {string}
-	 *          path
+	 * @param {string} mountPath
+	 * @param {string} path
 	 *
 	 * @returns {Repository} a Repository object
 	 */
@@ -194,10 +188,8 @@ class API extends events.EventEmitter {
 	/**
 	 * Add video directory.
 	 *
-	 * @param {string}
-	 *          mountPath
-	 * @param {string}
-	 *          path
+	 * @param {string} mountPath
+	 * @param {string} path
 	 *
 	 * @returns {Repository} a Repository object
 	 */
@@ -213,8 +205,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Add history directory.
 	 *
-	 * @param {string}
-	 *          mountPath
+	 * @param {string} mountPath
 	 *
 	 * @returns {Repository} a Repository object
 	 */
@@ -229,10 +220,8 @@ class API extends events.EventEmitter {
 	/**
 	 * Add iceCast.
 	 *
-	 * @param {string}
-	 *          mountPath
-	 * @param {object}
-	 *          configuration
+	 * @param {string} mountPath
+	 * @param {object} configuration
 	 *
 	 * @returns {Repository} a Repository object
 	 */
@@ -248,8 +237,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Load a JSON configuration
 	 *
-	 * @param {object}
-	 *          config - JSON read from file
+	 * @param {object} config - JSON read from file
 	 */
 	loadConfiguration(config) {
 		var upnpClasses = config.upnpClasses;
@@ -403,8 +391,7 @@ class API extends events.EventEmitter {
 	/**
 	 * After the server start.
 	 *
-	 * @param {object}
-	 *          upnpServer
+	 * @param {object} upnpServer
 	 */
 	_upnpServerStarted(upnpServer, callback) {
 
@@ -418,11 +405,13 @@ class API extends events.EventEmitter {
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
+			// @ts-ignore
 				require('./package.json').version
 		};
 
 		debug('_upnpServerStarted', 'New SSDP server config=', config);
 
+		// @ts-ignore
 		var ssdpServer = new SSDP.Server(config);
 		this.ssdpServer = ssdpServer;
 
@@ -450,7 +439,7 @@ class API extends events.EventEmitter {
 			logger.verbose('HTTP ' + req.method + ' ' + req.url);
 			next();
 		});
-		app.use('/api', new restRouter);
+		app.use('/api', restRouter);
 
 		app.use((req, res) => {
 			this._processRequest(req, res);
@@ -459,7 +448,9 @@ class API extends events.EventEmitter {
 		});
 
 		httpServer.on('error', (err) => {
+			// @ts-ignore
 			if (err.code == 'EADDRINUSE') {
+				// @ts-ignore
 				logger.error('Could not start server, port ' + err.port + ' is already in use !!!');
 				logger.error('Probably another instance of this server is already running?');
 			} else
@@ -502,10 +493,8 @@ class API extends events.EventEmitter {
 	/**
 	 * Process request
 	 *
-	 * @param {object}
-	 *          request
-	 * @param {object}
-	 *          response
+	 * @param {object} request
+	 * @param {object} response
 	 */
 	_processRequest(request, response) {
 
@@ -552,8 +541,7 @@ class API extends events.EventEmitter {
 	/**
 	 * Stop server.
 	 *
-	 * @param {function|undefined}
-	 *          callback
+	 * @param {function|undefined} callback
 	 */
 	stop(callback) {
 		debug('stop', 'Stopping ...');

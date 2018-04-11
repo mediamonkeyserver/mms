@@ -1,3 +1,5 @@
+// ts-check
+
 const shell = require('shelljs');
 
 // const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
