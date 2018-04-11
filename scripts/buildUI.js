@@ -2,7 +2,7 @@ const shell = require('shelljs');
 
 const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
 
-console.log(`Using ${npm}for processing.`); // eslint-disable-line no-console
+console.log(`Using ${npm}for building UI.`); // eslint-disable-line no-console
 
 shell.rm('-r', 'build-webui');
 shell.cd('webui');
