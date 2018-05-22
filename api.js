@@ -12,6 +12,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const restRouter = require('./lib/api/rest');
 const clients = require('./lib/clients');
+const os = require('os');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -397,15 +398,15 @@ class API extends events.EventEmitter {
 
 		this.emit('starting');
 
-		this.upnpServer = upnpServer;		
+		this.upnpServer = upnpServer;
 
 		var config = {
-			udn: this.upnpServer.uuid,			
+			udn: this.upnpServer.uuid,
 			location: { port: this.configuration.httpPort, path: '/description.xml' },
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
-			// @ts-ignore
+				// @ts-ignore
 				require('./package.json').version
 		};
 
@@ -456,6 +457,26 @@ class API extends events.EventEmitter {
 			} else
 				logger.error('httpServer error: ' + err);
 		});
+
+		var getLocalIP = function () {
+			var ifaces = os.networkInterfaces();
+			var res = null;
+
+			Object.keys(ifaces).forEach(function (ifname) {
+				ifaces[ifname].forEach(function (iface) {
+					if ('IPv4' !== iface.family || iface.internal !== false) {
+						// skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+						return;
+					}
+
+					if (!res || ifname === 'Ethernet' || ifname === 'eth0') // Empty, or preferred interfaces
+						res = iface.address;
+				});
+			});
+
+			return res;
+		};
+
 		httpServer.listen(upnpServer.port, (error) => {
 			if (error) {
 				return callback(error);
@@ -469,12 +490,10 @@ class API extends events.EventEmitter {
 
 			debug('_upnpServerStarted', 'Http server is listening on address=', address);
 
-			var hostname = address.address;
-			if (address.family === 'IPv6') {
-				hostname = '[' + hostname + ']';
-			}
-
-			logger.info('Ready http://' + hostname + ':' + address.port);
+			logger.info('==================================================');
+			logger.info(`Running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
+			logger.info('Connect using a web browser or using MediaMonkey 5.');
+			logger.info('==================================================');
 
 			this._initUIConfigObserver(callback);
 		});

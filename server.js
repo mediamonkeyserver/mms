@@ -73,9 +73,9 @@ server.start();
 
 server.on('waiting',
 	function () {
-		console.log('Waiting connexions on port ' +
-			server.httpServer.address().port);
-	});
+
+	}
+);
 
 // Catch nodejs problem or signals
 
