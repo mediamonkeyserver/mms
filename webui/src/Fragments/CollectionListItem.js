@@ -19,6 +19,8 @@ import MenuIcon from '@material-ui/icons/MoreVert';
 import PubSub from 'pubsub-js';
 import Server from 'server';
 
+import { withRouter } from 'react-router-dom';
+
 const styles = {
 };
 
@@ -46,7 +48,9 @@ class CollectionListItem extends Component {
 		if (this.props.click === 'edit') {
 			PubSub.publish('EDIT_COLLECTION', { collection: this.props.collection });
 		} else {
-			PubSub.publish('SHOW_VIEW', { view: 'collection', props: {collection: this.props.collection} });
+			this.props.history.push({
+				pathname: `/col/${this.props.collection.id}`
+			});
 		}
 	}
 
@@ -142,6 +146,7 @@ CollectionListItem.propTypes = {
 	classes: PropTypes.object.isRequired,
 	collection: PropTypes.object.isRequired,
 	click: PropTypes.string,
+	history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CollectionListItem);
+export default withStyles(styles)(withRouter(CollectionListItem));

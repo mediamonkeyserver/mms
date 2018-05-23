@@ -26,7 +26,7 @@ class CollectionSorting extends Component {
 			sort: newSort,
 			openDrop: false
 		});
-		changeCollectionSort(this.props.collection, newSort);
+		changeCollectionSort(this.props.collectionID, newSort);
 	}
 
 	render() {
@@ -50,7 +50,7 @@ class CollectionSorting extends Component {
 
 CollectionSorting.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collection: PropTypes.object.isRequired,
+	collectionID: PropTypes.string.isRequired,
 };
 
 export default withStyles()(CollectionSorting);

@@ -96,7 +96,7 @@ class CollectionFilterButton extends Component {
 
 	addRatingFilter = (event) => {
 		this.handleRatingClose(event);
-		addCollectionFilter(this.props.collection, {
+		addCollectionFilter(this.props.collectionID, {
 			field: 'rating',
 			operator: (this.state.ratingAtLeast ? '>=' : '='),
 			value: event.currentTarget.dataset.stars,
@@ -111,7 +111,7 @@ class CollectionFilterButton extends Component {
 			to = Number(this.state.durationTo);
 		}
 		if (from || to) {
-			addCollectionFilter(this.props.collection, {
+			addCollectionFilter(this.props.collectionID, {
 				field: 'duration',
 				operator: ('..'),
 				value: [from, to],
@@ -213,7 +213,7 @@ class CollectionFilterButton extends Component {
 
 CollectionFilterButton.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collection: PropTypes.object.isRequired,
+	collectionID: PropTypes.string.isRequired,
 };
 
 export default withStyles(style)(CollectionFilterButton);

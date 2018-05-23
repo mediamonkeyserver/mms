@@ -76,19 +76,19 @@ class Collection extends Component {
 	state = {
 		tracks: [],
 	}
-	collection = {};
+	collectionID = null;
 	sort = null;
 	filters = [];
 
 	updateContent = () => {
 		this.setState({ tracks: [] });
-		Server.getTracklist(this.collection, this.sort, this.filters).then(tracklist =>
+		Server.getTracklist(this.collectionID, this.sort, this.filters).then(tracklist =>
 			this.setState({ tracks: tracklist })
 		);
 	}
 
 	componentDidMount = () => {
-		this.collection = this.props.collection;
+		this.collectionID = this.props.collectionID;
 		this.filters = getCollectionFilters();
 		this.updateContent();
 		subscribeCollectionSort(this.handleChangeSort);
@@ -96,21 +96,21 @@ class Collection extends Component {
 	}
 
 	componentWillReceiveProps = (nextProps) => {
-		if (this.props.collection.id !== nextProps.collection.id) {
-			this.collection = nextProps.collection;
+		if (this.props.collectionID !== nextProps.collectionID) {
+			this.collectionID = nextProps.collectionID;
 			this.updateContent();
 		}
 	}
 
 	handleChangeSort = (data) => {
-		if (this.props.collection.id === data.collection.id) {
+		if (this.props.collectionID === data.collectionID) {
 			this.sort = data.newSort;
 			this.updateContent();
 		}
 	}
 
 	handleChangeFilters = (data) => {
-		if (this.props.collection.id === data.collection.id) {
+		if (this.props.collectionID === data.collectionID) {
 			this.filters = data.filters;
 			this.updateContent();
 		}
@@ -223,7 +223,7 @@ class Collection extends Component {
 
 Collection.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collection: PropTypes.object.isRequired,
+	collectionID: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(Collection);

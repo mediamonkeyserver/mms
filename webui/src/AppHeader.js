@@ -15,7 +15,8 @@ import CastingButton from 'Fragments/CastingButton';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
-import { subscribeViewChange } from './actions';
+
+import { Route, Switch } from 'react-router-dom';
 
 const styles = theme => ({
 	root: {
@@ -42,8 +43,7 @@ class AppHeader extends React.Component {
 		auth: true,
 		anchorEl: null,
 		serverName: '',
-		view: 'dashboard',
-		viewProps: null,
+		collections: [],
 	};
 
 	updateServerName = () => {
@@ -52,17 +52,17 @@ class AppHeader extends React.Component {
 		}).catch(() => { });
 	}
 
-	componentDidMount = () => {
-		this.updateServerName();
-		PubSub.subscribe('CONFIG_CHANGE', this.update);
-		subscribeViewChange(this.handleViewChange);
+	updateCollections = () => {
+		Server.getCollections().then((cols) => {
+			this.setState({ collections: cols });
+		}).catch(() => { });
 	}
 
-	handleViewChange = (data) => {
-		this.setState({
-			view: data.view,
-			viewProps: data.props,
-		});
+	componentDidMount = () => {
+		this.updateServerName();
+		this.updateCollections();
+		PubSub.subscribe('CONFIG_CHANGE', this.update);
+		PubSub.subscribe('COLLECTIONS_CHANGE', this.update);
 	}
 
 	handleChange = (event, checked) => {
@@ -81,47 +81,40 @@ class AppHeader extends React.Component {
 		PubSub.publish('TOGGLE_MAIN_DRAWER');
 	}
 
+	getCollectionTitle = (id) => {
+		return (this.state.collections.filter(col => col.id === id)[0] || {name: null}).name;
+	}
+
 	renderTitle = () => {
-		switch (this.state.view) {
-			case 'collection':
-				return (
-					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
-						{this.state.viewProps.collection.name}
-					</Typography>
-				);
-			case 'log':
-				return (
-					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
-						{'Server Log'}
-					</Typography>
-				);
-			default:
-				return (
-					<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
-						{this.state.serverName}
-					</Typography>
-				);
-		}
+		return (
+			<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+				<Switch>
+					<Route path='/col/:idCol' render={(props) => this.getCollectionTitle(props.match.params.idCol)} />
+					<Route path='/log' render={() => 'Server Log'} />
+					<Route render={() => this.state.serverName}/>
+				</Switch>
+			</Typography>
+		);
 	}
 
 	renderCollectionSort() {
-		if (this.state.view === 'collection') {
-			return (
+		return (
+			<Route path='/col/:idCol' render={props => (
 				<div className={this.props.classes.toolbarItem}>
-					<CollectionSorting collection={this.state.viewProps.collection} />
+					<CollectionSorting {...props} collectionID={props.match.params.idCol} />
 				</div>
-			);
-		}
+			)} />
+		);
 	}
 
 	renderFilterState() {
-		if (this.state.view === 'collection') {
-			return (
+		return (
+			<Route path='/col/:idCol' render={props => (
 				<div className={this.props.classes.toolbarItem}>
-					<CollectionFilter collection={this.state.viewProps.collection} />
+					<CollectionFilter collectionID={props.match.params.idCol} />
 				</div>
-			);
-		}
+			)} />
+		);
 	}
 
 	render() {
@@ -140,7 +133,10 @@ class AppHeader extends React.Component {
 						</div>
 
 						{this.renderCollectionSort()}
-						{this.state.view === 'collection' ? <CollectionFilterButton collection={this.state.viewProps.collection} /> : null}
+						<Route path='/col/:idCol' render={props => (
+							<CollectionFilterButton {...props} collectionID={props.match.params.idCol} />
+						)} />
+
 						<CastingButton />
 						<LoginIcon />
 					</Toolbar>

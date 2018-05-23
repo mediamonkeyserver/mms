@@ -9,7 +9,8 @@ import CollectionIcon from 'Fragments/CollectionIcon';
 
 import Server from './server';
 import PubSub from 'pubsub-js';
-import { showView, VIEWS } from 'actions';
+
+import { withRouter } from 'react-router-dom';
 
 // icons
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -53,15 +54,21 @@ class NavigationList extends React.Component {
 	};
 
 	handleSelectView = (event) => {
-		showView(event.currentTarget.dataset.id);
 		if (this.props.onItemClicked)
 			this.props.onItemClicked(event);
+
+		this.props.history.push({
+			pathname: event.currentTarget.dataset.id,
+		});
 	}
 
 	handleShowCollection = (event) => {
-		showView(VIEWS.Collection, { collection: this.state.collections[event.currentTarget.dataset.index] });
 		if (this.props.onItemClicked)
 			this.props.onItemClicked(event);
+
+		this.props.history.push({
+			pathname: `/col/${event.currentTarget.dataset.id}`
+		});
 	}
 
 	render() {
@@ -74,7 +81,7 @@ class NavigationList extends React.Component {
 					subheader={<ListSubheader component='div' color='primary'>{this.state.serverName}</ListSubheader>}
 				>
 					{/* Dashboard */}
-					<ListItem button data-id='dashboard' onClick={this.handleSelectView}>
+					<ListItem button data-id='/' onClick={this.handleSelectView}>
 						<ListItemIcon>
 							<DashboardIcon />
 						</ListItemIcon>
@@ -85,10 +92,10 @@ class NavigationList extends React.Component {
 
 					{/* Collections */}
 					<ListSubheader>Collections</ListSubheader>
-					{this.state.collections.map((col, index) => {
+					{this.state.collections.map((col) => {
 						return <ListItem
 							button
-							data-index={index}
+							data-id={col.id}
 							key={'navcol' + col.id}
 							onClick={this.handleShowCollection}>
 							<CollectionIcon type={col.type} variant='list' />
@@ -96,7 +103,7 @@ class NavigationList extends React.Component {
 						</ListItem>;
 					})}
 
-					<ListItem button data-id='playlists' onClick={this.handleSelectView}>
+					<ListItem button data-id='/plst' onClick={this.handleSelectView}>
 						<CollectionIcon type={'playlists'} variant='list' />
 						<ListItemText inset primary={'Playlists'} />
 					</ListItem>
@@ -105,7 +112,7 @@ class NavigationList extends React.Component {
 					<Divider />
 					<ListSubheader>Server</ListSubheader>
 
-					<ListItem button data-id={VIEWS.Log} onClick={this.handleSelectView}>
+					<ListItem button data-id={'/log'} onClick={this.handleSelectView}>
 						<ListItemText inset primary={'Log'} />
 					</ListItem>
 
@@ -119,10 +126,10 @@ class NavigationList extends React.Component {
 					</ListItem>
 					<Collapse in={this.state.configOpen} timeout='auto' unmountOnExit>
 						<List component='div' disablePadding>
-							<ListItem button className={classes.nested} data-id='cfgServer' onClick={this.handleSelectView}>
+							<ListItem button className={classes.nested} data-id='/cfg' onClick={this.handleSelectView}>
 								<ListItemText inset primary='Server' />
 							</ListItem>
-							<ListItem button className={classes.nested} data-id='cfgCollections' onClick={this.handleSelectView}>
+							<ListItem button className={classes.nested} data-id='/col' onClick={this.handleSelectView}>
 								<ListItemText inset primary='Collections' />
 							</ListItem>
 						</List>
@@ -135,7 +142,8 @@ class NavigationList extends React.Component {
 
 NavigationList.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 	onItemClicked: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(NavigationList);
+export default withStyles(styles)(withRouter(NavigationList));

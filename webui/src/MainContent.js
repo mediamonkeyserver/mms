@@ -9,41 +9,23 @@ import Playlists from './Views/Playlists';
 import CfgServer from './Views/CfgServer';
 import Log from './Views/Log';
 
-import PubSub from 'pubsub-js';
+import { Route, Switch } from 'react-router-dom';
 
 const styles = {
 };
 
-const pages = {
-	dashboard: {component: Dashboard},
-	collection: {component: Collection},
-	playlists: {component: Playlists},
-	cfgCollections: {component: Collections},
-	cfgServer: {component: CfgServer},
-	log: {component: Log},
-};
-
 class MainContent extends Component {
-	state = {
-		view: 'dashboard',
-		props: {},
-	}
-
-	componentDidMount = () => {
-		PubSub.subscribe('SHOW_VIEW', this.handleShowView.bind(this));
-	}
-
-	handleShowView = (msg, data) => {
-		this.setState({
-			view: data.view,
-			props: data.props,
-		});
-	}
-
 	render() {
-		var activeview = React.createElement(pages[this.state.view].component, { key: this.state.view, ...this.state.props });
-
-		return [activeview];
+		return (
+			<Switch>
+				<Route exact path='/' component={Dashboard} />
+				<Route exact path='/col' component={Collections} />
+				<Route path='/col/:idCol' render={props => (<Collection {...props} collectionID={props.match.params.idCol}/>)} />
+				<Route path='/plst' component={Playlists} />
+				<Route path='/cfg' component={CfgServer} />
+				<Route path='/log' component={Log} />
+			</Switch>
+		);
 	}
 }
 

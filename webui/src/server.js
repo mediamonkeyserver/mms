@@ -96,8 +96,8 @@ class Server {
 		return Server.fetchJson('/log/' + (logType ? logType : 'messages'));
 	}
 
-	static getTracklist = (collection, sort, filters) => {
-		var path = '/tracks/' + collection.id;
+	static getTracklist = (collectionID, sort, filters) => {
+		var path = '/tracks/' + collectionID;
 		var params = '';
 		if (sort)
 			params += 'sort=' + sort;

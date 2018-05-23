@@ -38,7 +38,7 @@ class CollectionFilter extends Component {
 	}
 
 	handleFilterRemove = (event) => {
-		removeCollectionFilter(this.props.collection, this.menuIndex);
+		removeCollectionFilter(this.props.collectionID, this.menuIndex);
 		this.handleMenuClose(event);
 	}
 
@@ -120,7 +120,7 @@ class CollectionFilter extends Component {
 
 CollectionFilter.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collection: PropTypes.object.isRequired,
+	collectionID: PropTypes.string.isRequired,
 };
 
 export default withStyles(style)(CollectionFilter);

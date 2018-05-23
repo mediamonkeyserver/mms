@@ -6,6 +6,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
+import { BrowserRouter } from 'react-router-dom';
+
 const theme = createMuiTheme({
 	// palette: {
 	// 	primary: {
@@ -24,17 +26,11 @@ const theme = createMuiTheme({
 	// }
 });
 
-// import { Provider } from 'react-redux'
-// import { createStore } from 'redux'
-// import mmsReducers from './reducers';
-
-// let store = createStore(mmsReducers);
-
 ReactDOM.render(
-	// <Provider store={store}>
 	<MuiThemeProvider theme={theme}>
-		<App />
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</MuiThemeProvider>
-	// </Provider>
 	, document.getElementById('root'));
 registerServiceWorker();

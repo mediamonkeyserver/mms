@@ -9,7 +9,8 @@ import LogList from 'Fragments/LogList';
 import CollectionsList from 'Fragments/CollectionsList';
 
 import PubSub from 'pubsub-js';
-import { showView, VIEWS } from 'actions';
+
+import { withRouter } from 'react-router-dom';
 
 const MAX_LOG_ITEMS = 15;
 
@@ -28,7 +29,9 @@ class Dashboard extends Component {
 	}
 
 	handleShowLog = () => {
-		showView(VIEWS.Log);
+		this.props.history.push({
+			pathname: '/log',
+		});
 	}
 
 	render() {
@@ -68,6 +71,7 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(withRouter(Dashboard));
