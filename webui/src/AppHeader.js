@@ -81,8 +81,15 @@ class AppHeader extends React.Component {
 		PubSub.publish('TOGGLE_MAIN_DRAWER');
 	}
 
+	setDocumentTitle(title) {
+		document.title = title + ' (MediaMonkey Server)';
+		return title;
+	}
+
 	getCollectionTitle = (id) => {
-		return (this.state.collections.filter(col => col.id === id)[0] || {name: null}).name;
+		const title = (this.state.collections.filter(col => col.id === id)[0] || {name: null}).name;
+		this.setDocumentTitle(title);
+		return title;
 	}
 
 	renderTitle = () => {
@@ -90,8 +97,12 @@ class AppHeader extends React.Component {
 			<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
 				<Switch>
 					<Route path='/col/:idCol' render={(props) => this.getCollectionTitle(props.match.params.idCol)} />
-					<Route path='/log' render={() => 'Server Log'} />
-					<Route render={() => this.state.serverName}/>
+					<Route path='/log' render={() => this.setDocumentTitle('Server Log')} />
+					<Route path='/col' render={() => this.setDocumentTitle('Collections')} />
+					<Route path='/cfg' render={() => this.setDocumentTitle('Server Configuration')} />
+					<Route path='/plst' render={() => this.setDocumentTitle('Playlists')} />
+					<Route path='/' render={() => {this.setDocumentTitle('Dashboard'); return this.state.serverName;}} />
+					<Route render={() => this.setDocumentTitle(this.state.serverName)}/>
 				</Switch>
 			</Typography>
 		);
