@@ -69,6 +69,12 @@
       "mimeType": "video/*",
       "type": "srt",
       "priority": -50
+    },
+    {
+      "key": "lyrics",
+      "mimeType": "audio/*",
+      "type": "lyrics",
+      "priority": -60
     }
   ],
   "enableIntelToolkitSupport": false,
