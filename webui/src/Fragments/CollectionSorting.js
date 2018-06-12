@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
-import { MenuItem } from 'material-ui/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { changeCollectionSort } from 'actions';
 
 const audioSorts = {

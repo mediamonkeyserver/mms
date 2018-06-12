@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Chip from 'material-ui/Chip';
-import Avatar from 'material-ui/Avatar';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import { withStyles } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import StarIcon from '@material-ui/icons/Star';
 import DurationIcon from '@material-ui/icons/AccessTime';

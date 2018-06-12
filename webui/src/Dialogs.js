@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import DialogEditCollection from './DialogEditCollection';
 import DialogChooseFolder from './DialogChooseFolder';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import PubSub from 'pubsub-js';
 
-const styles = theme => ({
+const styles = /*theme =>*/ ({
 });
 
 class Dialogs extends React.Component {
@@ -44,7 +44,7 @@ class Dialogs extends React.Component {
 					autoHideDuration={this.state.snackbarAutoHide}
 					onClose={this.handleSnackbarClose.bind(this)}
 					message={this.state.snackbarMessage}
-					/>
+				/>
 			</div>
 		);
 	}

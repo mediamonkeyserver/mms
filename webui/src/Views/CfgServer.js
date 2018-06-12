@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Grid from 'material-ui/Grid';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import Server from 'server';
 

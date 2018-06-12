@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import IconButton from 'material-ui/IconButton';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import { ListItemIcon } from 'material-ui/List';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import CastIcon from '@material-ui/icons/Cast';
 import CastConnectedIcon from '@material-ui/icons/CastConnected';

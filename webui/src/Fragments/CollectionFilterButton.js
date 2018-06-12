@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import Divider from 'material-ui/Divider';
-import { ListItemIcon } from 'material-ui/List';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import TextField from '@material-ui/core/TextField';
 
 import FilterIcon from '@material-ui/icons/FilterList';
 import StarIcon from '@material-ui/icons/Star';

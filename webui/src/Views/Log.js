@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-// import Button from 'material-ui/Button';
-// import Grid from 'material-ui/Grid';
-import { MenuItem } from 'material-ui/Menu';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+// import Button from '@material-ui/core/Button';
+// import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
-import { FormControlLabel } from 'material-ui/Form';
-import Switch from 'material-ui/Switch';
-import IconButton from 'material-ui/IconButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import LogList from 'Fragments/LogList';

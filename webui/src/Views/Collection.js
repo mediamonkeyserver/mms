@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import 'react-virtualized/styles.css';
 import { AutoSizer } from 'react-virtualized';
 import { Table, Column } from 'react-virtualized';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 
 import Server from 'server';
 import Playback from 'playback';
