@@ -11,15 +11,13 @@
     "hls.js": "^0.9.1",
     "pubsub-js": "^1.6.0",
     "rc-slider": "^8.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.1",
-    "react-virtualized": "^9.18.5",
-    "redux": "^3.7.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^1.1.4",
+    "react-virtualized": "^9.19.1",
     "screenfull": "^3.3.2",
-    "socket.io-client": "^2.0.4",
+    "socket.io-client": "^2.1.1",
     "typeface-roboto": "^0.0.54"
   },
   "scripts": {
@@ -29,8 +27,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.3",
     "eslint": "^4.18.0",
-    "eslint-plugin-react": "^7.6.1"
+    "eslint-plugin-react": "^7.9.1"
   }
 }
