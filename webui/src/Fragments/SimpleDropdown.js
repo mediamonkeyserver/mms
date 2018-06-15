@@ -17,8 +17,8 @@ class SimpleDropdown extends React.Component {
 		menuAnchorEl: null,
 	};
 
-	componentWillReceiveProps = (newProps) => {
-		if (!newProps.open) {
+	componentDidUpdate = () => {
+		if (!this.props.open) {
 			this.setState({ menuAnchorEl: null });
 		}
 	}

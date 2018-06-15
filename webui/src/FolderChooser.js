@@ -44,9 +44,9 @@ class FolderChooser extends React.Component {
 		this.setState({ path: this.props.path });
 	}
 
-	componentWillReceiveProps = (newProps) => {
-		if (this.props.path !== newProps.path) {
-			this.setState({ path: newProps.path });
+	componentDidUpdate = (prevProps) => {
+		if (this.props.path !== prevProps.path) {
+			this.setState({ path: this.props.path });
 		}
 	}
 
