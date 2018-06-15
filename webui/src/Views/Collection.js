@@ -82,9 +82,15 @@ class Collection extends Component {
 
 	updateContent = () => {
 		this.setState({ tracks: [] });
-		Server.getTracklist(this.collectionID, this.sort, this.filters).then(tracklist =>
-			this.setState({ tracks: tracklist })
-		);
+		if (this.props.search) {
+			Server.search(this.props.searchTerm, this.sort, this.filters).then(tracklist =>
+				this.setState({ tracks: tracklist })
+			);
+		} else {
+			Server.getTracklist(this.collectionID, this.sort, this.filters).then(tracklist =>
+				this.setState({ tracks: tracklist })
+			);
+		}
 	}
 
 	componentDidMount = () => {
@@ -96,24 +102,22 @@ class Collection extends Component {
 	}
 
 	componentDidUpdate = (prevProps) => {
-		if (this.props.collectionID !== prevProps.collectionID) {
+		if (this.props.collectionID !== prevProps.collectionID ||
+			this.props.search !== prevProps.search ||
+			this.props.searchTerm !== prevProps.searchTerm) {
 			this.collectionID = this.props.collectionID;
 			this.updateContent();
 		}
 	}
 
 	handleChangeSort = (data) => {
-		if (this.props.collectionID === data.collectionID) {
-			this.sort = data.newSort;
-			this.updateContent();
-		}
+		this.sort = data.newSort;
+		this.updateContent();
 	}
 
 	handleChangeFilters = (data) => {
-		if (this.props.collectionID === data.collectionID) {
-			this.filters = data.filters;
-			this.updateContent();
-		}
+		this.filters = data.filters;
+		this.updateContent();
 	}
 
 	getArtistCellData = ({ rowData }) => {
@@ -223,7 +227,9 @@ class Collection extends Component {
 
 Collection.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collectionID: PropTypes.string.isRequired,
+	collectionID: PropTypes.string,
+	search: PropTypes.bool,
+	searchTerm: PropTypes.string,
 };
 
 export default withStyles(styles)(Collection);

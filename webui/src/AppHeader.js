@@ -8,13 +8,18 @@ import IconButton from '@material-ui/core/IconButton';
 import CollectionSorting from 'Fragments/CollectionSorting';
 import CollectionFilter from 'Fragments/CollectionFilter';
 import CollectionFilterButton from 'Fragments/CollectionFilterButton';
+import SearchBar from 'material-ui-search-bar';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import LoginIcon from './LoginIcon';
+import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 import CastingButton from 'Fragments/CastingButton';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
+
+import { withRouter } from 'react-router-dom';
 
 import { Route, Switch } from 'react-router-dom';
 
@@ -35,7 +40,7 @@ const styles = theme => ({
 	toolbarItem: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-	}
+	},
 });
 
 class AppHeader extends React.Component {
@@ -44,6 +49,7 @@ class AppHeader extends React.Component {
 		anchorEl: null,
 		serverName: '',
 		collections: [],
+		search: '',
 	};
 
 	updateServerName = () => {
@@ -63,6 +69,15 @@ class AppHeader extends React.Component {
 		this.updateCollections();
 		PubSub.subscribe('CONFIG_CHANGE', this.update);
 		PubSub.subscribe('COLLECTIONS_CHANGE', this.update);
+		PubSub.subscribe('QUICKSEARCH', (msg, data) => {
+			this.setState({ search: data.term });
+		});
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.location.pathname !== prevProps.location.pathname) {
+			this.setState({ search: '' });
+		}
 	}
 
 	handleChange = (event, checked) => {
@@ -87,45 +102,85 @@ class AppHeader extends React.Component {
 	}
 
 	getCollectionTitle = (id) => {
-		const title = (this.state.collections.filter(col => col.id === id)[0] || {name: null}).name;
+		const title = (this.state.collections.filter(col => col.id === id)[0] || { name: null }).name;
 		this.setDocumentTitle(title);
 		return title;
 	}
 
 	renderTitle = () => {
-		return (
-			<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+		if (this.state.search) {
+			return (
+				this.setDocumentTitle(`Search "${this.state.search}"`)
+			);
+		} else {
+			return (
 				<Switch>
 					<Route path='/col/:idCol' render={(props) => this.getCollectionTitle(props.match.params.idCol)} />
 					<Route path='/log' render={() => this.setDocumentTitle('Server Log')} />
 					<Route path='/col' render={() => this.setDocumentTitle('Collections')} />
 					<Route path='/cfg' render={() => this.setDocumentTitle('Server Configuration')} />
 					<Route path='/plst' render={() => this.setDocumentTitle('Playlists')} />
-					<Route path='/' render={() => {this.setDocumentTitle('Dashboard'); return this.state.serverName;}} />
-					<Route render={() => this.setDocumentTitle(this.state.serverName)}/>
+					<Route path='/search/:term' render={(props) => this.setDocumentTitle(`Search "${props.match.params.term}"`)} />
+					<Route path='/' render={() => { this.setDocumentTitle('Dashboard'); return this.state.serverName; }} />
+					<Route render={() => this.setDocumentTitle(this.state.serverName)} />
 				</Switch>
-			</Typography>
+			);
+		}
+	}
+
+	renderCollectionSortBody(colID) {
+		return (
+			<React.Fragment>
+				<div className={this.props.classes.toolbarItem}>
+					<CollectionSorting collectionID={colID} />
+				</div>
+				<CollectionFilterButton collectionID={colID} />
+			</React.Fragment>
 		);
 	}
 
 	renderCollectionSort() {
+		if (this.state.search) {
+			return this.renderCollectionSortBody(0);
+		} else {
+			return (
+				<React.Fragment>
+					<Route path='/col/:idCol' render={props => this.renderCollectionSortBody(props.match.params.idCol)} />
+					<Route path='/search' render={() => this.renderCollectionSortBody(0)} />
+				</React.Fragment>
+			);
+		}
+	}
+
+	renderFilterStateBody(colID) {
 		return (
-			<Route path='/col/:idCol' render={props => (
-				<div className={this.props.classes.toolbarItem}>
-					<CollectionSorting {...props} collectionID={props.match.params.idCol} />
-				</div>
-			)} />
+			<div className={this.props.classes.toolbarItem}>
+				<CollectionFilter collectionID={colID} />
+			</div>
 		);
 	}
 
 	renderFilterState() {
-		return (
-			<Route path='/col/:idCol' render={props => (
-				<div className={this.props.classes.toolbarItem}>
-					<CollectionFilter collectionID={props.match.params.idCol} />
-				</div>
-			)} />
-		);
+		if (this.state.search) {
+			return this.renderFilterStateBody(0);
+		} else {
+			return (
+				<React.Fragment>
+					<Route path='/col/:idCol' render={props => this.renderFilterStateBody(props.match.params.idCol)} />
+					<Route path='/search' render={() => this.renderFilterStateBody(0)} />
+				</React.Fragment>
+			);
+		}
+	}
+
+	handleSearch = (value) => {
+		this.props.history.push({
+			pathname: `/search/${value}`,
+		});
+	}
+
+	handleSearchChange = (value) => {
+		PubSub.publish('QUICKSEARCH', { term: value });
 	}
 
 	render() {
@@ -139,14 +194,32 @@ class AppHeader extends React.Component {
 							<MenuIcon />
 						</IconButton>
 						<div className={classes.expand}>
-							{this.renderTitle()}
+							<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+								{this.renderTitle()}
+							</Typography>
 							{this.renderFilterState()}
 						</div>
 
+						<SearchBar
+							onRequestSearch={this.handleSearch}
+							onChange={this.handleSearchChange}
+							value={this.state.search}
+							style={{
+								marginRight: 16,
+								maxWidth: 800,
+								backgroundColor: '#5c6bc0',
+								boxShadow: 'none',
+							}}
+							inputProps={{
+								'style': {
+									color: 'white',
+								}
+							}}
+							searchIcon={<SearchIcon style={{ color: 'white' }} />}
+							closeIcon={<ClearIcon style={{ color: 'white' }} />}
+						/>
+
 						{this.renderCollectionSort()}
-						<Route path='/col/:idCol' render={props => (
-							<CollectionFilterButton {...props} collectionID={props.match.params.idCol} />
-						)} />
 
 						<CastingButton />
 						<LoginIcon />
@@ -159,6 +232,8 @@ class AppHeader extends React.Component {
 
 AppHeader.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AppHeader);
+export default withStyles(styles)(withRouter(AppHeader));

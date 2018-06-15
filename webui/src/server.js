@@ -96,7 +96,7 @@ class Server {
 		return Server.fetchJson('/log/' + (logType ? logType : 'messages'));
 	}
 
-	static getTracklist = (collectionID, sort, filters) => {
+	static getTracklist = (collectionID, sort, filters, search) => {
 		var path = '/tracks/' + collectionID;
 		var params = '';
 		if (sort)
@@ -106,9 +106,18 @@ class Server {
 				params += '&';
 			params += 'filter=' + JSON.stringify(filters);
 		}
+		if (search) {
+			if (params.length > 0)
+				params += '&';
+			params += `search=${search}`;
+		}
 		if (params.length > 0)
 			path += '?' + params;
 		return Server.fetchJson(path);
+	}
+
+	static search = (term, sort, filters) => {
+		return Server.getTracklist(0, sort, filters, term);
 	}
 
 	static getPlayers = () => {

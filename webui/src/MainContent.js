@@ -10,27 +10,51 @@ import CfgServer from './Views/CfgServer';
 import Log from './Views/Log';
 
 import { Route, Switch } from 'react-router-dom';
+import PubSub from 'pubsub-js';
+import { withRouter } from 'react-router-dom';
 
 const styles = {
 };
 
 class MainContent extends Component {
+	state = {
+		search: '',
+	}
+
+	componentDidMount() {
+		PubSub.subscribe('QUICKSEARCH', (msg, data) => {
+			this.setState({ search: data.term });
+		});
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.location.pathname !== prevProps.location.pathname) {
+			this.setState({ search: '' });
+		}
+	}
+
 	render() {
-		return (
-			<Switch>
-				<Route exact path='/' component={Dashboard} />
-				<Route exact path='/col' component={Collections} />
-				<Route path='/col/:idCol' render={props => (<Collection {...props} collectionID={props.match.params.idCol}/>)} />
-				<Route path='/plst' component={Playlists} />
-				<Route path='/cfg' component={CfgServer} />
-				<Route path='/log' component={Log} />
-			</Switch>
-		);
+		if (this.state.search) {
+			return (<Collection search={true} searchTerm={this.state.search} />);
+		} else {
+			return (
+				<Switch>
+					<Route exact path='/col' component={Collections} />
+					<Route path='/col/:idCol' render={props => (<Collection {...props} collectionID={props.match.params.idCol} />)} />
+					<Route path='/search/:term' render={props => (<Collection {...props} search={true} searchTerm={props.match.params.term} />)} />
+					<Route path='/plst' component={Playlists} />
+					<Route path='/cfg' component={CfgServer} />
+					<Route path='/log' component={Log} />
+					<Route path='/' component={Dashboard} />
+				</Switch>
+			);
+		}
 	}
 }
 
 MainContent.propTypes = {
 	classes: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MainContent);
+export default withStyles(styles)(withRouter(MainContent));
