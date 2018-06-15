@@ -95,9 +95,9 @@ class Collection extends Component {
 		subscribeCollectionChangeFilters(this.handleChangeFilters);
 	}
 
-	componentWillReceiveProps = (nextProps) => {
-		if (this.props.collectionID !== nextProps.collectionID) {
-			this.collectionID = nextProps.collectionID;
+	componentDidUpdate = (prevProps) => {
+		if (this.props.collectionID !== prevProps.collectionID) {
+			this.collectionID = this.props.collectionID;
 			this.updateContent();
 		}
 	}
