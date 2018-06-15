@@ -29,17 +29,26 @@ class CollectionSorting extends Component {
 		changeCollectionSort(this.props.collectionID, newSort);
 	}
 
+	handleDropdownClick = () => {
+		this.setState({ openDrop: !this.state.openDrop });
+	}
+
 	render() {
 		var sort = this.state.sort || 'title';
 
 		return (
-			<SimpleDropdown text={audioSorts[sort]} open={this.state.openDrop}>
+			<SimpleDropdown 
+				text={audioSorts[sort]} 
+				open={this.state.openDrop}
+				onClick={this.handleDropdownClick}
+			>
 				{Object.keys(audioSorts).map(srt => (
 					<MenuItem
 						key={srt}
 						data-id={srt}
 						selected={sort === srt}
-						onClick={this.handleSortClick}>
+						onClick={this.handleSortClick}
+					>
 						{audioSorts[srt]}
 					</MenuItem>
 				))}

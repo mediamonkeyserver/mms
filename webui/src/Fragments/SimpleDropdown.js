@@ -17,14 +17,9 @@ class SimpleDropdown extends React.Component {
 		menuAnchorEl: null,
 	};
 
-	componentDidUpdate = () => {
-		if (!this.props.open && this.state.menuAnchorEl) {
-			this.setState({ menuAnchorEl: null });
-		}
-	}
-
 	handleDropShow = (event) => {
 		this.setState({ menuAnchorEl: event.currentTarget });
+		this.props.onClick();
 	}
 
 	handleMenuClose = (event) => {
@@ -44,7 +39,7 @@ class SimpleDropdown extends React.Component {
 
 				<Menu
 					anchorEl={this.state.menuAnchorEl}
-					open={Boolean(this.state.menuAnchorEl)}
+					open={this.props.open && Boolean(this.state.menuAnchorEl)}
 					onClose={this.handleMenuClose}
 				>
 					{this.props.children}
@@ -58,7 +53,8 @@ SimpleDropdown.propTypes = {
 	classes: PropTypes.object.isRequired,
 	children: PropTypes.node.isRequired,
 	text: PropTypes.string.isRequired,
-	open: PropTypes.bool,
+	open: PropTypes.bool.isRequired,
+	onClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(SimpleDropdown);

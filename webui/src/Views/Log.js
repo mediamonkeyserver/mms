@@ -59,6 +59,10 @@ class Log extends Component {
 		forceLogRefresh();
 	}
 
+	handleDropdownClick = () => {
+		this.setState({ openTypeDrop: !this.state.openTypeDrop });
+	}
+
 	render() {
 		const { classes } = this.props;
 		var logType = this.state.logType || 'messages';
@@ -68,7 +72,11 @@ class Log extends Component {
 				<div className={classes.headerRow}>
 					{/* Left  side */}
 					<Typography variant='body2'>Show: &nbsp;</Typography>
-					<SimpleDropdown text={logTypes[logType]} open={this.state.openTypeDrop}>
+					<SimpleDropdown 
+						text={logTypes[logType]} 
+						open={this.state.openTypeDrop}
+						onClick={this.handleDropdownClick}
+					>
 						{Object.keys(logTypes).map(logtype => (
 							<MenuItem
 								key={logtype}
