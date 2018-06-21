@@ -14,6 +14,9 @@ import screenfull from 'screenfull';
 
 import { subscribeVideoState } from 'actions';
 
+import { withRouter } from 'react-router-dom';
+import PubSub from 'pubsub-js';
+
 const styles = theme => ({
 	root: {
 		position: 'absolute',
@@ -64,6 +67,18 @@ class App extends Component {
 		subscribeVideoState(this.onVideoState);
 	}
 
+	componentDidMount() {
+		document.body.addEventListener('keyup', this.handleKeyUp);
+	}
+
+	handleKeyUp = (event) => {
+		if (event.key === 'Escape') {
+			PubSub.publish('QUICKSEARCH', {term: ''}); // To clean up the search box
+			if (this.props.location.pathname.startsWith('/search'))
+				this.props.history.goBack();
+		}
+	}
+
 	onVideoState = (state) => {
 		this.setState({ video: (state === 'show') });
 		if (state === 'show')
@@ -105,6 +120,8 @@ class App extends Component {
 
 App.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,	
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(withRouter(App));
