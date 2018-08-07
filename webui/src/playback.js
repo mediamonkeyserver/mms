@@ -256,8 +256,9 @@ class LocalPlayback {
 			hls.destroy();
 			hls = undefined;
 		} else {
-			if (state.activeAVPlayer)
-				state.activeAVPlayer.src = '';
+			// JH: Disabled in order to not cause an error (empty src). It probably isn't needed anyway?
+			// if (state.activeAVPlayer)
+			// 	state.activeAVPlayer.src = '';
 		}
 
 		state.activeAVPlayer = null;
