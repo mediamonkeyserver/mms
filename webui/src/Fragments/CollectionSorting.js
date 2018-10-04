@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import SimpleDropdown from 'Fragments/SimpleDropdown';
 import MenuItem from '@material-ui/core/MenuItem';
 import { changeCollectionSort } from 'actions';
@@ -58,8 +57,7 @@ class CollectionSorting extends Component {
 }
 
 CollectionSorting.propTypes = {
-	classes: PropTypes.object.isRequired,
 	collectionID: PropTypes.string.isRequired,
 };
 
-export default withStyles()(CollectionSorting);
+export default CollectionSorting;
