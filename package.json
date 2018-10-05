@@ -87,5 +87,5 @@
     "build-arm": "npm run buildUI && node scripts/build-arm.js",
     "build-all": "npm run buildUI && node scripts/build-all.js"
   },
-  "version": "0.1.4"
+  "version": "0.1.6"
 }
