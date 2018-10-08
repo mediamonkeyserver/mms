@@ -494,6 +494,7 @@ class API extends events.EventEmitter {
 			debug('_upnpServerStarted', 'Http server is listening on address=', address);
 
 			logger.info('==================================================');
+			// @ts-ignore
 			logger.info(`Running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
 			logger.info('Connect using a web browser or using MediaMonkey 5.');
 			logger.info('==================================================');
