@@ -178,7 +178,7 @@ class LocalPlayback {
 		}
 	}
 
-	static playItem(mediaItem) {
+	static playItem(mediaItem, params) {
 		debug(`playItem: ${mediaItem}`);
 
 		if (state.getActive())
@@ -198,12 +198,14 @@ class LocalPlayback {
 		notifyPlaybackState('playing', state.mediaItem);
 
 		// Get info about the format
-		Server.getMediaStreamInfo(mediaItem).then(info => {
+		Server.getMediaStreamInfo(mediaItem, params).then(info => {
 
 			if (isHLSMimeType(info.stream.mimeType)) {
 				// HLS is handled by the hls.js library
-				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem));
+				state.playingHLS = true;
+				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem, {forceHLS: true}));
 			} else {
+				state.playingHLS = false;
 				// Everything else is handled natively by HTML5 <audio>/<video> elements
 				state.activeAVPlayer.src = Server.getMediaStreamURL(mediaItem);//mediaItem.streamURL;
 				const playRes = state.activeAVPlayer.play();
@@ -316,6 +318,10 @@ class Playback {
 		return state.getActive();
 	}
 
+	static isPlayingHLS() {
+		return state.playingHLS;
+	}	
+
 	static getCurrentMediaItem() {
 		return state.mediaItem;
 	}
@@ -382,6 +388,9 @@ export function addPlayerListeners(player) {
 	player.addEventListener('error', () => {
 		notifyVideoHide();
 		notifyPlaybackState('stopped');
+		if(!Playback.isPlayingHLS()) {
+			LocalPlayback.playItem(Playback.getCurrentMediaItem(), {forceHLS: true});
+		}
 	}, true);
 }
 
