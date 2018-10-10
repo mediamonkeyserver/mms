@@ -5,8 +5,8 @@
   "proxy": "http://localhost:10222/",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.2.3",
-    "@material-ui/icons": "^1.1.0",
+    "@material-ui/core": "^3.0.0",
+    "@material-ui/icons": "^3.0.0",
     "debug": "^3.1.0",
     "hls.js": "^0.10.1",
     "material-ui-search-bar": "1.0.0-beta.6",

@@ -102,7 +102,7 @@ class AppHeader extends React.Component {
 	}
 
 	getCollectionTitle = (id) => {
-		const title = (this.state.collections.filter(col => col.id === id)[0] || { name: null }).name;
+		const title = (this.state.collections.filter(col => String(col.id) === String(id))[0] || { name: null }).name;
 		this.setDocumentTitle(title);
 		return title;
 	}
