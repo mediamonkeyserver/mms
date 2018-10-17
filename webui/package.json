@@ -9,7 +9,7 @@
     "@material-ui/icons": "^3.0.0",
     "debug": "^3.1.0",
     "hls.js": "^0.10.1",
-    "material-ui-search-bar": "1.0.0-beta.6",
+    "material-ui-search-bar": "^1.0.0-beta.13",
     "pubsub-js": "^1.6.0",
     "rc-slider": "^8.6.1",
     "react": "^16.4.1",
