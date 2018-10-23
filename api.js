@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const restRouter = require('./lib/api/rest');
 const clients = require('./lib/clients');
 const os = require('os');
+const sysUI = require('./lib/sysUI');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -40,6 +41,8 @@ class API extends events.EventEmitter {
 		this._contentHandlers = [];
 		this._contentProviders = {};
 		this._contentHandlersKey = 0;
+
+		sysUI.setServerURL(`http://localhost:${this.configuration.httpPort}`);
 
 		if (typeof (paths) === 'string') {
 			this.addDirectory('/', paths);
@@ -491,6 +494,7 @@ class API extends events.EventEmitter {
 			debug('_upnpServerStarted', 'Http server is listening on address=', address);
 
 			logger.info('==================================================');
+			// @ts-ignore
 			logger.info(`Running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
 			logger.info('Connect using a web browser or using MediaMonkey 5.');
 			logger.info('==================================================');

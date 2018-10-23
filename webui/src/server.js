@@ -129,12 +129,19 @@ class Server {
 		});
 	}
 
-	static getMediaStreamURL = (mediaItem) => {
-		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}`;
+	static getMediaStreamURL = (mediaItem, params) => {
+		var forceHLS = '';
+		if (params && params.forceHLS)
+			forceHLS = '&forceHLS=true';
+
+		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}${forceHLS}`;
 	}
 
-	static getMediaStreamInfo = (mediaItem) => {
-		return Server.fetchJson(`/stream/${mediaItem.db_id}/info`);
+	static getMediaStreamInfo = (mediaItem, params) => {
+		var forceHLS = '';
+		if (params && params.forceHLS)
+			forceHLS = '?forceHLS=true';
+		return Server.fetchJson(`/stream/${mediaItem.db_id}/info${forceHLS}`);
 	}
 
 	static playItem = (playerID, mediaItem) => {

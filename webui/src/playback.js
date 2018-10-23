@@ -8,7 +8,7 @@ import Hls from 'hls.js';
 import Debug from 'debug';
 const debug = Debug('mms:playback');
 const debugError = Debug('mms:error:playback');
-
+//localStorage.debug = '*';
 // TODO: USe https://github.com/mediaelement/mediaelement for playback? Offers several renderers, etc.
 
 // == Casting ==
@@ -115,7 +115,7 @@ class LocalPlayback {
 	// HLS playback start
 	static startHls(video, url) {
 		if (Hls.isSupported()) {
-			hls = new Hls();
+			hls = new Hls(/*{debug: true}*/);
 			hls.loadSource(url);
 			hls.attachMedia(video);
 
@@ -125,39 +125,41 @@ class LocalPlayback {
 				const playRes = video.play();
 				if (playRes)	// The Promise isn't returned by all browsers (e.g. Edge, atm).
 					playRes.catch((error) => {
-						debugError(`HLS playback failed (${error})`);
+						debugError(`HLS playback failed (${error.details})`);
 						if (error.name !== 'NotAllowedError')	// Don't stop, so that user can restart playback on mobile devices, where play() fails beause it's execute async (not in click event).
 							LocalPlayback.stop();
 					});
 			});
 
 			hls.on(Hls.Events.ERROR, (msg, error) => {
-				debugError(`HLS playback failed (${error})`);
-				switch (error.type) {
-					case Hls.ErrorTypes.MEDIA_ERROR:
-						// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
-						if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
-							lastHlsRecoverMedia = Date.now();
-							debug('HLS recovering media error');
-							hls.recoverMediaError();
-							video.play();
+				debugError(`HLS playback failed (${error.details}, fatal=${error.fatal})`);
+				if(error.fatal) {
+					switch (error.type) {
+						case Hls.ErrorTypes.MEDIA_ERROR:
+								// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
+								if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
+									lastHlsRecoverMedia = Date.now();
+									debug('HLS recovering media error');
+									hls.recoverMediaError();
+									video.play();
+									break;
+								}
+								if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
+									lastHlsAudioCodecSwap = Date.now();
+									debug('HLS swapping audio codec');
+									hls.swapAudioCodec();
+									video.play();
+								}
 							break;
-						}
-						if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
-							lastHlsAudioCodecSwap = Date.now();
-							debug('HLS swapping audio codec');
-							hls.swapAudioCodec();
-							video.play();
-						}
-						break;
 
-					case Hls.ErrorTypes.NETWORK_ERROR:
-						hls.destroy();
-						hls.startLoad();
-						break;
+						case Hls.ErrorTypes.NETWORK_ERROR:
+							hls.destroy();
+							hls.startLoad();
+							break;
 
-					default:
-						LocalPlayback.stop();
+						default:
+							LocalPlayback.stop();
+					}
 				}
 			});
 		}
@@ -178,7 +180,7 @@ class LocalPlayback {
 		}
 	}
 
-	static playItem(mediaItem) {
+	static playItem(mediaItem, params) {
 		debug(`playItem: ${mediaItem}`);
 
 		if (state.getActive())
@@ -198,12 +200,14 @@ class LocalPlayback {
 		notifyPlaybackState('playing', state.mediaItem);
 
 		// Get info about the format
-		Server.getMediaStreamInfo(mediaItem).then(info => {
+		Server.getMediaStreamInfo(mediaItem, params).then(info => {
 
 			if (isHLSMimeType(info.stream.mimeType)) {
 				// HLS is handled by the hls.js library
-				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem));
+				state.playingHLS = true;
+				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem, {forceHLS: true}));
 			} else {
+				state.playingHLS = false;
 				// Everything else is handled natively by HTML5 <audio>/<video> elements
 				state.activeAVPlayer.src = Server.getMediaStreamURL(mediaItem);//mediaItem.streamURL;
 				const playRes = state.activeAVPlayer.play();
@@ -269,7 +273,6 @@ class LocalPlayback {
 	static seek(newTime) {
 		if (!state.activeAVPlayer)
 			return;
-
 		state.activeAVPlayer.currentTime = newTime;
 	}
 }
@@ -315,6 +318,10 @@ class Playback {
 	static getActive() {
 		return state.getActive();
 	}
+
+	static isPlayingHLS() {
+		return state.playingHLS;
+	}	
 
 	static getCurrentMediaItem() {
 		return state.mediaItem;
@@ -382,6 +389,9 @@ export function addPlayerListeners(player) {
 	player.addEventListener('error', () => {
 		notifyVideoHide();
 		notifyPlaybackState('stopped');
+		if(!Playback.isPlayingHLS()) {
+			LocalPlayback.playItem(Playback.getCurrentMediaItem(), {forceHLS: true});
+		}
 	}, true);
 }
 

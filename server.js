@@ -6,6 +6,7 @@ var util = require('util');
 var commander = require('commander');
 
 var Server = require('./api');
+const sysUI = require('./lib/sysUI');
 
 var directories = [];
 
@@ -121,3 +122,5 @@ if (commander.headDump) {
 		}
 	}, 1000 * 60 * 10);
 }
+
+sysUI.installTrayIcon();
