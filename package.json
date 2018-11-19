@@ -18,7 +18,7 @@
     "mime": "^2.2.0",
     "mkdirp": "^0.5.1",
     "moviedb": "^0.2.2",
-    "music-metadata": "^3.1.2",
+    "music-metadata": "^3.2.1",
     "node-ssdp": "^3.3.0",
     "opn": "^5.4.0",
     "range-parser": "^1.0.3",
