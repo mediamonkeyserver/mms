@@ -2347,9 +2347,9 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-type@^10.0.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-10.4.0.tgz#e730e93ffdf30992c0b7d38fc2f15c4371353d44"
+file-type@^10.5.0:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-10.5.0.tgz#895d686cb677f73aba2ff36ea0fc8a232ae7b890"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -3909,12 +3909,12 @@ multistream@2.1.1:
     inherits "^2.0.1"
     readable-stream "^2.0.5"
 
-music-metadata@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-3.2.1.tgz#82c5c752f1c0ccbf24cdc764a687a48ba2ba6d9a"
+music-metadata@^3.2:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-3.2.4.tgz#639905a5142614389e2b31ff9a82d94a5c21d1f4"
   dependencies:
     debug "^4.1.0"
-    file-type "^10.0.0"
+    file-type "^10.5.0"
     media-typer "0.3.0"
     strtok3 "^2.1.1"
     then-read-stream "^1.3.1"
