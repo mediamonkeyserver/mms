@@ -133,23 +133,23 @@ class LocalPlayback {
 
 			hls.on(Hls.Events.ERROR, (msg, error) => {
 				debugError(`HLS playback failed (${error.details}, fatal=${error.fatal})`);
-				if(error.fatal) {
+				if (error.fatal) {
 					switch (error.type) {
 						case Hls.ErrorTypes.MEDIA_ERROR:
-								// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
-								if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
-									lastHlsRecoverMedia = Date.now();
-									debug('HLS recovering media error');
-									hls.recoverMediaError();
-									video.play();
-									break;
-								}
-								if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
-									lastHlsAudioCodecSwap = Date.now();
-									debug('HLS swapping audio codec');
-									hls.swapAudioCodec();
-									video.play();
-								}
+							// HLS.js doesn't sometimes like the seeked transcoded streams, we try to recover from these problems here
+							if (!lastHlsRecoverMedia || Date.now() - lastHlsRecoverMedia > 3000) {
+								lastHlsRecoverMedia = Date.now();
+								debug('HLS recovering media error');
+								hls.recoverMediaError();
+								video.play();
+								break;
+							}
+							if (!lastHlsAudioCodecSwap || Date.now() - lastHlsAudioCodecSwap > 3000) {
+								lastHlsAudioCodecSwap = Date.now();
+								debug('HLS swapping audio codec');
+								hls.swapAudioCodec();
+								video.play();
+							}
 							break;
 
 						case Hls.ErrorTypes.NETWORK_ERROR:
@@ -205,7 +205,7 @@ class LocalPlayback {
 			if (isHLSMimeType(info.stream.mimeType)) {
 				// HLS is handled by the hls.js library
 				state.playingHLS = true;
-				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem, {forceHLS: true}));
+				LocalPlayback.startHls(state.activeAVPlayer, Server.getMediaStreamURL(mediaItem, { forceHLS: true }));
 			} else {
 				state.playingHLS = false;
 				// Everything else is handled natively by HTML5 <audio>/<video> elements
@@ -321,7 +321,7 @@ class Playback {
 
 	static isPlayingHLS() {
 		return state.playingHLS;
-	}	
+	}
 
 	static getCurrentMediaItem() {
 		return state.mediaItem;
@@ -389,8 +389,8 @@ export function addPlayerListeners(player) {
 	player.addEventListener('error', () => {
 		notifyVideoHide();
 		notifyPlaybackState('stopped');
-		if(!Playback.isPlayingHLS()) {
-			LocalPlayback.playItem(Playback.getCurrentMediaItem(), {forceHLS: true});
+		if (!Playback.isPlayingHLS()) {
+			LocalPlayback.playItem(Playback.getCurrentMediaItem(), { forceHLS: true });
 		}
 	}, true);
 }
