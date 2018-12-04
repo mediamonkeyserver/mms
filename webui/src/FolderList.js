@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -38,9 +39,9 @@ class FolderList extends React.Component {
 		this.updateList(this.props.path);
 	}
 
-	componentWillUpdate = (nextProps) => {
-		if (this.props.path !== nextProps.path) {
-			this.updateList(nextProps.path);
+	componentDidUpdate = (prevProps) => {
+		if (this.props.path !== prevProps.path) {
+			this.updateList(this.props.path);
 		}
 	}
 
@@ -73,8 +74,8 @@ class FolderList extends React.Component {
 
 FolderList.propTypes = {
 	classes: PropTypes.object.isRequired,
-	path: PropTypes.string.required,
-	onPathChange: PropTypes.function,
+	path: PropTypes.string.isRequired,
+	onPathChange: PropTypes.func,
 };
 
 export default withStyles(styles)(FolderList);
