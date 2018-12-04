@@ -82,7 +82,7 @@ server.on('waiting',
 
 var stopped = false;
 
-process.on('SIGINT', function () {
+var _stopAndExit = function () {
 	console.log('disconnecting...');
 	stopped = true;
 
@@ -91,14 +91,19 @@ process.on('SIGINT', function () {
 	setTimeout(function () {
 		process.exit();
 	}, 1000);
-});
+};
+
+process.on('SIGINT', _stopAndExit);
 
 process.on('uncaughtException', function (err) {
 	if (stopped) {
 		process.exit(0);
 		return;
 	}
-	console.error('Caught exception: ' + err);
+	if (err == 'SIGINT')
+		_stopAndExit();
+	else	
+		console.error('Caught exception: ' + err);
 });
 
 // Try to profile upnpserver manually !
