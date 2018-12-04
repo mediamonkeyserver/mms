@@ -1,7 +1,8 @@
-import Server from 'server';
-import { audioPlayer } from 'Fragments/AudioPlayer';
-import { videoPlayer } from 'Fragments/VideoPlayer';
-import { notifyPlaybackState, subscribePlaybackStateChange, notifyVideoShow, notifyVideoHide } from 'actions';
+// @ts-check
+import Server from './server';
+import { audioPlayer } from './Fragments/AudioPlayer';
+import { videoPlayer } from './Fragments/VideoPlayer';
+import { notifyPlaybackState, subscribePlaybackStateChange, notifyVideoShow, notifyVideoHide } from './actions';
 
 import Hls from 'hls.js';
 
