@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import Divider from '@material-ui/core/Divider';
-import CollectionIcon from 'Fragments/CollectionIcon';
+import CollectionIcon from './Fragments/CollectionIcon';
 
 import Server from './server';
 import PubSub from 'pubsub-js';

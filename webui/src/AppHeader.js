@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -5,16 +6,16 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import CollectionSorting from 'Fragments/CollectionSorting';
-import CollectionFilter from 'Fragments/CollectionFilter';
-import CollectionFilterButton from 'Fragments/CollectionFilterButton';
+import CollectionSorting from './Fragments/CollectionSorting';
+import CollectionFilter from './Fragments/CollectionFilter';
+import CollectionFilterButton from './Fragments/CollectionFilterButton';
 import SearchBar from 'material-ui-search-bar';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import LoginIcon from './LoginIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
-import CastingButton from 'Fragments/CastingButton';
+import CastingButton from './Fragments/CastingButton';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -67,8 +68,8 @@ class AppHeader extends React.Component {
 	componentDidMount = () => {
 		this.updateServerName();
 		this.updateCollections();
-		PubSub.subscribe('CONFIG_CHANGE', this.update);
-		PubSub.subscribe('COLLECTIONS_CHANGE', this.update);
+		PubSub.subscribe('CONFIG_CHANGE', this.updateServerName);
+		PubSub.subscribe('COLLECTIONS_CHANGE', this.updateCollections);
 		PubSub.subscribe('QUICKSEARCH', (msg, data) => {
 			this.setState({ search: data.term });
 		});
@@ -93,7 +94,7 @@ class AppHeader extends React.Component {
 	};
 
 	handleMainDrawer = () => {
-		PubSub.publish('TOGGLE_MAIN_DRAWER');
+		PubSub.publish('TOGGLE_MAIN_DRAWER', null);
 	}
 
 	setDocumentTitle(title) {
@@ -210,6 +211,7 @@ class AppHeader extends React.Component {
 								backgroundColor: '#5c6bc0',
 								boxShadow: 'none',
 							}}
+							// @ts-ignore
 							inputProps={{
 								'style': {
 									color: 'white',

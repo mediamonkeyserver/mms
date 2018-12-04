@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -5,8 +6,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 
-import Server from 'server';
-import { subscribeLogChanges } from 'actions';
+import Server from '../server';
+import { subscribeLogChanges } from '../actions';
 
 const DEFAULT_MAX_ITEMS = 100000;
 
@@ -33,9 +34,9 @@ class LogList extends React.Component {
 		subscribeLogChanges(this.logChanged);
 	}
 
-	componentWillUpdate = (nextProps) => {
-		if (nextProps.logType !== this.props.logType) {
-			this.updateList(nextProps.logType);
+	componentDidUpdate = (prevProps) => {
+		if (prevProps.logType !== this.props.logType) {
+			this.updateList(this.props.logType);
 		}
 	}
 

@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,8 +13,8 @@ import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import StopIcon from '@material-ui/icons/Stop';
 
-import Playback from 'playback';
-import { subscribePlaybackStateChange } from 'actions';
+import Playback from './playback';
+import { subscribePlaybackStateChange } from './actions';
 
 const styles = {
 	root: {
@@ -133,7 +134,7 @@ class Player extends React.Component {
 						</Button>
 
 						{/* Track title */}
-						<Typography type='title' color='inherit' className={classes.flex}>
+						<Typography color='inherit' className={classes.flex}>
 							{this.state.trackTitle}
 						</Typography>
 
@@ -154,4 +155,5 @@ Player.propTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
+// @ts-ignore
 export default withTheme()(withStyles(styles)(Player));
