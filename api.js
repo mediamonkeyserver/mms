@@ -166,7 +166,11 @@ class API extends events.EventEmitter {
 
 		assert.equal(typeof (path), 'string', 'Invalid path parameter \'' + path + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: 'directory' });
+		configuration = Object.assign({}, configuration, {
+			mountPath,
+			path,
+			type: 'directory'
+		});
 
 		return this.declareRepository(configuration);
 	}
@@ -184,7 +188,11 @@ class API extends events.EventEmitter {
 			mountPath + '\'');
 		assert.equal(typeof path, 'string', 'Invalid path parameter \'' + mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: 'music' });
+		configuration = Object.assign({}, configuration, {
+			mountPath,
+			path,
+			type: 'music'
+		});
 
 		return this.declareRepository(configuration);
 	}
@@ -201,7 +209,11 @@ class API extends events.EventEmitter {
 		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' + mountPath + '\'');
 		assert.equal(typeof path, 'string', 'Invalid path parameter \'' + path + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, path, type: 'movie' });
+		configuration = Object.assign({}, configuration, {
+			mountPath,
+			path,
+			type: 'movie'
+		});
 
 		return this.declareRepository(configuration);
 	}
@@ -216,7 +228,10 @@ class API extends events.EventEmitter {
 	addHistoryDirectory(mountPath, configuration) {
 		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' + mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, type: 'history' });
+		configuration = Object.assign({}, configuration, {
+			mountPath,
+			type: 'history'
+		});
 
 		return this.declareRepository(configuration);
 	}
@@ -233,7 +248,10 @@ class API extends events.EventEmitter {
 		assert.equal(typeof mountPath, 'string', 'Invalid mountPoint parameter \'' +
 			mountPath + '\'');
 
-		configuration = Object.assign({}, configuration, { mountPath, type: 'iceCast' });
+		configuration = Object.assign({}, configuration, {
+			mountPath,
+			type: 'iceCast'
+		});
 
 		return this.declareRepository(configuration);
 	}
@@ -358,8 +376,7 @@ class API extends events.EventEmitter {
 	 * @return {UPNPServer}
 	 */
 	startServer(callback) {
-		callback = callback || (() => {
-		});
+		callback = callback || (() => {});
 
 		debug('startServer', 'Start the server');
 
@@ -405,7 +422,10 @@ class API extends events.EventEmitter {
 
 		var config = {
 			udn: this.upnpServer.uuid,
-			location: { port: this.configuration.httpPort, path: '/description.xml' },
+			location: {
+				port: this.configuration.httpPort,
+				path: '/description.xml'
+			},
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
 			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
@@ -437,7 +457,9 @@ class API extends events.EventEmitter {
 
 		this.httpServer = httpServer;
 
-		app.use('/api', bodyParser.urlencoded({ extended: true }));
+		app.use('/api', bodyParser.urlencoded({
+			extended: true
+		}));
 		app.use('/api', bodyParser.json());
 		app.use('/', (req, res, next) => {
 			logger.verbose('HTTP ' + req.method + ' ' + req.url + ', headers: ' + JSON.stringify(req.headers));
@@ -464,6 +486,9 @@ class API extends events.EventEmitter {
 		var getLocalIP = function () {
 			var ifaces = os.networkInterfaces();
 			var res = null;
+			var priority1;
+			var priority2;
+			var priority3;
 
 			Object.keys(ifaces).forEach(function (ifname) {
 				ifaces[ifname].forEach(function (iface) {
@@ -472,10 +497,26 @@ class API extends events.EventEmitter {
 						return;
 					}
 
-					if (!res || ifname === 'Ethernet' || ifname === 'eth0') // Empty, or preferred interfaces
-						res = iface.address;
+					if (iface.address.startsWith('192.168.0') || iface.address.startsWith('192.168.1'))
+						priority1 = iface.address;
+					else
+					if (iface.address.startsWith('10.0.0.'))
+						priority2 = iface.address;
+					else
+						priority3 = iface.address;
 				});
 			});
+
+			if (priority1)
+				res = priority1;
+			else
+			if (priority2)
+				res = priority2;
+			else	
+			if (priority3)
+				res = priority3;
+			else
+				res = '127.0.0.1';
 
 			return res;
 		};
