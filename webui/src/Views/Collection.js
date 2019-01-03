@@ -121,6 +121,7 @@ class Collection extends Component {
 	}
 
 	getArtistCellData = ({ rowData }) => {
+		console.log(rowData);
 		if (rowData.artists)
 			return rowData.artists.join('; ');
 		else
@@ -208,6 +209,18 @@ class Collection extends Component {
 								flexGrow={10}
 								className={classes.cell}
 							/>
+							<Column label='Genre'
+								dataKey='genres'
+								width={100}
+								flexGrow={10}
+								className={classes.cell}
+							/>
+							<Column label='Year'
+								dataKey='year'
+								width={15}
+								flexGrow={10}
+								className={classes.cell}
+							/>
 							<Column
 								label='Length'
 								dataKey='duration'
@@ -217,6 +230,7 @@ class Collection extends Component {
 								className={classes.cellRight}
 								cellDataGetter={this.getDurationCellData}
 							/>
+
 						</Table>
 					)}
 				</AutoSizer>
