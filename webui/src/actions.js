@@ -1,3 +1,4 @@
+// @ts-check
 import PubSub from 'pubsub-js';
 
 // export const toggleMainDrawer = () => {return {type: 'TOGGLE_MAIN_DRAWER'}}
@@ -53,7 +54,7 @@ export function subscribeLogChanges(callback) {
 }
 
 export function forceLogRefresh() {
-	PubSub.publish('NEW_LOG_ITEM');
+	PubSub.publish('NEW_LOG_ITEM', null);
 }
 
 // == Playback ==

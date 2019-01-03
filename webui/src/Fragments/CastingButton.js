@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,8 +13,8 @@ import CastIcon from '@material-ui/icons/Cast';
 import CastConnectedIcon from '@material-ui/icons/CastConnected';
 import ComputerIcon from '@material-ui/icons/Computer';
 
-import Server from 'server';
-import { getCastingClientID, setCastingClientID } from 'playback';
+import Server from '../server';
+import { getCastingClientID, setCastingClientID } from '../playback';
 
 const styles = {
 	menuRoot: {

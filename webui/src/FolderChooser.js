@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -36,7 +37,7 @@ class FolderChooser extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 		this.state.path = props.path;
 	}
 
@@ -56,6 +57,10 @@ class FolderChooser extends React.Component {
 			this.props.onPathChange(newPath);
 	}
 
+	onPathEdited = (event) => {
+		this.onPathChange(event.target.value);
+	}
+
 	render() {
 		const { classes } = this.props;
 
@@ -65,7 +70,7 @@ class FolderChooser extends React.Component {
 					id='name'
 					className={classes.textField}
 					value={this.state.path}
-					// onChange={this.handleChange('name')}
+					onChange={this.onPathEdited}
 					margin='normal'
 					InputProps={{
 						disableUnderline: true,
@@ -87,7 +92,7 @@ class FolderChooser extends React.Component {
 FolderChooser.propTypes = {
 	classes: PropTypes.object.isRequired,
 	path: PropTypes.string,
-	onPathChange: PropTypes.function,
+	onPathChange: PropTypes.func,
 };
 
 export default withStyles(styles)(FolderChooser);

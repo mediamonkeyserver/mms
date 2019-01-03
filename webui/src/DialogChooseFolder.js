@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -22,7 +23,7 @@ class DialogChooseFolder extends React.Component {
 	};
 
 	componentDidMount = () => {
-		PubSub.subscribe('ADD_FOLDER', this.handleAddFolder.bind(this));
+		PubSub.subscribe('ADD_FOLDER', this.handleAddFolder);
 	}
 
 	handleAddFolder = (msg, data) => {
@@ -72,4 +73,5 @@ DialogChooseFolder.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
+// @ts-ignore
 export default withStyles(styles)(withMobileDialog()(DialogChooseFolder));
