@@ -1,7 +1,7 @@
 [![Build Status][travis-image]][travis-url] [![NPM version][npm-image]][npm-url] 
 
 # mediamonkey server
-![upnpserver icon](icon/icon_128.png)
+![upnpserver icon](icon/icon_120.png)
 
 MediaMonkey Server is a cross-platform media server written in Node.js.
 
