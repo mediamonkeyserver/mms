@@ -120,8 +120,6 @@ class Player extends React.Component {
 
 		if(hours.toString() === "00") {
 			return minutes+':'+seconds;
-		} else if(minutes.toString() === "00") {
-			return ':'+seconds;	
 		} else{
 			return hours+':'+minutes+':'+seconds;
 		}
