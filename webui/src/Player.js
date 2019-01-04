@@ -108,7 +108,7 @@ class Player extends React.Component {
 		Playback.stop();
 	}
 
-	formatTimetoHHMMSS = (timeInSeconds) => {
+	formatTimeToHHMMSS = (timeInSeconds) => {
 		let sec_num = parseInt(timeInSeconds, 10); // don't forget the second param
 		let hours   = Math.floor(sec_num / 3600);
 		let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -118,10 +118,10 @@ class Player extends React.Component {
 		if (minutes < 10) {minutes = "0"+minutes;}
 		if (seconds < 10) {seconds = "0"+seconds;}
 
-		if(hours.toString() === "00") {
-			return minutes+':'+seconds;
+		if (hours.toString() === "00") {
+			return minutes + ':' + seconds;
 		} else{
-			return hours+':'+minutes+':'+seconds;
+			return hours + ':' + minutes + ':' + seconds;
 		}
 		
 	}
@@ -168,7 +168,7 @@ class Player extends React.Component {
 
 						{this.state.playbackActive ? 
 						<Typography color="inherit" className={classes.timeIndicator}>
-							{this.formatTimetoHHMMSS(this.state.trackCurrentTime)} / {this.formatTimetoHHMMSS(this.state.trackTotalTime)}
+							{this.formatTimeToHHMMSS(this.state.trackCurrentTime)} / {this.formatTimeToHHMMSS(this.state.trackTotalTime)}
 						</Typography> : null}
 
 						{/* Stop button */}
