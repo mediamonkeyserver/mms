@@ -33,6 +33,9 @@ const styles = {
 		right: 0,
 		top: -5,
 		height: 10,
+	},
+	timeIndicator: {
+		marginRight: 15
 	}
 };
 
@@ -44,6 +47,8 @@ class Player extends React.Component {
 		playbackActive: false,
 		trackTitle: '',
 		seekPosition: 20,
+		trackCurrentTime: 0,
+		trackTotalTime: 0
 	};
 
 	componentDidMount() {
@@ -79,7 +84,11 @@ class Player extends React.Component {
 			var currTime = Playback.getCurrentTime();
 			position = currTime / duration * SEEK_STEPS;
 		}
-		this.setState({ seekPosition: position });
+		this.setState({ 
+			seekPosition: position,
+			trackTotalTime: duration,
+			trackCurrentTime: currTime
+		 });
 	}
 
 	handleSeeked = (value) => {
@@ -97,6 +106,24 @@ class Player extends React.Component {
 
 	handleStopClick = () => {
 		Playback.stop();
+	}
+
+	formatTimeToHHMMSS = (timeInSeconds) => {
+		let sec_num = parseInt(timeInSeconds, 10); // don't forget the second param
+		let hours   = Math.floor(sec_num / 3600);
+		let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+		let seconds = sec_num - (hours * 3600) - (minutes * 60);
+	
+		if (hours   < 10) {hours   = "0"+hours;}
+		if (minutes < 10) {minutes = "0"+minutes;}
+		if (seconds < 10) {seconds = "0"+seconds;}
+
+		if (hours.toString() === "00") {
+			return minutes + ':' + seconds;
+		} else{
+			return hours + ':' + minutes + ':' + seconds;
+		}
+		
 	}
 
 	render() {
@@ -138,11 +165,19 @@ class Player extends React.Component {
 							{this.state.trackTitle}
 						</Typography>
 
+
+						{this.state.playbackActive ? 
+						<Typography color="inherit" className={classes.timeIndicator}>
+							{this.formatTimeToHHMMSS(this.state.trackCurrentTime)} / {this.formatTimeToHHMMSS(this.state.trackTotalTime)}
+						</Typography> : null}
+
 						{/* Stop button */}
-						{this.state.playbackActive ?
+						{this.state.playbackActive ? 
 							<Button variant='fab' mini color='secondary' aria-label='stop' className={classes.playButton} onClick={this.handleStopClick}>
 								<StopIcon />
 							</Button> : null}
+
+							
 					</Toolbar>
 				</AppBar>
 			</div>
