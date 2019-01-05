@@ -121,7 +121,7 @@ class Collection extends Component {
 	}
 
 	getArtistCellData = ({ rowData }) => {
-		console.log(rowData);
+		// console.log(rowData);
 		if (rowData.artists)
 			return rowData.artists.join('; ');
 		else

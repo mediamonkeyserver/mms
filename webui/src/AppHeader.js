@@ -16,6 +16,7 @@ import LoginIcon from './LoginIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CastingButton from './Fragments/CastingButton';
+import ColumnSelection from './Fragments/ColumnSelection';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -223,6 +224,7 @@ class AppHeader extends React.Component {
 
 						{this.renderCollectionSort()}
 
+						<ColumnSelection />
 						<CastingButton />
 						<LoginIcon />
 					</Toolbar>
