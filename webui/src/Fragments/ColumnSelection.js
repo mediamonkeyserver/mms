@@ -19,6 +19,8 @@ const styles = theme => ({});
 class ColumnSelection extends Component {
 
     state = {
+        displayedColumns: [],
+
         columns: [
             {
                 name: 'title',
@@ -64,7 +66,8 @@ class ColumnSelection extends Component {
     }
 
     updateColumnDisplay = (columnKey) => {
-        this.state.columns[columnKey].display = !this.state.columns[columnKey].display;
+        console.log(columnKey);
+        //this.state.columns[columnKey].display = !this.state.columns[columnKey].display;
     }
 
     render(){
@@ -73,8 +76,9 @@ class ColumnSelection extends Component {
         return(
             <div>
                 <Select
+                            value={this.state.displayedColumns}
 							multiple
-							onChange={this.updateColumnDisplay}
+							onChange={this.updateColumnDisplay()}
 							input={<Input id="select-multiple-checkbox" />}
 							renderValue={selected => selected.join(', ')}
 						
