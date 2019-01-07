@@ -18,6 +18,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CastingButton from './Fragments/CastingButton';
 import ColumnSelection from './Fragments/ColumnSelection';
 
+import _cloneDeep from 'lodash/cloneDeep';
+
 import PubSub from 'pubsub-js';
 import Server from './server';
 
@@ -52,6 +54,48 @@ class AppHeader extends React.Component {
 		serverName: '',
 		collections: [],
 		search: '',
+		columns: [
+			{
+				name: 'title',
+				label: 'Title',
+				display: true
+			},
+			{
+				name: 'artist',
+				label: 'Artist',
+				display: true
+			},
+			{
+				name: 'album',
+				label: 'Album',
+				display: true
+			},
+			{
+				name: 'duration',
+				label: 'Duration',
+				display: true
+			},
+			{
+				name: 'genre',
+				label: 'Genre',
+				display: false
+			},
+			{
+				name: 'year',
+				label: 'Year',
+				display: false
+			},
+			{
+				name: 'bpm',
+				label: 'BPM',
+				display: false
+			},
+			{
+				name: 'path',
+				label: 'Path',
+				display: false
+			}
+		]
 	};
 
 	updateServerName = () => {
@@ -85,6 +129,15 @@ class AppHeader extends React.Component {
 	handleChange = (event, checked) => {
 		this.setState({ auth: checked });
 	};
+
+	handleUpdateColumnDisplay = (e, child) => {
+		let columnIndex = this.state.columns.findIndex(column => column.name === child.key);
+		let newColumns = _cloneDeep(this.state.columns);
+		newColumns[columnIndex].display = !newColumns[columnIndex].display;
+		this.setState({
+			columns: newColumns
+		});
+	}
 
 	handleMenu = event => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -224,7 +277,9 @@ class AppHeader extends React.Component {
 
 						{this.renderCollectionSort()}
 
-						<ColumnSelection />
+						<ColumnSelection
+							columns={this.state.columns}
+							onChange={this.handleUpdateColumnDisplay} />
 						<CastingButton />
 						<LoginIcon />
 					</Toolbar>
