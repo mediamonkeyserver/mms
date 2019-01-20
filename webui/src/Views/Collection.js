@@ -75,6 +75,7 @@ const styles = theme => ({
 class Collection extends Component {
 	state = {
 		tracks: [],
+		headerHeight: 40
 	}
 	collectionID = null;
 	sort = null;
@@ -140,6 +141,14 @@ class Collection extends Component {
 			return '';
 	}
 
+	// _headerRenderer = ({dataKey, sortBy, sortDirection}) => {
+	// 	return (
+	// 	  <div>
+	// 		Title Header
+	// 	  </div>
+	// 	);
+	// }
+
 	renderArtwork = ({ rowData }) => {
 		if (rowData.artworkURL)
 			return (<img
@@ -154,12 +163,15 @@ class Collection extends Component {
 		}
 	}
 
-	handleTrackClick = ({ rowData }) => {
+	handleTrackClick = ({ rowData, e }) => {
+		console.log(rowData);
+		console.log(e);
 		Playback.playMediaItem(rowData);
 	}
 
 	render() {
 		const { classes } = this.props;
+		const {headerHeight} = this.state;
 
 		return (
 			<div className={classes.root}>
@@ -170,8 +182,8 @@ class Collection extends Component {
 							height={height}
 							className={classes.table}
 							gridClassName={classes.grid}
-							disableHeader
-							// headerHeight={20}
+							disableHeader={false}
+							headerHeight={headerHeight}
 							rowHeight={48}
 							rowCount={this.state.tracks.length}
 							rowGetter={({ index }) => this.state.tracks[index]}
@@ -188,8 +200,9 @@ class Collection extends Component {
 								cellRenderer={this.renderArtwork}
 							/>
 							<Column
-								label='Name'
+								label='Track Title'
 								dataKey='title'
+								headerHeight={headerHeight}
 								className={classes.cell}
 								width={250}
 								flexGrow={10}
@@ -222,7 +235,7 @@ class Collection extends Component {
 								className={classes.cell}
 							/>
 							<Column
-								label='Length'
+								label='Duration'
 								dataKey='duration'
 								width={40}
 								flexGrow={0}
