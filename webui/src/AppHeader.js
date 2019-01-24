@@ -16,6 +16,9 @@ import LoginIcon from './LoginIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CastingButton from './Fragments/CastingButton';
+import ColumnSelection from './Fragments/ColumnSelection';
+
+import _cloneDeep from 'lodash/cloneDeep';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -51,6 +54,7 @@ class AppHeader extends React.Component {
 		serverName: '',
 		collections: [],
 		search: '',
+		
 	};
 
 	updateServerName = () => {
@@ -84,6 +88,15 @@ class AppHeader extends React.Component {
 	handleChange = (event, checked) => {
 		this.setState({ auth: checked });
 	};
+
+	handleUpdateColumnDisplay = (e, child) => {
+		let columnIndex = this.state.columns.findIndex(column => column.name === child.key);
+		let newColumns = _cloneDeep(this.state.columns);
+		newColumns[columnIndex].display = !newColumns[columnIndex].display;
+		this.setState({
+			columns: newColumns
+		});
+	}
 
 	handleMenu = event => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -223,7 +236,7 @@ class AppHeader extends React.Component {
 
 						{this.renderCollectionSort()}
 
-						<CastingButton />
+						
 						<LoginIcon />
 					</Toolbar>
 				</AppBar>
