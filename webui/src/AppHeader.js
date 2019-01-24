@@ -54,48 +54,7 @@ class AppHeader extends React.Component {
 		serverName: '',
 		collections: [],
 		search: '',
-		columns: [
-			{
-				name: 'title',
-				label: 'Title',
-				display: true
-			},
-			{
-				name: 'artist',
-				label: 'Artist',
-				display: true
-			},
-			{
-				name: 'album',
-				label: 'Album',
-				display: true
-			},
-			{
-				name: 'duration',
-				label: 'Duration',
-				display: true
-			},
-			{
-				name: 'genre',
-				label: 'Genre',
-				display: false
-			},
-			{
-				name: 'year',
-				label: 'Year',
-				display: false
-			},
-			{
-				name: 'bpm',
-				label: 'BPM',
-				display: false
-			},
-			{
-				name: 'path',
-				label: 'Path',
-				display: false
-			}
-		]
+		
 	};
 
 	updateServerName = () => {
@@ -277,10 +236,7 @@ class AppHeader extends React.Component {
 
 						{this.renderCollectionSort()}
 
-						<ColumnSelection
-							columns={this.state.columns}
-							onChange={this.handleUpdateColumnDisplay} />
-						<CastingButton />
+						
 						<LoginIcon />
 					</Toolbar>
 				</AppBar>

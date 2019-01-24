@@ -6,6 +6,15 @@ import { AutoSizer } from 'react-virtualized';
 import { Table, Column } from 'react-virtualized';
 import Avatar from '@material-ui/core/Avatar';
 
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import Select from '@material-ui/core/Select';
+import _cloneDeep from 'lodash/cloneDeep';
+
 import Server from 'server';
 import Playback from 'playback';
 import { subscribeCollectionSort, subscribeCollectionChangeFilters, getCollectionFilters } from 'actions';
@@ -75,7 +84,55 @@ const styles = theme => ({
 class Collection extends Component {
 	state = {
 		tracks: [],
-		headerHeight: 40
+		headerHeight: 40,
+		displayedColumns: [],
+		columns: {
+			title: {
+				name: 'title',
+				label: 'Title',
+				display: true
+			},
+			artist: {
+				name: 'artist',
+				label: 'Artist',
+				display: true
+			},
+			album: {
+				name: 'album',
+				label: 'Album',
+				display: true
+			},
+			duration: {
+				name: 'duration',
+				label: 'Duration',
+				display: true
+			},
+			genre: {
+				name: 'genre',
+				label: 'Genre',
+				display: true
+			},
+			year: {
+				name: 'year',
+				label: 'Year',
+				display: true
+			},
+			bpm: {
+				name: 'bpm',
+				label: 'BPM',
+				display: true
+			},
+			path: {
+				name: 'path',
+				label: 'Path',
+				display: true
+			},
+			size: {
+				name: 'size',
+				label: 'Size',
+				display: true
+			}
+		}
 	}
 	collectionID = null;
 	sort = null;
@@ -122,7 +179,6 @@ class Collection extends Component {
 	}
 
 	getArtistCellData = ({ rowData }) => {
-		// console.log(rowData);
 		if (rowData.artists)
 			return rowData.artists.join('; ');
 		else
@@ -141,13 +197,6 @@ class Collection extends Component {
 			return '';
 	}
 
-	// _headerRenderer = ({dataKey, sortBy, sortDirection}) => {
-	// 	return (
-	// 	  <div>
-	// 		Title Header
-	// 	  </div>
-	// 	);
-	// }
 
 	renderArtwork = ({ rowData }) => {
 		if (rowData.artworkURL)
@@ -163,9 +212,39 @@ class Collection extends Component {
 		}
 	}
 
+	renderColumnSelectionHeader = () => {
+		return (
+            <div>
+                <FormControl>
+                    <Select
+                        value={this.state.displayedColumns}
+                        multiple
+                        onChange={this.onColumnSelectionChange}
+                        input={<Input id="select-multiple-checkbox" />}
+                        renderValue={selected => selected.join(', ')}
+                    >
+                        {Object.keys(this.state.columns).map((key) => (
+                            <MenuItem key={this.state.columns[key].name} value={this.state.columns[key].display}>
+                                <Checkbox checked={this.state.columns[key].display} />
+                                <ListItemText primary={this.state.columns[key].label} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+            </div >
+		)
+	}
+
+	onColumnSelectionChange = (e, child) => {
+		let newColumns = _cloneDeep(this.state.columns);
+		newColumns[child.key].display = !newColumns[child.key].display;
+		this.setState({
+			columns: newColumns
+		});
+	}
+
 	handleTrackClick = ({ rowData, e }) => {
-		console.log(rowData);
-		console.log(e);
 		Playback.playMediaItem(rowData);
 	}
 
@@ -190,6 +269,7 @@ class Collection extends Component {
 							rowClassName={classes.row}
 							onRowClick={this.handleTrackClick}
 						>
+						
 							<Column
 								label='Artwork'
 								dataKey='artworkURL'
@@ -199,6 +279,7 @@ class Collection extends Component {
 								flexShrink={0}
 								cellRenderer={this.renderArtwork}
 							/>
+							{this.state.columns.title.display ?
 							<Column
 								label='Track Title'
 								dataKey='title'
@@ -206,7 +287,9 @@ class Collection extends Component {
 								className={classes.cell}
 								width={250}
 								flexGrow={10}
-							/>
+							/> : null
+							}
+							{this.state.columns.artist.display ?
 							<Column
 								label='Artist'
 								dataKey='artists'
@@ -214,36 +297,76 @@ class Collection extends Component {
 								flexGrow={10}
 								className={classes.cell}
 								cellDataGetter={this.getArtistCellData}
-							/>
+							/> : null
+							}
+							{this.state.columns.album.display ?
 							<Column
 								label='Album'
 								dataKey='album'
 								width={250}
 								flexGrow={10}
 								className={classes.cell}
-							/>
+							/> : null
+							}
+							{this.state.columns.genre.display ?
 							<Column label='Genre'
 								dataKey='genres'
 								width={100}
 								flexGrow={10}
 								className={classes.cell}
-							/>
+							/> : null
+							}
+							{this.state.columns.year.display ?
 							<Column label='Year'
 								dataKey='year'
 								width={15}
 								flexGrow={10}
 								className={classes.cell}
-							/>
-							<Column
+							/> : null
+							}
+							{this.state.columns.duration.display ? <Column
 								label='Duration'
 								dataKey='duration'
-								width={40}
-								flexGrow={0}
+								width={30}
+								flexGrow={20}
 								flexShrink={0}
 								className={classes.cellRight}
 								cellDataGetter={this.getDurationCellData}
+							/> : null }
+							{this.state.columns.bpm.display ? <Column
+								label='BPM'
+								dataKey='bpm'
+								width={10}
+								flexGrow={10}
+								flexShrink={0}
+								className={classes.cell}
+							
+							/> : null }
+							{this.state.columns.size.display ? <Column
+								label='File Size'
+								dataKey='size'
+								width={80}
+								flexGrow={10}
+								flexShrink={0}
+								className={classes.cell}
+							/> : null }
+							{this.state.columns.path.display ? <Column
+								label='Path'
+								dataKey='path'
+								width={200}
+								flexGrow={40}
+								flexShrink={0}
+								className={classes.cell}
+							
+							/> : null }
+							
+							<Column
+								headerRenderer={this.renderColumnSelectionHeader}
+								width={5}
+								flexGrow={0}
+								flexShrink={0}
+								className={classes.cellRight}
 							/>
-
 						</Table>
 					)}
 				</AutoSizer>
