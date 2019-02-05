@@ -1,182 +1,186 @@
-import PubSub from 'pubsub-js';
-import io from 'socket.io-client';
-import { forceLogRefresh } from 'actions';
+import PubSub from "pubsub-js";
+import io from "socket.io-client";
+import { forceLogRefresh } from "actions";
 
 var serverInfo;
 // var serverInfoPromise;
 
 // Connect to the server
 const socket = io();
-socket.on('new_log_item', () => {
-	forceLogRefresh();
+socket.on("new_log_item", () => {
+  forceLogRefresh();
 });
 
 var this_client_id;
-socket.on('id_assigned', (id) => {
-	this_client_id = id;
+socket.on("id_assigned", id => {
+  this_client_id = id;
 });
 
 class Server {
-	static fetchJson = (path, options) => {
-		return new Promise((res, rej) => {
-			fetch('/api' + path, options).then((result) => {
-				return result.json();
-			}).then((json) => {
-				res(json);
-			}).catch(err => {
-				rej(err);
-			});
-		});
-	}
+  static fetchJson = (path, options) => {
+    return new Promise((res, rej) => {
+      fetch("/api" + path, options)
+        .then(result => {
+          return result.json();
+        })
+        .then(json => {
+          res(json);
+        })
+        .catch(err => {
+          rej(err);
+        });
+    });
+  };
 
-	static postJson = (path, json, options) => {
-		options = options || {};
-		options.method = options.method || 'POST';
-		options.headers = new Headers({
-			'Content-Type': 'application/json'
-		});
-		options.body = JSON.stringify(json);
-		return fetch('/api' + path, options);
-	}
+  static postJson = (path, json, options) => {
+    options = options || {};
+    options.method = options.method || "POST";
+    options.headers = new Headers({
+      "Content-Type": "application/json"
+    });
+    options.body = JSON.stringify(json);
+    return fetch("/api" + path, options);
+  };
 
-	static deleteJson = (path, json, options) => {
-		options = options || {};
-		options.method = options.method || 'DELETE';
-		return Server.postJson(path, json, options);
-	}
+  static deleteJson = (path, json, options) => {
+    options = options || {};
+    options.method = options.method || "DELETE";
+    return Server.postJson(path, json, options);
+  };
 
-	static getInfo = () => {
-		return new Promise((res, rej) => {
-			if (serverInfo)
-				res(serverInfo);
+  static getInfo = () => {
+    return new Promise((res, rej) => {
+      if (serverInfo) res(serverInfo);
 
-			Server.fetchJson('/').then(json => {
-				serverInfo = json;
-				res(serverInfo);
-			}).catch(err => {
-				rej(err);
-			});
-		});
-	}
+      Server.fetchJson("/")
+        .then(json => {
+          serverInfo = json;
+          res(serverInfo);
+        })
+        .catch(err => {
+          rej(err);
+        });
+    });
+  };
 
-	static saveCongif = (cfg) => {
-		Server.postJson('/', cfg).then(() => {
-			serverInfo = undefined;
-			PubSub.publish('CONFIG_CHANGE');
-			PubSub.publish('SHOW_SNACKBAR', {
-				message: 'Server configuration updated',
-				autoHide: 5000,
-			});
-		});
-	}
+  static saveCongif = cfg => {
+    Server.postJson("/", cfg).then(() => {
+      serverInfo = undefined;
+      PubSub.publish("CONFIG_CHANGE");
+      PubSub.publish("SHOW_SNACKBAR", {
+        message: "Server configuration updated",
+        autoHide: 5000
+      });
+    });
+  };
 
-	static getFolderList = (path) => {
-		return Server.fetchJson('/folders?path=' + path);
-	}
+  static getFolderList = path => {
+    return Server.fetchJson("/folders?path=" + path);
+  };
 
-	static getCollections = () => {
-		return Server.fetchJson('/collections');
-	}
+  static getCollections = () => {
+    return Server.fetchJson("/collections");
+  };
 
-	static saveCollection = (collection) => {
-		Server.postJson('/collections', collection).then(() => {
-			serverInfo = undefined;
-			PubSub.publish('COLLECTIONS_CHANGE');
-		});
-	}
+  static saveCollection = collection => {
+    Server.postJson("/collections", collection).then(() => {
+      serverInfo = undefined;
+      PubSub.publish("COLLECTIONS_CHANGE");
+    });
+  };
 
-	static deleteCollection = (collection) => {
-		Server.deleteJson('/collections', collection).then(() => {
-			serverInfo = undefined;
-			PubSub.publish('COLLECTIONS_CHANGE');
-		});
-	}
+  static deleteCollection = collection => {
+    Server.deleteJson("/collections", collection).then(() => {
+      serverInfo = undefined;
+      PubSub.publish("COLLECTIONS_CHANGE");
+    });
+  };
 
-	static getLog = (logType) => {
-		return Server.fetchJson('/log/' + (logType ? logType : 'messages'));
-	}
+  static getPlaylists = () => {
+    console.log("server.getPlaylists");
+    //debugger;
+    return Server.fetchJson("/playlists/list");
+  };
 
-	static getTracklist = (collectionID, sort, filters, search) => {
-		var path = '/tracks/' + collectionID;
-		var params = '';
-		if (sort)
-			params += 'sort=' + sort;
-		if (filters && filters.length > 0) {
-			if (params.length > 0)
-				params += '&';
-			params += 'filter=' + JSON.stringify(filters);
-		}
-		if (search) {
-			if (params.length > 0)
-				params += '&';
-			params += `search=${search}`;
-		}
-		if (params.length > 0)
-			path += '?' + params;
-		return Server.fetchJson(path);
-	}
+  static getLog = logType => {
+    return Server.fetchJson("/log/" + (logType ? logType : "messages"));
+  };
 
-	static search = (term, sort, filters) => {
-		return Server.getTracklist(0, sort, filters, term);
-	}
+  static getTracklist = (collectionID, sort, filters, search) => {
+    var path = "/tracks/" + collectionID;
+    var params = "";
+    if (sort) params += "sort=" + sort;
+    if (filters && filters.length > 0) {
+      if (params.length > 0) params += "&";
+      params += "filter=" + JSON.stringify(filters);
+    }
+    if (search) {
+      if (params.length > 0) params += "&";
+      params += `search=${search}`;
+    }
+    if (params.length > 0) path += "?" + params;
+    return Server.fetchJson(path);
+  };
 
-	static getPlayers = () => {
-		return new Promise((res) => {
-			Server.fetchJson('/players/').then((players) => {
-				// Return all players, except this one
-				res(players.filter(player => player.id !== this_client_id));
-			});
-		});
-	}
+  static search = (term, sort, filters) => {
+    return Server.getTracklist(0, sort, filters, term);
+  };
 
-	static getMediaStreamURL = (mediaItem, params) => {
-		var forceHLS = '';
-		if (params && params.forceHLS)
-			forceHLS = '&forceHLS=true';
+  static getPlayers = () => {
+    return new Promise(res => {
+      Server.fetchJson("/players/").then(players => {
+        // Return all players, except this one
+        res(players.filter(player => player.id !== this_client_id));
+      });
+    });
+  };
 
-		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}${forceHLS}`;
-	}
+  static getMediaStreamURL = (mediaItem, params) => {
+    var forceHLS = "";
+    if (params && params.forceHLS) forceHLS = "&forceHLS=true";
 
-	static getMediaStreamInfo = (mediaItem, params) => {
-		var forceHLS = '';
-		if (params && params.forceHLS)
-			forceHLS = '?forceHLS=true';
-		return Server.fetchJson(`/stream/${mediaItem.db_id}/info${forceHLS}`);
-	}
+    return `/api/stream/${
+      mediaItem.db_id
+    }?clientId=${this_client_id}${forceHLS}`;
+  };
 
-	static playItem = (playerID, mediaItem) => {
-		Server.postJson('/players/' + playerID + '/play_item', mediaItem).then(() => {
-		});
-	}
+  static getMediaStreamInfo = (mediaItem, params) => {
+    var forceHLS = "";
+    if (params && params.forceHLS) forceHLS = "?forceHLS=true";
+    return Server.fetchJson(`/stream/${mediaItem.db_id}/info${forceHLS}`);
+  };
 
-	static playPause = (playerID) => {
-		Server.postJson('/players/' + playerID + '/play_pause').then(() => {
-		});
-	}
+  static playItem = (playerID, mediaItem) => {
+    Server.postJson("/players/" + playerID + "/play_item", mediaItem).then(
+      () => {}
+    );
+  };
 
-	static stop = (playerID) => {
-		Server.postJson('/players/' + playerID + '/stop').then(() => {
-		});
-	}
+  static playPause = playerID => {
+    Server.postJson("/players/" + playerID + "/play_pause").then(() => {});
+  };
 
-	static seek = (playerID, newTime) => {
-		Server.postJson(`/players/${playerID}/seek/${newTime}`).then(() => {
-		});
-	}
+  static stop = playerID => {
+    Server.postJson("/players/" + playerID + "/stop").then(() => {});
+  };
 
-	static updatePlaybackState = (action, mediaItem, currentTime) => {
-		socket.emit('playback', {
-			action: action,
-			mediaItem: mediaItem,
-			currentTime: currentTime,
-		});
-	}
+  static seek = (playerID, newTime) => {
+    Server.postJson(`/players/${playerID}/seek/${newTime}`).then(() => {});
+  };
 
-	static addEventHandler = (event, handler) => {
-		socket.on(event, function (...args) {
-			handler(...args);
-		});
-	}
+  static updatePlaybackState = (action, mediaItem, currentTime) => {
+    socket.emit("playback", {
+      action: action,
+      mediaItem: mediaItem,
+      currentTime: currentTime
+    });
+  };
+
+  static addEventHandler = (event, handler) => {
+    socket.on(event, function(...args) {
+      handler(...args);
+    });
+  };
 }
 
 export default Server;
