@@ -13,7 +13,6 @@ import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import Select from "@material-ui/core/Select";
-import _cloneDeep from "lodash/cloneDeep";
 
 import Server from "server";
 import Playback from "playback";
@@ -193,6 +192,15 @@ class Collection extends Component {
     else return "";
   };
 
+  getFileSizeCellData = ({ rowData }) => {
+    let fileSize = rowData.size;
+    if (fileSize > 1024 && fileSize < 1048576) {
+      return (fileSize / 1024).toFixed(2) + " KB";
+    } else if (fileSize > 1048576) {
+      return (fileSize / 1048576).toFixed(2) + " MB";
+    }
+  };
+
   getDurationCellData = ({ rowData }) => {
     var duration = rowData.duration;
     if (duration >= 0) {
@@ -247,7 +255,7 @@ class Collection extends Component {
   };
 
   onColumnSelectionChange = (e, child) => {
-    let newColumns = _cloneDeep(this.state.columns);
+    let newColumns = this.state.columns;
     newColumns[child.key].display = !newColumns[child.key].display;
     this.setState({
       columns: newColumns
@@ -364,6 +372,7 @@ class Collection extends Component {
                   flexGrow={10}
                   flexShrink={0}
                   className={classes.cell}
+                  cellDataGetter={this.getFileSizeCellData}
                 />
               ) : null}
               {this.state.columns.path.display ? (
