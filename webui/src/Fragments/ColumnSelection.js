@@ -9,9 +9,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 
-const styles = theme => ({
-    width: '50px'
-});
+// const styles = theme => ({
+//     width: '50px'
+// });
 
 class ColumnSelection extends Component {
 
