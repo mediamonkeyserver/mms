@@ -7,12 +7,25 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
 
+import Server from "server";
+
 const styles = {
   card: {}
 };
 
 class Collection extends Component {
   state = {};
+
+
+
+  componentWillMount() {
+    this.getPlaylists();
+  }
+
+  getPlaylists = async () => {
+    let playlists = [];
+    Server.getPlaylists().then(playlists => this.setState({ playlists }));
+  }
 
   render() {
     const { classes } = this.props;
@@ -23,11 +36,7 @@ class Collection extends Component {
           <Card className={classes.card}>
             <CardHeader title="Not implemented" />
             <CardContent>
-              <Typography component="p">
-                {
-                  "Playlists browsing isn't implemented yet. But it will be! ;-)"
-                }
-              </Typography>
+
             </CardContent>
           </Card>
         </Grid>

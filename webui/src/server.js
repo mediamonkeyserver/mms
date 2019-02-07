@@ -97,9 +97,7 @@ class Server {
   };
 
   static getPlaylists = () => {
-    console.log("server.getPlaylists");
-    //debugger;
-    return Server.fetchJson("/playlists/list");
+    return Server.fetchJson("/playlists");
   };
 
   static getLog = logType => {
@@ -141,7 +139,7 @@ class Server {
 
     return `/api/stream/${
       mediaItem.db_id
-    }?clientId=${this_client_id}${forceHLS}`;
+      }?clientId=${this_client_id}${forceHLS}`;
   };
 
   static getMediaStreamInfo = (mediaItem, params) => {
@@ -152,20 +150,20 @@ class Server {
 
   static playItem = (playerID, mediaItem) => {
     Server.postJson("/players/" + playerID + "/play_item", mediaItem).then(
-      () => {}
+      () => { }
     );
   };
 
   static playPause = playerID => {
-    Server.postJson("/players/" + playerID + "/play_pause").then(() => {});
+    Server.postJson("/players/" + playerID + "/play_pause").then(() => { });
   };
 
   static stop = playerID => {
-    Server.postJson("/players/" + playerID + "/stop").then(() => {});
+    Server.postJson("/players/" + playerID + "/stop").then(() => { });
   };
 
   static seek = (playerID, newTime) => {
-    Server.postJson(`/players/${playerID}/seek/${newTime}`).then(() => {});
+    Server.postJson(`/players/${playerID}/seek/${newTime}`).then(() => { });
   };
 
   static updatePlaybackState = (action, mediaItem, currentTime) => {
@@ -177,7 +175,7 @@ class Server {
   };
 
   static addEventHandler = (event, handler) => {
-    socket.on(event, function(...args) {
+    socket.on(event, function (...args) {
       handler(...args);
     });
   };
