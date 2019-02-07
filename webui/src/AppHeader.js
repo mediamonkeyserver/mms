@@ -58,7 +58,7 @@ class AppHeader extends React.Component {
       .then(info => {
         this.setState({ serverName: info.serverName });
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   updateCollections = () => {
@@ -66,7 +66,7 @@ class AppHeader extends React.Component {
       .then(cols => {
         this.setState({ collections: cols });
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   componentDidMount = () => {
@@ -276,7 +276,7 @@ class AppHeader extends React.Component {
             />
 
             {this.renderCollectionSort()}
-
+            <CastingButton />
             <LoginIcon />
           </Toolbar>
         </AppBar>
