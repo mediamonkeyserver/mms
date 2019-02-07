@@ -1,28 +1,30 @@
 // @ts-check
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CollectionSorting from "./Fragments/CollectionSorting";
-import CollectionFilter from "./Fragments/CollectionFilter";
-import CollectionFilterButton from "./Fragments/CollectionFilterButton";
-import SearchBar from "material-ui-search-bar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import CollectionSorting from './Fragments/CollectionSorting';
+import CollectionFilter from './Fragments/CollectionFilter';
+import CollectionFilterButton from './Fragments/CollectionFilterButton';
+import SearchBar from 'material-ui-search-bar';
 
-import MenuIcon from "@material-ui/icons/Menu";
-import LoginIcon from "./LoginIcon";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from "@material-ui/icons/Clear";
-import CastingButton from "./Fragments/CastingButton";
+import MenuIcon from '@material-ui/icons/Menu';
+import LoginIcon from './LoginIcon';
+import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
+import CastingButton from './Fragments/CastingButton';
+import ColumnSelection from './Fragments/ColumnSelection';
 
-import PubSub from "pubsub-js";
-import Server from "./server";
+import PubSub from 'pubsub-js';
+import Server from './server';
 
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch } from 'react-router-dom';
+
 
 const styles = theme => ({
   root: {
@@ -45,244 +47,202 @@ const styles = theme => ({
 });
 
 class AppHeader extends React.Component {
-  state = {
-    auth: true,
-    anchorEl: null,
-    serverName: "",
-    collections: [],
-    search: ""
-  };
+  
+	state = {
+		auth: true,
+		anchorEl: null,
+		serverName: '',
+		collections: [],
+		search: '',
+		
+	};
 
-  updateServerName = () => {
-    Server.getInfo()
-      .then(info => {
-        this.setState({ serverName: info.serverName });
-      })
-      .catch(() => { });
-  };
+	updateServerName = () => {
+		Server.getInfo().then((info) => {
+			this.setState({ serverName: info.serverName });
+		}).catch(() => { });
+	}
 
-  updateCollections = () => {
-    Server.getCollections()
-      .then(cols => {
-        this.setState({ collections: cols });
-      })
-      .catch(() => { });
-  };
+	updateCollections = () => {
+		Server.getCollections().then((cols) => {
+			this.setState({ collections: cols });
+		}).catch(() => { });
+	}
 
-  componentDidMount = () => {
-    this.updateServerName();
-    this.updateCollections();
-    PubSub.subscribe("CONFIG_CHANGE", this.updateServerName);
-    PubSub.subscribe("COLLECTIONS_CHANGE", this.updateCollections);
-    PubSub.subscribe("QUICKSEARCH", (msg, data) => {
-      this.setState({ search: data.term });
-    });
-  };
+	componentDidMount = () => {
+		this.updateServerName();
+		this.updateCollections();
+		PubSub.subscribe('CONFIG_CHANGE', this.updateServerName);
+		PubSub.subscribe('COLLECTIONS_CHANGE', this.updateCollections);
+		PubSub.subscribe('QUICKSEARCH', (msg, data) => {
+			this.setState({ search: data.term });
+		});
+	}
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location.pathname !== prevProps.location.pathname) {
-      this.setState({ search: "" });
-    }
-  }
+	componentDidUpdate(prevProps) {
+		if (this.props.location.pathname !== prevProps.location.pathname) {
+			this.setState({ search: '' });
+		}
+	}
 
-  handleChange = (event, checked) => {
-    this.setState({ auth: checked });
-  };
+	handleChange = (event, checked) => {
+		this.setState({ auth: checked });
+	};
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+	handleUpdateColumnDisplay = (e, child) => {
+		let columnIndex = this.state.columns.findIndex(column => column.name === child.key);
+		let newColumns = _cloneDeep(this.state.columns);
+		newColumns[columnIndex].display = !newColumns[columnIndex].display;
+		this.setState({
+			columns: newColumns
+		});
+	}
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+	handleMenu = event => {
+		this.setState({ anchorEl: event.currentTarget });
+	};
 
-  handleMainDrawer = () => {
-    PubSub.publish("TOGGLE_MAIN_DRAWER", null);
-  };
+	handleClose = () => {
+		this.setState({ anchorEl: null });
+	};
 
-  setDocumentTitle(title) {
-    document.title = title + " (MediaMonkey Server)";
-    return title;
-  }
+	handleMainDrawer = () => {
+		PubSub.publish('TOGGLE_MAIN_DRAWER', null);
+	}
 
-  getCollectionTitle = id => {
-    const title = (
-      this.state.collections.filter(
-        col => String(col.id) === String(id)
-      )[0] || { name: null }
-    ).name;
-    this.setDocumentTitle(title);
-    return title;
-  };
+	setDocumentTitle(title) {
+		document.title = title + ' (MediaMonkey Server)';
+		return title;
+	}
 
-  renderTitle = () => {
-    if (this.state.search) {
-      return this.setDocumentTitle(`Search "${this.state.search}"`);
-    } else {
-      return (
-        <Switch>
-          <Route
-            path="/col/:idCol"
-            render={props => this.getCollectionTitle(props.match.params.idCol)}
-          />
-          <Route
-            path="/log"
-            render={() => this.setDocumentTitle("Server Log")}
-          />
-          <Route
-            path="/col"
-            render={() => this.setDocumentTitle("Collections")}
-          />
-          <Route
-            path="/cfg"
-            render={() => this.setDocumentTitle("Server Configuration")}
-          />
-          <Route
-            path="/plst"
-            render={() => this.setDocumentTitle("Playlists")}
-          />
-          <Route
-            path="/search/:term"
-            render={props =>
-              this.setDocumentTitle(`Search "${props.match.params.term}"`)
-            }
-          />
-          <Route
-            path="/"
-            render={() => {
-              this.setDocumentTitle("Dashboard");
-              return this.state.serverName;
-            }}
-          />
-          <Route render={() => this.setDocumentTitle(this.state.serverName)} />
-        </Switch>
-      );
-    }
-  };
+	getCollectionTitle = (id) => {
+		const title = (this.state.collections.filter(col => String(col.id) === String(id))[0] || { name: null }).name;
+		this.setDocumentTitle(title);
+		return title;
+	}
 
-  renderCollectionSortBody(colID) {
-    return (
-      <React.Fragment>
-        <div className={this.props.classes.toolbarItem}>
-          <CollectionSorting collectionID={colID} />
-        </div>
-        <CollectionFilterButton collectionID={colID} />
-      </React.Fragment>
-    );
-  }
+	renderTitle = () => {
+		if (this.state.search) {
+			return (
+				this.setDocumentTitle(`Search "${this.state.search}"`)
+			);
+		} else {
+			return (
+				<Switch>
+					<Route path='/col/:idCol' render={(props) => this.getCollectionTitle(props.match.params.idCol)} />
+					<Route path='/log' render={() => this.setDocumentTitle('Server Log')} />
+					<Route path='/col' render={() => this.setDocumentTitle('Collections')} />
+					<Route path='/cfg' render={() => this.setDocumentTitle('Server Configuration')} />
+					<Route path='/plst' render={() => this.setDocumentTitle('Playlists')} />
+					<Route path='/search/:term' render={(props) => this.setDocumentTitle(`Search "${props.match.params.term}"`)} />
+					<Route path='/' render={() => { this.setDocumentTitle('Dashboard'); return this.state.serverName; }} />
+					<Route render={() => this.setDocumentTitle(this.state.serverName)} />
+				</Switch>
+			);
+		}
+	}
 
-  renderCollectionSort() {
-    if (this.state.search) {
-      return this.renderCollectionSortBody(0);
-    } else {
-      return (
-        <React.Fragment>
-          <Route
-            path="/col/:idCol"
-            render={props =>
-              this.renderCollectionSortBody(props.match.params.idCol)
-            }
-          />
-          <Route
-            path="/search"
-            render={() => this.renderCollectionSortBody(0)}
-          />
-        </React.Fragment>
-      );
-    }
-  }
+	renderCollectionSortBody(colID) {
+		return (
+			<React.Fragment>
+				<div className={this.props.classes.toolbarItem}>
+					<CollectionSorting collectionID={colID} />
+				</div>
+				<CollectionFilterButton collectionID={colID} />
+			</React.Fragment>
+		);
+	}
 
-  renderFilterStateBody(colID) {
-    return (
-      <div className={this.props.classes.toolbarItem}>
-        <CollectionFilter collectionID={colID} />
-      </div>
-    );
-  }
+	renderCollectionSort() {
+		if (this.state.search) {
+			return this.renderCollectionSortBody(0);
+		} else {
+			return (
+				<React.Fragment>
+					<Route path='/col/:idCol' render={props => this.renderCollectionSortBody(props.match.params.idCol)} />
+					<Route path='/search' render={() => this.renderCollectionSortBody(0)} />
+				</React.Fragment>
+			);
+		}
+	}
 
-  renderFilterState() {
-    if (this.state.search) {
-      return this.renderFilterStateBody(0);
-    } else {
-      return (
-        <React.Fragment>
-          <Route
-            path="/col/:idCol"
-            render={props =>
-              this.renderFilterStateBody(props.match.params.idCol)
-            }
-          />
-          <Route path="/search" render={() => this.renderFilterStateBody(0)} />
-        </React.Fragment>
-      );
-    }
-  }
+	renderFilterStateBody(colID) {
+		return (
+			<div className={this.props.classes.toolbarItem}>
+				<CollectionFilter collectionID={colID} />
+			</div>
+		);
+	}
 
-  handleSearch = value => {
-    this.props.history.push({
-      pathname: `/search/${value}`
-    });
-  };
+	renderFilterState() {
+		if (this.state.search) {
+			return this.renderFilterStateBody(0);
+		} else {
+			return (
+				<React.Fragment>
+					<Route path='/col/:idCol' render={props => this.renderFilterStateBody(props.match.params.idCol)} />
+					<Route path='/search' render={() => this.renderFilterStateBody(0)} />
+				</React.Fragment>
+			);
+		}
+	}
 
-  handleSearchChange = value => {
-    PubSub.publish("QUICKSEARCH", { term: value });
-  };
+	handleSearch = (value) => {
+		this.props.history.push({
+			pathname: `/search/${value}`,
+		});
+	}
 
-  render() {
-    const { classes } = this.props;
+	handleSearchChange = (value) => {
+		PubSub.publish('QUICKSEARCH', { term: value });
+	}
 
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-              onClick={this.handleMainDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-            <div className={classes.expand}>
-              <Typography
-                variant="title"
-                color="inherit"
-                className={this.props.classes.toolbarItem}
-              >
-                {this.renderTitle()}
-              </Typography>
-              {this.renderFilterState()}
-            </div>
+	render() {
+		const { classes } = this.props;
 
-            <SearchBar
-              onRequestSearch={this.handleSearch}
-              onChange={this.handleSearchChange}
-              value={this.state.search}
-              style={{
-                marginRight: 16,
-                maxWidth: 800,
-                backgroundColor: "#5c6bc0",
-                boxShadow: "none"
-              }}
-              // @ts-ignore
-              inputProps={{
-                style: {
-                  color: "white"
-                }
-              }}
-              searchIcon={<SearchIcon style={{ color: "white" }} />}
-              closeIcon={<ClearIcon style={{ color: "white" }} />}
-            />
+		return (
+			<div className={classes.root}>
+				<AppBar position='static'>
+					<Toolbar>
+						<IconButton className={classes.menuButton} color='inherit' aria-label='Menu' onClick={this.handleMainDrawer}>
+							<MenuIcon />
+						</IconButton>
+						<div className={classes.expand}>
+							<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+								{this.renderTitle()}
+							</Typography>
+							{this.renderFilterState()}
+						</div>
 
-            {this.renderCollectionSort()}
-            <CastingButton />
-            <LoginIcon />
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+						<SearchBar
+							onRequestSearch={this.handleSearch}
+							onChange={this.handleSearchChange}
+							value={this.state.search}
+							style={{
+								marginRight: 16,
+								maxWidth: 800,
+								backgroundColor: '#5c6bc0',
+								boxShadow: 'none',
+							}}
+							// @ts-ignore
+							inputProps={{
+								'style': {
+									color: 'white',
+								}
+							}}
+							searchIcon={<SearchIcon style={{ color: 'white' }} />}
+							closeIcon={<ClearIcon style={{ color: 'white' }} />}
+						/>
+
+						{this.renderCollectionSort()}
+
+						<CastingButton />
+						<LoginIcon />
+					</Toolbar>
+				</AppBar>
+			</div>
+		);
+	}
 }
 
 AppHeader.propTypes = {

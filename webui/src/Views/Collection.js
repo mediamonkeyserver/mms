@@ -7,7 +7,6 @@ import { Table, Column } from "react-virtualized";
 import Avatar from "@material-ui/core/Avatar";
 
 import Input from "@material-ui/core/Input";
-// import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -397,6 +396,7 @@ class Collection extends Component {
       </div>
     );
   }
+
 }
 
 Collection.propTypes = {
