@@ -16,7 +16,6 @@ import LoginIcon from './LoginIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import CastingButton from './Fragments/CastingButton';
-import ColumnSelection from './Fragments/ColumnSelection';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -27,34 +26,34 @@ import { Route, Switch } from 'react-router-dom';
 
 
 const styles = theme => ({
-  root: {
-    width: "100%",
-    zIndex: 100
-  },
-  expand: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center"
-  },
-  menuButton: {
-    marginLeft: -1.5 * theme.spacing.unit,
-    marginRight: 1.5 * theme.spacing.unit
-  },
-  toolbarItem: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  }
+	root: {
+		width: "100%",
+		zIndex: 100
+	},
+	expand: {
+		flex: 1,
+		display: "flex",
+		alignItems: "center"
+	},
+	menuButton: {
+		marginLeft: -1.5 * theme.spacing.unit,
+		marginRight: 1.5 * theme.spacing.unit
+	},
+	toolbarItem: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit
+	}
 });
 
 class AppHeader extends React.Component {
-  
+
 	state = {
 		auth: true,
 		anchorEl: null,
 		serverName: '',
 		collections: [],
 		search: '',
-		
+
 	};
 
 	updateServerName = () => {
@@ -88,15 +87,6 @@ class AppHeader extends React.Component {
 	handleChange = (event, checked) => {
 		this.setState({ auth: checked });
 	};
-
-	handleUpdateColumnDisplay = (e, child) => {
-		let columnIndex = this.state.columns.findIndex(column => column.name === child.key);
-		let newColumns = _cloneDeep(this.state.columns);
-		newColumns[columnIndex].display = !newColumns[columnIndex].display;
-		this.setState({
-			columns: newColumns
-		});
-	}
 
 	handleMenu = event => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -246,9 +236,9 @@ class AppHeader extends React.Component {
 }
 
 AppHeader.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(withRouter(AppHeader));

@@ -6,12 +6,6 @@ import { AutoSizer } from "react-virtualized";
 import { Table, Column } from "react-virtualized";
 import Avatar from "@material-ui/core/Avatar";
 
-import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Select from "@material-ui/core/Select";
 
 import Server from "server";
 import Playback from "playback";
@@ -20,6 +14,8 @@ import {
   subscribeCollectionChangeFilters,
   getCollectionFilters
 } from "actions";
+
+import ColumnSelection from "../Fragments/ColumnSelection";
 
 const styles = theme => ({
   root: {
@@ -223,39 +219,16 @@ class Collection extends Component {
     }
   };
 
+  updateDisplayedColumns = (newColumns) => {
+    this.setState({ columns: newColumns })
+  }
+
   renderColumnSelectionHeader = () => {
     return (
-      <div>
-        <FormControl>
-          <Select
-            value={this.state.displayedColumns}
-            multiple
-            onChange={this.onColumnSelectionChange}
-            input={<Input id="select-multiple-checkbox" />}
-            renderValue={selected => selected.join(", ")}
-          >
-            {Object.keys(this.state.columns).map(key => (
-              <MenuItem
-                key={this.state.columns[key].name}
-                value={this.state.columns[key].display}
-              >
-                <Checkbox checked={this.state.columns[key].display} />
-                <ListItemText primary={this.state.columns[key].label} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
+      <ColumnSelection columns={this.state.columns} updateDisplayedColumns={this.updateDisplayedColumns} />
     );
   };
 
-  onColumnSelectionChange = (e, child) => {
-    let newColumns = this.state.columns;
-    newColumns[child.key].display = !newColumns[child.key].display;
-    this.setState({
-      columns: newColumns
-    });
-  };
 
   handleTrackClick = ({ rowData, e }) => {
     Playback.playMediaItem(rowData);

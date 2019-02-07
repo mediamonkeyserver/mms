@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 //import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/styles';
 
 
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -21,33 +19,42 @@ class ColumnSelection extends Component {
         displayedColumns: []
     }
 
+    onColumnSelectionChange = (e, child) => {
+        let newColumns = this.props.columns;
+        newColumns[child.key].display = !newColumns[child.key].display;
+
+        console.log('props');
+        console.log(this.props);
+        this.props.updateDisplayedColumns(newColumns);
+    };
+
     render() {
-        const { classes } = this.props;
 
         return (
             <div>
-                <FormControl className={classes.width}>
-                    <InputLabel htmlFor="select-multiple-checkbox">Fields</InputLabel>
+                <FormControl>
                     <Select
                         value={this.state.displayedColumns}
                         multiple
-                        onChange={this.props.onChange}
+                        onChange={this.onColumnSelectionChange}
                         input={<Input id="select-multiple-checkbox" />}
-                        renderValue={selected => selected.join(', ')}
+                        renderValue={selected => selected.join(", ")}
                     >
-                        {this.props.columns.map(column => (
-                            <MenuItem key={column.name} value={column.display}>
-                                <Checkbox checked={column.display} />
-                                <ListItemText primary={column.label} />
+                        {Object.keys(this.props.columns).map(key => (
+                            <MenuItem
+                                key={this.props.columns[key].name}
+                                value={this.props.columns[key].display}
+                            >
+                                <Checkbox checked={this.props.columns[key].display} />
+                                <ListItemText primary={this.props.columns[key].label} />
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-
-            </div >
+            </div>
         )
     }
 
 }
 
-export default withTheme()(withStyles(styles)(ColumnSelection));
+export default (ColumnSelection);
