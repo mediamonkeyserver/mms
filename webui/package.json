@@ -2,7 +2,7 @@
   "name": "mms-ui",
   "version": "0.1.0",
   "homepage": "/web",
-  "proxy": "http://bvia-solutions.com:10222/",
+  "proxy": "http://localhost:10222",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.0.0",

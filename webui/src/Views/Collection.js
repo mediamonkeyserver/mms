@@ -7,7 +7,7 @@ import { Table, Column } from "react-virtualized";
 import Avatar from "@material-ui/core/Avatar";
 
 import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
+// import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -160,10 +160,6 @@ class Collection extends Component {
     this.updateContent();
     subscribeCollectionSort(this.handleChangeSort);
     subscribeCollectionChangeFilters(this.handleChangeFilters);
-    console.log("component did mount");
-    Server.getPlaylists().then(response => {
-      console.log(response);
-    });
   };
 
   componentDidUpdate = prevProps => {
@@ -386,12 +382,14 @@ class Collection extends Component {
                 />
               ) : null}
 
+              {/*Column Selection Empty Column */}
               <Column
                 headerRenderer={this.renderColumnSelectionHeader}
-                width={5}
+                width={15}
                 flexGrow={0}
                 flexShrink={0}
-                className={classes.cellRight}
+                dataKey=""
+                className={classes.cellInLastColumn}
               />
             </Table>
           )}
