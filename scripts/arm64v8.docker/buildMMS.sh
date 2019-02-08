@@ -4,11 +4,11 @@ cd ~
 nvm install 8.15.0
 nvm use 8.15.0
 
-# following not needed if compiling node from sources
 cd ~
 mkdir -p .pkg-cache/v2.5
 cd ~/.pkg-cache/v2.5
-wget https://github.com/robertsLando/pkg-binaries/raw/master/arm64/fetched-v8.11.3-linux-arm64
+cp /buildTarget/node-arm64 ./fetched-v8.11.3-linux-arm64
+#wget https://github.com/robertsLando/pkg-binaries/raw/master/arm64/fetched-v8.11.3-linux-arm64
 
 cd /
 git clone https://github.com/mediamonkeyserver/mms.git
