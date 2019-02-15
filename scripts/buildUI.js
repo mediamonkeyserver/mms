@@ -14,6 +14,10 @@ shell.exec(npm + 'run build');
 shell.mv('build', '../build-webui');
 shell.cd('..');
 
+// Remove .map files, to make the distribution smaller
+for (file of (shell.find('build-webui').filter(f => f.match(/\.map$/))))
+	shell.rm(file);
+
 // Prepare sources for cordova
 shell.rm('-r', 'cordova/www');
 shell.mkdir('cordova/www');
