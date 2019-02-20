@@ -24,36 +24,33 @@ import { withRouter } from 'react-router-dom';
 
 import { Route, Switch } from 'react-router-dom';
 
-
 const styles = theme => ({
 	root: {
-		width: "100%",
-		zIndex: 100
+		width: '100%',
+		zIndex: 100,
 	},
 	expand: {
 		flex: 1,
-		display: "flex",
-		alignItems: "center"
+		display: 'flex',
+		alignItems: 'center',
 	},
 	menuButton: {
 		marginLeft: -1.5 * theme.spacing.unit,
-		marginRight: 1.5 * theme.spacing.unit
+		marginRight: 1.5 * theme.spacing.unit,
 	},
 	toolbarItem: {
 		marginLeft: theme.spacing.unit,
-		marginRight: theme.spacing.unit
-	}
+		marginRight: theme.spacing.unit,
+	},
 });
 
 class AppHeader extends React.Component {
-
 	state = {
 		auth: true,
 		anchorEl: null,
 		serverName: '',
 		collections: [],
 		search: '',
-
 	};
 
 	updateServerName = () => {
@@ -238,7 +235,7 @@ class AppHeader extends React.Component {
 AppHeader.propTypes = {
 	classes: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired
+	location: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(withRouter(AppHeader));
