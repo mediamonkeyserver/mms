@@ -1,0 +1,1 @@
+docker run --rm -v %CD%/arm32v7.docker:/buildTarget mms/arm32v7 bash /buildTarget/buildMMS.sh

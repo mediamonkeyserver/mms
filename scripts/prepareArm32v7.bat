@@ -1,0 +1,1 @@
+docker build -t mms/arm32v7 arm32v7.docker
