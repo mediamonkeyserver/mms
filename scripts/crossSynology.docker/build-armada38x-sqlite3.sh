@@ -14,7 +14,7 @@ export AS="/synotoolkit/build_env/ds.armada38x-6.2/usr/local/arm-unknown-linux-g
 export AR="/synotoolkit/build_env/ds.armada38x-6.2/usr/local/arm-unknown-linux-gnueabi/bin/arm-unknown-linux-gnueabi-ar"
 
 cd /
-git clone https://github.com/mediamonkeyserver/mms.git
-cd /mms
+mkdir sqlite
+cd sqlite
 npm install sqlite3 --build-from-source --target_arch=arm
-cp -r /mms/node_modules/sqlite3/lib/binding /local
+cp -r /sqlite/node_modules/sqlite3/lib/binding /local

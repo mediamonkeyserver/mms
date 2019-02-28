@@ -28,4 +28,4 @@ shell.cp('../sqlitebinaries/node-v57-linux-arm-synology/node_sqlite3.node', 'dis
 
 // Package it
 shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/armv7-synology; tar cfz ../MMS-armv7-${version}.tar.gz *"`);
-// shell.exec(`docker run --rm -v %CD%/../dist/:/dist ubuntu /bin/bash -c "apt-get update; apt-get install xz-utils; cd /dist/armv7-synology; tar cfJ ../MMS-armv7-${version}.tar.xz *"');
+// shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "apt-get update; apt-get install xz-utils; cd /dist/armv7-synology; tar cfJ ../MMS-armv7-${version}.tar.xz *"`);

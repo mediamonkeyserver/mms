@@ -45,5 +45,6 @@ shell.exec(npm + 'run pkg -t node8-linux-x64 -o dist/linux64/mms .');
 shell.cp('../sqlitebinaries/node-v57-linux-x64/*', 'dist/linux64');
 shell.cp('../ffmpegbinaries/linux64/*', 'dist/linux64');
 shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/linux64; tar cfz ../MMS-linux64-${version}.tar.gz *"`);
+shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "apt-get update; apt-get install xz-utils; cd /dist/linux64; tar cfJ ../MMS-linux64-${version}.tar.xz *"`);
 
 // ARM building is in build-arm.js, since it can't be currently crosscompiled, has to be executed on another machine

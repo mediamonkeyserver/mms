@@ -22,3 +22,5 @@ RUN ./EnvDeploy -v 6.2 -p armada38x
 RUN ./EnvDeploy -v 6.2 -p rtd1296
 # alpine4k is quite recent armv7 platform, seems to be usable e.g. for armada370 as well
 RUN ./EnvDeploy -v 6.2 -p alpine4k
+# evansport (x86)
+RUN ./EnvDeploy -v 6.2 -p evansport 
