@@ -1,12 +1,15 @@
 // ts-check
 
 const shell = require('shelljs');
+const fs = require('fs');
+
+const version = JSON.parse(fs.readFileSync('package.json')).version;
 
 const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
 console.log(`Using ${npm}for building arm64.`); // eslint-disable-line no-console
 
-shell.mkdir('-p', 'dist/rtd1296-synology');
-shell.rm('-r', 'dist/rtd1296-synology/*');
+shell.mkdir('-p', 'dist/armv8-synology');
+shell.rm('-r', 'dist/armv8-synology/*');
 
 // Prepare docker
 shell.cd('scripts');
@@ -18,10 +21,16 @@ shell.cp('../../nodebinaries/node-arm64-rtd1296-synology', 'arm64v8.docker/node-
 // Compile MMS package
 shell.exec('docker run --rm -v %CD%/arm64v8.docker:/buildTarget mms/arm64v8 bash /buildTarget/buildMMS.sh');
 
-shell.mv('arm64v8.docker/mms-arm64', '../dist/rtd1296-synology/mms');
-shell.mv('arm64v8.docker/node-v57-linux-arm64/node_sqlite3.node', '../dist/rtd1296-synology/node_sqlite3.node');
+shell.mv('arm64v8.docker/mms-arm64', '../dist/armv8-synology/mms');
+shell.mv('arm64v8.docker/node-v57-linux-arm64/node_sqlite3.node', '../dist/armv8-synology/node_sqlite3.node');
 // Clean up
 shell.rm('arm64v8.docker/node-arm64');
 shell.rm('-r', 'arm64v8.docker/node-v57-linux-arm64');
 
+// Back to the mms root
 shell.cd('..');
+
+shell.cp('../ffmpegbinaries/linux-armv8/*', 'dist/armv8-synology');
+
+// Package it
+shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/armv8-synology; tar cfz ../MMS-armv8-${version}.tar.gz *"`);
