@@ -8,5 +8,7 @@ cd /
 git clone https://github.com/mediamonkeyserver/mms.git
 cd /mms
 npm install
-node node_modules/.bin/pkg -t node8-linux-arm -o mms-arm .
+npm run buildUI
+node node_modules/.bin/pkg -t node8-linux-armv7 -o mms-arm .
 cp mms-arm /buildTarget
+cp -r node_modules/sqlite3/lib/binding/* /buildTarget

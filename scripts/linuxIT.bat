@@ -1,0 +1,1 @@
+docker run -it -v %CD%/x86-linux.docker:/buildTarget mms/linuxx86 bash

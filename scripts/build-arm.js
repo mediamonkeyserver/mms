@@ -1,4 +1,5 @@
 // ts-check
+// This is for compilation on raspberry, not for crosscompiling
 
 const shell = require('shelljs');
 

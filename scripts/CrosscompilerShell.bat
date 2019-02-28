@@ -1,0 +1,1 @@
+docker run -it --privileged -v %CD%/crossSynology.docker/:/local mms/crosscompiler bash

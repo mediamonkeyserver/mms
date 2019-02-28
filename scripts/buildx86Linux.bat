@@ -1,0 +1,1 @@
+docker build -t mms/linuxx86 x86-linux.docker

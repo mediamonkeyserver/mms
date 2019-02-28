@@ -18,6 +18,7 @@ RUN sed -i "s/'-xhf'/'-xf'/g" EnvDeploy                 # tar problem in Docker
 # For a particular Synology NAS model (armv7 instructions). We'll probably need more builds...
 # armada370 has an old gcc, doesn't work well for me
 # RUN ./EnvDeploy -v 6.0 -p armada370
-# alpine4k is quite recent armv7 platform, seems to be usable e.g. for armada370 as well
-# RUN ./EnvDeploy -v 6.2 -p alpine4k
+RUN ./EnvDeploy -v 6.2 -p armada38x
 RUN ./EnvDeploy -v 6.2 -p rtd1296
+# alpine4k is quite recent armv7 platform, seems to be usable e.g. for armada370 as well
+RUN ./EnvDeploy -v 6.2 -p alpine4k

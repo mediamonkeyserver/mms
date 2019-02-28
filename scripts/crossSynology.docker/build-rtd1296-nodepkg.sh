@@ -24,5 +24,6 @@ git checkout v8.11.3
 wget https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v8.11.3.cpp.patch
 git apply node.v8.11.3.cpp.patch
 /bin/bash ./configure --prefix=../install --dest-cpu=arm64 --cross-compiling --dest-os=linux --with-arm-float-abi=hard --with-arm-fpu=neon
-make -j6
+# make -j6 parameter caused freezes of the build process (JH)
+make
 cp out/Release/node /nodepkg/node-arm64-rtd1296-synology
