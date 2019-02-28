@@ -92,5 +92,5 @@
     "build-armv8-synology": "node scripts/build-rtd1296-synology",
     "build-nodepkg-rtd1296": "node scripts/build-nodepkg-rtd1296.js"
   },
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
