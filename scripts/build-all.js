@@ -34,17 +34,30 @@ shell.cd('dist/mac64');
 shell.exec(`${winrar} a ../MMS-mac64-${version}.rar * -s -md64 -ma`);
 shell.cd('../..');
 
-// We don't have sqlite for linux 32bit build yet.
-// shell.mkdir('-p', 'dist/linux32');
-// shell.exec(npm + 'run pkg -t node8-linux-x86 -o dist/linux32/mms .');
-// shell.cp('../sqlitebinaries/node-v57-linux-x86/*', 'dist/linux32');
-// shell.cp('../ffmpegbinaries/linux32/*', 'dist/linux32');
-
 shell.mkdir('-p', 'dist/linux64');
 shell.exec(npm + 'run pkg -t node8-linux-x64 -o dist/linux64/mms .');
 shell.cp('../sqlitebinaries/node-v57-linux-x64/*', 'dist/linux64');
 shell.cp('../ffmpegbinaries/linux64/*', 'dist/linux64');
 shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/linux64; tar cfz ../MMS-linux64-${version}.tar.gz *"`);
 shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "apt-get update; apt-get install xz-utils; cd /dist/linux64; tar cfJ ../MMS-linux64-${version}.tar.xz *"`);
+
+const nodelinux64 = '~/.pkg-cache/v2.5/fetched-v8.11.3-linux-x64';
+shell.mv(nodelinux64, nodelinux64+'.back');
+shell.cp('../nodebinaries/node-linux64-QNAPx86', nodelinux64);
+shell.mkdir('-p', 'dist/QNAPx86');
+shell.exec(npm + 'run pkg -t node8-linux-x64 -o dist/QNAPx86/mms .');
+shell.cp('../sqlitebinaries/node-v57-linux-x64-QNAPx86/*', 'dist/QNAPx86');
+shell.cp('../ffmpegbinaries/linux64/*', 'dist/QNAPx86');
+shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/QNAPx86; tar cfz ../MMS-QNAPx86-${version}.tar.gz *"`);
+shell.rm(nodelinux64);
+shell.mv(nodelinux64+'.back', nodelinux64);
+
+
+// We don't have sqlite for linux 32bit build yet.
+// shell.mkdir('-p', 'dist/linux32');
+// shell.exec(npm + 'run pkg -t node8-linux-x86 -o dist/linux32/mms .');
+// shell.cp('../sqlitebinaries/node-v57-linux-x86/*', 'dist/linux32');
+// shell.cp('../ffmpegbinaries/linux32/*', 'dist/linux32');
+
 
 // ARM building is in build-arm.js, since it can't be currently crosscompiled, has to be executed on another machine
