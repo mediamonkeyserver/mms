@@ -14,6 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
 
 import CollectionIcon from './CollectionIcon';
 import MenuIcon from '@material-ui/icons/MoreVert';
@@ -59,6 +60,11 @@ class CollectionListItem extends Component {
 	handleEdit = (event) => {
 		this.handleMenuClose(event);
 		PubSub.publish('EDIT_COLLECTION', { collection: this.props.collection });
+	}
+
+	handleRescan = (event) => {
+		this.handleMenuClose(event);
+		Server.rescanCollection(this.props.collection);
 	}
 
 	handleShowConfirm = (event) => {
@@ -114,6 +120,8 @@ class CollectionListItem extends Component {
 						open={Boolean(this.state.anchorEl)}
 						onClose={this.handleMenuClose}
 					>
+						<MenuItem onClick={this.handleRescan}>Rescan</MenuItem>
+						<Divider />
 						<MenuItem onClick={this.handleEdit}>Edit</MenuItem>
 						<MenuItem onClick={this.handleShowConfirm}>Delete</MenuItem>
 					</Menu>
