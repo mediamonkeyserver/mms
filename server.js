@@ -4,6 +4,8 @@
 
 var util = require('util');
 var commander = require('commander');
+const http = require('http');
+const pubsub = require('pubsub-js');
 
 var Server = require('./api');
 const sysUI = require('./lib/sysUI');
@@ -49,6 +51,8 @@ commander.option('--ssdpLogLevel <level>', 'Log level of SSDP engine');
 commander.option('--profiler', 'Enable memory profiler dump');
 commander.option('--heapDump', 'Enable heap dump (require heapdump)');
 
+commander.option('--stop', 'Stop already running local MediaMonkey Server');
+
 commander.option('-p, --httpPort <port>', 'Http port', function (v) {
 	return parseInt(v, 10);
 });
@@ -66,66 +70,94 @@ try {
 
 //commander.garbageItems = true;
 
-// Create an UpnpServer with options
-
-var server = new Server(commander, directories);
-
-server.start();
-
-server.on('waiting',
-	function () {
-
-	}
-);
-
-// Catch nodejs problem or signals
-
-var stopped = false;
-
-var _stopAndExit = function () {
-	console.log('disconnecting...');
-	stopped = true;
-
-	server.stop();
-
-	setTimeout(function () {
-		process.exit();
-	}, 1000);
-};
-
-process.on('SIGINT', _stopAndExit);
-
-process.on('uncaughtException', function (err) {
-	if (stopped) {
-		process.exit(0);
+function start() {
+	if (commander.stop) {
+		console.log('Stopping a running MediaMonkey Server...');
+		http.request({
+			host: 'localhost',
+			port: '10222',
+			path: '/api/stop',
+			method: 'POST',
+		}, (res) => {
+			if (res.statusCode === 200)
+				console.log('Server successfully stopped.');
+			else
+				console.log('Server stop failed.');
+		}).on('error', () => {
+			console.log('Server not found.');
+		}).end();
 		return;
 	}
-	if (err == 'SIGINT')
-		_stopAndExit();
-	else	
-		console.error('Caught exception: ' + err);
-});
 
-// Try to profile upnpserver manually !
+	// Create an UpnpServer with options
 
-if (commander.profiler) {
-	setInterval(function () {
-		console.log(util.inspect(process.memoryUsage()));
-	}, 1000 * 30);
-}
+	var server = new Server(commander, directories);
 
-if (commander.headDump) {
-	var heapdump = require('heapdump');
-	console.log('***** HEAPDUMP enabled **************');
-	var nextMBThreshold = 0;
+	server.start();
 
-	setInterval(function () {
-		var memMB = process.memoryUsage().rss / 1048576;
-		if (memMB > nextMBThreshold) {
-			heapdump.writeSnapshot();
-			nextMBThreshold += 100;
+	server.on('waiting',
+		function () {
+
 		}
-	}, 1000 * 60 * 10);
+	);
+
+	// Catch nodejs problem or signals
+
+	var stopped = false;
+
+	var _stopAndExit = function () {
+		console.log('disconnecting...');
+		stopped = true;
+
+		server.stop();
+
+		setTimeout(function () {
+			process.exit();
+		}, 1000);
+	};
+
+	pubsub.subscribe('APP_END', () => {
+		_stopAndExit();
+	});
+
+	process.on('SIGINT', () => {
+		pubsub.publishSync('APP_END', null);
+	});
+
+	process.on('uncaughtException', function (err) {
+		if (stopped) {
+			process.exit(0);
+			return;
+		}
+		if (err == 'SIGINT')
+			pubsub.publishSync('APP_END');
+		else
+			console.error('Caught exception: ' + err);
+	});
+
+	// Try to profile upnpserver manually !
+
+	if (commander.profiler) {
+		setInterval(function () {
+			console.log(util.inspect(process.memoryUsage()));
+		}, 1000 * 30);
+	}
+
+	if (commander.headDump) {
+		var heapdump = require('heapdump');
+		console.log('***** HEAPDUMP enabled **************');
+		var nextMBThreshold = 0;
+
+		setInterval(function () {
+			var memMB = process.memoryUsage().rss / 1048576;
+			if (memMB > nextMBThreshold) {
+				heapdump.writeSnapshot();
+				nextMBThreshold += 100;
+			}
+		}, 1000 * 60 * 10);
+	}
+
+	sysUI.installTrayIcon();
 }
 
-sysUI.installTrayIcon();
+start();
