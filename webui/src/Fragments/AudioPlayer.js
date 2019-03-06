@@ -1,5 +1,6 @@
+// @ts-check
 import React from 'react';
-import { addPlayerListeners } from 'playback';
+import { addPlayerListeners } from '../playback';
 
 export var audioPlayer;
 
@@ -14,7 +15,7 @@ function initAudioPlayer() {
 class AudioPlayer extends React.Component {
 	render() {
 		return (
-			<audio autoPlay="" crossOrigin="anonymous" // eslint-disable-line
+			<audio autoPlay={false} crossOrigin="anonymous" // eslint-disable-line
 				ref={(audio) => { audioPlayer = audio; initAudioPlayer(); }}>
 			</audio>
 		);

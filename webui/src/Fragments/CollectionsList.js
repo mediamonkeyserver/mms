@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,10 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import CollectionListItem from 'Fragments/CollectionListItem';
+import CollectionListItem from './CollectionListItem';
 
 import PubSub from 'pubsub-js';
-import Server from 'server';
+import Server from '../server';
 
 const styles = ({
 	emptyBox: {
@@ -36,7 +37,7 @@ class CollectionsList extends Component {
 	}
 
 	handleNewCollection = () => {
-		PubSub.publish('ADD_COLLECTION');
+		PubSub.publish('ADD_COLLECTION', null);
 	}
 
 	handleEditCollection = (index) => {

@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,7 +25,7 @@ import TextField from '@material-ui/core/TextField';
 import RemoveIcon from '@material-ui/icons/Clear';
 
 import PubSub from 'pubsub-js';
-import Server from 'server';
+import Server from './server';
 
 const styles = ({
 	root: {
@@ -148,7 +149,7 @@ class DialogEditCollection extends React.Component {
 								<InputLabel>Collection type</InputLabel>
 								<Select
 									value={this.state.colType}
-									disabled={!!this.add}
+									disabled={!this.state.add}
 									onChange={this.handleColTypeChange}
 									inputProps={{
 										name: 'colType',
@@ -191,7 +192,7 @@ class DialogEditCollection extends React.Component {
 								return <TextField className={classes.folder}
 									fullWidth
 									disabled
-									spellCheck='false'
+									spellCheck={false}
 									value={folder}
 									id={'folder' + index}
 									key={'folder' + index}
@@ -237,4 +238,5 @@ DialogEditCollection.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
+// @ts-ignore
 export default withStyles(styles)(withMobileDialog({ breakpoint: 'xs' })(DialogEditCollection));

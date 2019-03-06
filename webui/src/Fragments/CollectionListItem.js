@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,11 +15,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import CollectionIcon from 'Fragments/CollectionIcon';
+import CollectionIcon from './CollectionIcon';
 import MenuIcon from '@material-ui/icons/MoreVert';
 
 import PubSub from 'pubsub-js';
-import Server from 'server';
+import Server from '../server';
 
 import { withRouter } from 'react-router-dom';
 

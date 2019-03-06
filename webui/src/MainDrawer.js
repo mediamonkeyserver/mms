@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -30,7 +31,7 @@ class MainDrawer extends React.Component {
 			<Drawer
 				open={this.state.drawerOpen}
 				onClose={this.handleDrawerToggle}
-				type='temporary'>
+				variant='temporary'>
 				<NavigationList onItemClicked={this.handleNavItemClicked} />
 			</Drawer>
 		);

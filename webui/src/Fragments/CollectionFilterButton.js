@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,7 +17,7 @@ import BackArrow from '@material-ui/icons/KeyboardBackspace';
 import DurationIcon from '@material-ui/icons/AccessTime';
 import CheckIcon from '@material-ui/icons/Check';
 
-import { addCollectionFilter } from 'actions';
+import { addCollectionFilter } from '../actions';
 
 var style = theme => ({
 	durationItem: {

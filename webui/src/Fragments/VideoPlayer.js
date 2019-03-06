@@ -1,7 +1,8 @@
+// @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { addPlayerListeners } from 'playback';
+import { addPlayerListeners } from '../playback';
 
 export var videoPlayer;
 
@@ -36,4 +37,5 @@ VideoPlayer.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
+// @ts-ignore
 export default withStyles(styles)(VideoPlayer);

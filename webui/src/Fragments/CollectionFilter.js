@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import StarIcon from '@material-ui/icons/Star';
 import DurationIcon from '@material-ui/icons/AccessTime';
 
-import { subscribeCollectionChangeFilters, getCollectionFilters, removeCollectionFilter } from 'actions';
+import { subscribeCollectionChangeFilters, getCollectionFilters, removeCollectionFilter } from '../actions';
 
 var style = theme => ({
 	filterChip: {
