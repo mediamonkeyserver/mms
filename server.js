@@ -1,4 +1,4 @@
-// ts-check
+// @ts-check
 /* eslint-disable no-console */
 'use strict';
 
@@ -74,8 +74,30 @@ try {
 
 //commander.garbageItems = true;
 
-function start() {
+function getStatus() {
+	return new Promise((resolve) => {
+		http.request({
+			port: configuration.getBasicConfig().httpPort,
+			path: '/api',
+			method: 'GET',
+		}, (res) => {
+			if (res.statusCode === 200)
+				resolve('running');
+			else
+				resolve('error');
+		}).on('error', () => {
+			resolve('stopped');
+		}).end();
+	});
+}
+
+async function start() {
 	if (commander.start) {
+		if (await getStatus() !== 'stopped') {
+			console.error('MediaMonkey Server is already running.');
+			return;
+		}
+		console.log('MediaMonkey Server was started as a service.');
 		daemonizeProcess({
 			arguments: process.argv.filter(arg => arg !== '--start'),
 		});
@@ -92,26 +114,19 @@ function start() {
 			if (res.statusCode === 200)
 				console.log('Server successfully stopped.');
 			else
-				console.log('Server stop failed.');
+				console.warn('Server stop failed.');
 		}).on('error', () => {
-			console.log('Server not found.');
+			console.error('Server not found.');
 		}).end();
 		return;
 	}
 
 	if (commander.status) {
-		http.request({
-			port: configuration.getBasicConfig().httpPort,
-			path: '/api',
-			method: 'GET',
-		}, (res) => {
-			if (res.statusCode === 200)
-				console.log('1:Server is running.');
-			else
-				console.log('99:Server failure.');
-		}).on('error', () => {
-			console.log('0:Server is not running.');
-		}).end();
+		switch (await getStatus()) {
+			case 'running': console.log('1: Server is running.'); break;
+			case 'stopped': console.log('0: Server is not running.'); break;
+			case 'error': console.log('99: Server failure.'); break;
+		}
 		return;
 	}
 
