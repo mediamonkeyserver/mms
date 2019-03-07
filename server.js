@@ -6,6 +6,7 @@ var util = require('util');
 var commander = require('commander');
 const http = require('http');
 const pubsub = require('pubsub-js');
+const configuration = require('./lib/configuration');
 
 var Server = require('./api');
 const sysUI = require('./lib/sysUI');
@@ -75,7 +76,7 @@ function start() {
 		console.log('Stopping a running MediaMonkey Server...');
 		http.request({
 			host: 'localhost',
-			port: '10222',
+			port: configuration.getBasicConfig().httpPort,
 			path: '/api/stop',
 			method: 'POST',
 		}, (res) => {
