@@ -1723,6 +1723,11 @@ cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
 
+daemonize-process@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/daemonize-process/-/daemonize-process-2.0.1.tgz#dcaddb30a0d31c32bb63beae62b4a4afd726f08d"
+  integrity sha512-YvTIFKlyWU2gAUliPEt93aNjsmbEZOg88HnhLBWT81BrE1iJDf6KV504hnRwXMNFN3i1yKCaoS/DTSdUCi9Csg==
+
 dargs@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-5.1.0.tgz#ec7ea50c78564cd36c9d5ec18f66329fade27829"

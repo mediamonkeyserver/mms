@@ -7,6 +7,7 @@
     "body-parser": "^1.18.2",
     "check-disk-space": "^1.5.0",
     "commander": "^2.19.0",
+    "daemonize-process": "^2.0.1",
     "debug": "^3.1.0",
     "exif": "^0.6.0",
     "express": "^4.16.2",
@@ -93,5 +94,5 @@
     "build-armv8-synology": "node scripts/build-rtd1296-synology",
     "build-nodepkg-rtd1296": "node scripts/build-nodepkg-rtd1296.js"
   },
-  "version": "0.2.3"
+  "version": "0.2.4"
 }
