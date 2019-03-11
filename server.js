@@ -7,6 +7,7 @@ var commander = require('commander');
 const http = require('http');
 const pubsub = require('pubsub-js');
 const configuration = require('./lib/configuration');
+const mediaProvider = require('./lib/mediaProvider');
 const daemonizeProcess = require('daemonize-process');
 
 var Server = require('./api');
@@ -201,4 +202,14 @@ async function start() {
 	sysUI.installTrayIcon();
 }
 
-start();
+var RegistryClass = require('./lib/db/sqlRegistry');
+var db = new RegistryClass();
+db.initialize((error) => {
+	if (error)
+		console.error('Unable to load database: ' + error);
+	else
+		configuration.setRegistry(db, () => {
+			mediaProvider.setRegistry(db);
+			start();
+		});
+});
