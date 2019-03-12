@@ -1,0 +1,10 @@
+.cache
+.git
+.vscode
+webui
+node_modules
+test
+tools
+cordova
+dist
+scripts
