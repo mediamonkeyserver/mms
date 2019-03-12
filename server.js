@@ -9,11 +9,15 @@ const pubsub = require('pubsub-js');
 const configuration = require('./lib/configuration');
 const mediaProvider = require('./lib/mediaProvider');
 const daemonizeProcess = require('daemonize-process');
+// @ts-ignore
+const pjson = require('./package.json');
 
 var Server = require('./api');
 const sysUI = require('./lib/sysUI');
 
 var directories = [];
+
+commander.version(pjson.version, '-v, --version');
 
 commander.option('-d, --directory <path>', 'Mount directory', function (path) {
 	var mountPoint = null;

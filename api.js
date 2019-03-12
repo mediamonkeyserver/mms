@@ -14,6 +14,8 @@ const restRouter = require('./lib/api/rest');
 const clients = require('./lib/clients');
 const os = require('os');
 const sysUI = require('./lib/sysUI');
+// @ts-ignore
+const pjson = require('./package.json');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -376,7 +378,7 @@ class API extends events.EventEmitter {
 	 * @return {UPNPServer}
 	 */
 	startServer(callback) {
-		callback = callback || (() => {});
+		callback = callback || (() => { });
 
 		debug('startServer', 'Start the server');
 
@@ -499,24 +501,27 @@ class API extends events.EventEmitter {
 
 					if (iface.address.startsWith('192.168.0') || iface.address.startsWith('192.168.1'))
 						priority1 = iface.address;
-					else
-					if (iface.address.startsWith('10.0.0.'))
-						priority2 = iface.address;
-					else
-						priority3 = iface.address;
+					else {
+						if (iface.address.startsWith('10.0.0.'))
+							priority2 = iface.address;
+						else
+							priority3 = iface.address;
+					}
 				});
 			});
 
 			if (priority1)
 				res = priority1;
-			else
-			if (priority2)
-				res = priority2;
-			else	
-			if (priority3)
-				res = priority3;
-			else
-				res = '127.0.0.1';
+			else {
+				if (priority2)
+					res = priority2;
+				else {
+					if (priority3)
+						res = priority3;
+					else
+						res = '127.0.0.1';
+				}
+			}
 
 			return res;
 		};
@@ -530,13 +535,13 @@ class API extends events.EventEmitter {
 
 			this.emit('waiting');
 
-			var address = httpServer.address();
+			const address = httpServer.address();
 
 			debug('_upnpServerStarted', 'Http server is listening on address=', address);
 
 			logger.info('==================================================');
-			// @ts-ignore
-			logger.info(`Running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
+			// @ts-ignore (address.port not known)
+			logger.info(`MMS v${pjson.version} running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
 			logger.info('Connect using a web browser or using MediaMonkey 5.');
 			logger.info('==================================================');
 
