@@ -155,7 +155,7 @@ async function start() {
 		console.log('disconnecting...');
 		stopped = true;
 
-		server.stop();
+		server.stop(() => {});
 
 		setTimeout(function () {
 			process.exit();
@@ -175,10 +175,7 @@ async function start() {
 			process.exit(0);
 			return;
 		}
-		if (err == 'SIGINT')
-			pubsub.publishSync('APP_END');
-		else
-			console.error('Caught exception: ' + err);
+		console.error('Caught exception: ' + err);
 	});
 
 	// Try to profile upnpserver manually !
