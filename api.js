@@ -37,7 +37,17 @@ class API extends events.EventEmitter {
 	constructor(configuration, paths) {
 		super();
 
-		this.configuration = Object.assign({}, this.defaultConfiguration, configuration);
+		var config = Configuration.getBasicConfig();
+		this.configuration = {
+			'dlnaSupport': true,
+			'httpPort': config.httpPort,
+			'name': config.serverName,
+			// @ts-ignore
+			'version': require('./package.json').version
+		};		
+		this.configuration = Object.assign({}, this.configuration, configuration);
+
+
 		this.repositories = [];
 		this._upnpClasses = {};
 		this._contentHandlers = [];
@@ -66,21 +76,6 @@ class API extends events.EventEmitter {
 		} else if (util.isArray(cf)) {
 			cf.forEach((c) => this.loadConfiguration(require(c)));
 		}
-	}
-
-	/**
-	 * Default server configuration.
-	 *
-	 * @type {object}
-	 */
-	get defaultConfiguration() {
-		return {
-			'dlnaSupport': true,
-			'httpPort': 10222,
-			'name': 'Node Server',
-			// @ts-ignore
-			'version': require('./package.json').version
-		};
 	}
 
 	/**

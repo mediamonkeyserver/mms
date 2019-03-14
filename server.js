@@ -116,7 +116,7 @@ function initDB() {
 
 function loadConfig() {
 	return new Promise((resolve) => {		
-		configuration.loadConfig(resolve, (err, config)=>{
+		configuration.loadConfig((err, config)=>{
 			if (err) {
 				console.error('Unable to load configuration: ' + err);
 				resolve();
