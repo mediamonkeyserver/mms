@@ -21,6 +21,8 @@ RUN sed -i "s/'-xhf'/'-xf'/g" EnvDeploy                 # tar problem in Docker
 RUN ./EnvDeploy -v 6.2 -p armada38x
 RUN ./EnvDeploy -v 6.2 -p rtd1296
 # alpine4k is quite recent armv7 platform, seems to be usable e.g. for armada370 as well
+# Doesn't compile node.js though, can be removed?
 RUN ./EnvDeploy -v 6.2 -p alpine4k
 # evansport (x86)
 RUN ./EnvDeploy -v 6.2 -p evansport 
+RUN ./EnvDeploy -v 6.2 -p alpine
