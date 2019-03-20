@@ -87,6 +87,7 @@
     "postinstall": "npm run buildUI",
     "test": "./node_modules/.bin/eslint lib/",
     "webpack": "webpack --config webpack.config.js",
+    "packWin": "node scripts/packWin.js",
     "buildUI": "node scripts/buildUI.js",
     "build-arm": "npm run buildUI && node scripts/build-arm.js",
     "build-all": "npm run buildUI && node scripts/build-all.js",
