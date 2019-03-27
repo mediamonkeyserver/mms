@@ -12,7 +12,7 @@ const styles = {
 	}
 };
 
-class Collection extends Component {
+class Playlist extends Component {
 	state = {
 	}
 
@@ -36,8 +36,8 @@ class Collection extends Component {
 	}
 }
 
-Collection.propTypes = {
+Playlist.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Collection);
+export default withStyles(styles)(Playlist);
