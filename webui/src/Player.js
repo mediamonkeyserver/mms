@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Slider from 'rc-slider'; // We use this non-Material UI Slider until there's one included in the material-ui library.
 import { withTheme } from '@material-ui/core/styles';
 
@@ -129,9 +129,9 @@ class Player extends React.Component {
 							: null}
 
 						{/* Play button */}
-						<Button variant='fab' mini color='secondary' aria-label='play' className={classes.playButton} onClick={this.handlePlayPauseClick}>
+						<Fab size='small' color='secondary' aria-label='play' className={classes.playButton} onClick={this.handlePlayPauseClick}>
 							{this.state.playing ? <PauseIcon /> : <PlayIcon />}
-						</Button>
+						</Fab>
 
 						{/* Track title */}
 						<Typography color='inherit' className={classes.flex}>
@@ -140,9 +140,9 @@ class Player extends React.Component {
 
 						{/* Stop button */}
 						{this.state.playbackActive ?
-							<Button variant='fab' mini color='secondary' aria-label='stop' className={classes.playButton} onClick={this.handleStopClick}>
+							<Fab size='small' color='secondary' aria-label='stop' className={classes.playButton} onClick={this.handleStopClick}>
 								<StopIcon />
-							</Button> : null}
+							</Fab> : null}
 					</Toolbar>
 				</AppBar>
 			</div>

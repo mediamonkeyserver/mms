@@ -10,6 +10,9 @@ import { BrowserRouter } from 'react-router-dom';
 import User from './User';
 
 const theme = createMuiTheme({
+	typography: {
+		useNextVariants: true,
+	},
 	// palette: {
 	// 	primary: {
 	// 		light: '#d05ce3',

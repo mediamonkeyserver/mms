@@ -201,7 +201,7 @@ class AppHeader extends React.Component {
 							<MenuIcon />
 						</IconButton>
 						<div className={classes.expand}>
-							<Typography variant='title' color='inherit' className={this.props.classes.toolbarItem}>
+							<Typography variant='h6' color='inherit' className={this.props.classes.toolbarItem}>
 								{this.renderTitle()}
 							</Typography>
 							{this.renderFilterState()}

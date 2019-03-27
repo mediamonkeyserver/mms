@@ -63,7 +63,7 @@ class LogList extends React.Component {
 			);
 		else
 			return (
-				<List component='div'>
+				<List>
 					{items.map((logitem, index) => {
 						return <ListItem key={'log' + index} dense>
 							<Typography variant='body1'>
