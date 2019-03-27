@@ -9,6 +9,7 @@ import Collection from './Views/Collection';
 import Playlists from './Views/Playlists';
 import CfgServer from './Views/CfgServer';
 import Log from './Views/Log';
+import Profile from './Views/Profile';
 
 import { Route, Switch } from 'react-router-dom';
 import PubSub from 'pubsub-js';
@@ -46,6 +47,7 @@ class MainContent extends Component {
 					<Route path='/plst' component={Playlists} />
 					<Route path='/cfg' component={CfgServer} />
 					<Route path='/log' component={Log} />
+					<Route path='/profile' render={props => (<Profile {...props} user={this.props.user} editUser={this.props.user}/>)} />
 					<Route path='/' render={props => (<Dashboard {...props} user={this.props.user} />)} />
 				</Switch>
 			);

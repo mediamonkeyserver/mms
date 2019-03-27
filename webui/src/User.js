@@ -1,11 +1,13 @@
 // @ts-check
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import cookie from 'js-cookie';
-import App from './App';
 import Server from './server';
 import PubSub from 'pubsub-js';
+import { withRouter } from 'react-router-dom';
+import Navigation from './navigation';
 
 class User extends Component {
 	state = {
@@ -14,6 +16,7 @@ class User extends Component {
 
 	constructor(props) {
 		super(props);
+		Navigation.init(props.location, props.history);
 
 		const token = cookie.get('token');
 		if (token) {
@@ -32,14 +35,31 @@ class User extends Component {
 		});
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.location !== prevProps.location) {
+			Navigation.update(this.props.location, this.props.history);
+		}
+	}
+
 	async getUserInfo() {
 		const user = await Server.getUserInfo();
 		this.setState({ user: user });
 	}
 
 	render() {
-		return <App {...this.props} user={this.state.user} />;
+		// @ts-ignore
+		return React.cloneElement(this.props.children, {
+			...this.props,
+			user: this.state.user,
+		});
+
 	}
 }
 
-export default User;
+User.propTypes = {
+	children: PropTypes.element.isRequired,
+	location: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+};
+
+export default withRouter(User);

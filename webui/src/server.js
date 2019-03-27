@@ -90,6 +90,16 @@ class Server {
 		});
 	}
 
+	static async saveProfile(profile) {
+		const res = await Server.postJson('/user/profile', profile);
+		if (res.user) {
+			PubSub.publish('UPDATE_GLOBAL', {
+				user: res.user,
+			});
+		}
+		return res.user;
+	}
+
 	static setAuth = (newAuth) => {
 		auth = newAuth;
 	}
