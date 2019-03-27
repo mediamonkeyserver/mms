@@ -1,3 +1,4 @@
+//@ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,8 +9,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 
-import LogList from 'Fragments/LogList';
-import CollectionsList from 'Fragments/CollectionsList';
+import LogList from '../Fragments/LogList';
+import CollectionsList from '../Fragments/CollectionsList';
 
 import PubSub from 'pubsub-js';
 
@@ -28,7 +29,7 @@ class Dashboard extends Component {
 	}
 
 	handleNewCollection() {
-		PubSub.publish('ADD_COLLECTION');
+		PubSub.publish('ADD_COLLECTION', null);
 	}
 
 	handleShowLog = () => {

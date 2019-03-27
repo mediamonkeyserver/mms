@@ -1,3 +1,4 @@
+//@ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -5,15 +6,15 @@ import { withStyles } from '@material-ui/core/styles';
 // import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import SimpleDropdown from 'Fragments/SimpleDropdown';
+import SimpleDropdown from '../Fragments/SimpleDropdown';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-import LogList from 'Fragments/LogList';
+import LogList from '../Fragments/LogList';
 
-import { forceLogRefresh } from 'actions';
+import { forceLogRefresh } from '../actions';
 
 const styles = {
 	headerRow: {

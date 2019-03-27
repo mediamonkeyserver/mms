@@ -1,3 +1,4 @@
+// @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -6,9 +7,9 @@ import { AutoSizer } from 'react-virtualized';
 import { Table, Column } from 'react-virtualized';
 import Avatar from '@material-ui/core/Avatar';
 
-import Server from 'server';
-import Playback from 'playback';
-import { subscribeCollectionSort, subscribeCollectionChangeFilters, getCollectionFilters } from 'actions';
+import Server from '../server';
+import Playback from '../playback';
+import { subscribeCollectionSort, subscribeCollectionChangeFilters, getCollectionFilters } from '../actions';
 
 const styles = theme => ({
 	root: {
@@ -170,7 +171,7 @@ class Collection extends Component {
 							className={classes.table}
 							gridClassName={classes.grid}
 							disableHeader
-							// headerHeight={20}
+							headerHeight={20}
 							rowHeight={48}
 							rowCount={this.state.tracks.length}
 							rowGetter={({ index }) => this.state.tracks[index]}
@@ -232,4 +233,5 @@ Collection.propTypes = {
 	searchTerm: PropTypes.string,
 };
 
+//@ts-ignore
 export default withStyles(styles)(Collection);
