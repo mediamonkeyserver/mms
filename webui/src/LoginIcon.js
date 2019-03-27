@@ -13,6 +13,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Server from './server';
 
 const styles = {
 };
@@ -31,6 +32,11 @@ class LoginIcon extends React.Component {
 	handleMenuClose = () => {
 		this.setState({ anchorEl: null });
 	};
+
+	onLogout = () => {
+		this.handleMenuClose();
+		Server.logout();
+	}
 
 	showProfile = () => {
 		this.handleMenuClose();
@@ -56,6 +62,7 @@ class LoginIcon extends React.Component {
 					>
 						<AccountCircle />
 					</IconButton>
+
 					<Menu
 						id="menu-appbar"
 						anchorEl={anchorEl}
@@ -70,9 +77,13 @@ class LoginIcon extends React.Component {
 						open={open}
 						onClose={this.handleMenuClose}
 					>
+						{this.props.user &&
+							<MenuItem onClick={this.onLogout}>{'Logout'}</MenuItem>
+						}
 						<MenuItem onClick={this.showProfile}>Profile</MenuItem>
 						<MenuItem onClick={this.showProfile}>My account</MenuItem>
 					</Menu>
+					
 					<Dialog
 						open={this.state.notImpDialog}
 						onClose={this.handleDialogClose}>
@@ -92,6 +103,7 @@ class LoginIcon extends React.Component {
 
 LoginIcon.propTypes = {
 	classes: PropTypes.object.isRequired,
+	user: PropTypes.object,
 };
 
 export default withStyles(styles)(LoginIcon);

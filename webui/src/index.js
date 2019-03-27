@@ -1,12 +1,13 @@
+// @ts-check
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import { BrowserRouter } from 'react-router-dom';
+import User from './User';
 
 const theme = createMuiTheme({
 	// palette: {
@@ -29,7 +30,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
 	<MuiThemeProvider theme={theme}>
 		<BrowserRouter basename="/web">
-			<App />
+			<User />
 		</BrowserRouter>
 	</MuiThemeProvider>
 	, document.getElementById('root'));

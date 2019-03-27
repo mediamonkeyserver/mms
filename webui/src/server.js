@@ -1,8 +1,10 @@
 import PubSub from 'pubsub-js';
 import io from 'socket.io-client';
 import { forceLogRefresh } from 'actions';
+import cookie from 'js-cookie';
 
 var serverInfo;
+var auth;
 // var serverInfoPromise;
 
 // Connect to the server
@@ -18,13 +20,26 @@ socket.on('id_assigned', (id) => {
 
 class Server {
 	static fetchJson = (path, options) => {
-		return new Promise((res, rej) => {
+		return new Promise((res, reject) => {
+			options = options || {};
+			if (auth) { // Send authenticated requests
+				options.headers = options.headers || new Headers({});
+				options.headers.append('Authorization', 'Bearer ' + auth);
+			}
+
 			fetch('/api' + path, options).then((result) => {
-				return result.json();
+				try {
+					if (!result.ok)
+						reject(`Error: ${result.status}: ${result.statusText}`);
+					else
+						return result.json();
+				} catch (e) {
+					reject(e);
+				}
 			}).then((json) => {
 				res(json);
 			}).catch(err => {
-				rej(err);
+				reject(err);
 			});
 		});
 	}
@@ -36,13 +51,51 @@ class Server {
 			'Content-Type': 'application/json'
 		});
 		options.body = JSON.stringify(json);
-		return fetch('/api' + path, options);
+		return Server.fetchJson(path, options);
 	}
 
 	static deleteJson = (path, json, options) => {
 		options = options || {};
 		options.method = options.method || 'DELETE';
 		return Server.postJson(path, json, options);
+	}
+
+	static async login(username, password) {
+		var res;
+		try {
+			res = await Server.postJson('/user/login', {
+				user: username,
+				pass: password,
+			});
+		} catch (e) {
+			return null;
+		}
+
+		if (res) {
+			Server.setAuth(res.token);
+			cookie.set('token', res.token);			
+			PubSub.publish('UPDATE_GLOBAL', {
+				user: res.user,
+			});
+		}
+
+		return res;
+	}
+
+	static logout() {
+		Server.setAuth(null);
+		cookie.remove('token');
+		PubSub.publish('UPDATE_GLOBAL', {
+			user: null,
+		});
+	}
+
+	static setAuth = (newAuth) => {
+		auth = newAuth;
+	}
+
+	static getUserInfo = () => {
+		return Server.fetchJson('/user');
 	}
 
 	static getInfo = () => {

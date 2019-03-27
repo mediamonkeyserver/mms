@@ -52,6 +52,8 @@ class AppHeader extends React.Component {
 		collections: [],
 		search: '',
 	};
+	collections = [];
+	IDCol = null;
 
 	updateServerName = () => {
 		Server.getInfo().then((info) => {
@@ -62,6 +64,9 @@ class AppHeader extends React.Component {
 	updateCollections = () => {
 		Server.getCollections().then((cols) => {
 			this.setState({ collections: cols });
+			this.collections = cols;
+			if (this.IDCol)
+				this.getCollectionTitle(this.IDCol);
 		}).catch(() => { });
 	}
 
@@ -103,7 +108,8 @@ class AppHeader extends React.Component {
 	}
 
 	getCollectionTitle = (id) => {
-		const title = (this.state.collections.filter(col => String(col.id) === String(id))[0] || { name: null }).name;
+		this._IDCol = id;
+		const title = (this.collections.filter(col => String(col.id) === String(id))[0] || { name: '' }).name;
 		this.setDocumentTitle(title);
 		return title;
 	}
@@ -201,30 +207,32 @@ class AppHeader extends React.Component {
 							{this.renderFilterState()}
 						</div>
 
-						<SearchBar
-							onRequestSearch={this.handleSearch}
-							onChange={this.handleSearchChange}
-							value={this.state.search}
-							style={{
-								marginRight: 16,
-								maxWidth: 800,
-								backgroundColor: '#5c6bc0',
-								boxShadow: 'none',
-							}}
+						{
 							// @ts-ignore
-							inputProps={{
-								'style': {
-									color: 'white',
-								}
-							}}
-							searchIcon={<SearchIcon style={{ color: 'white' }} />}
-							closeIcon={<ClearIcon style={{ color: 'white' }} />}
-						/>
+							<SearchBar
+								onRequestSearch={this.handleSearch}
+								onChange={this.handleSearchChange}
+								value={this.state.search}
+								style={{
+									marginRight: 16,
+									maxWidth: 800,
+									backgroundColor: '#5c6bc0',
+									boxShadow: 'none',
+								}}
+								inputProps={{
+									'style': {
+										color: 'white',
+									}
+								}}
+								searchIcon={<SearchIcon style={{ color: 'white' }} />}
+								closeIcon={<ClearIcon style={{ color: 'white' }} />}
+							/>
+						}
 
 						{this.renderCollectionSort()}
 
 						<CastingButton />
-						<LoginIcon />
+						<LoginIcon user={this.props.user} />
 					</Toolbar>
 				</AppBar>
 			</div>
@@ -236,6 +244,7 @@ AppHeader.propTypes = {
 	classes: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
+	user: PropTypes.object,
 };
 
 export default withStyles(styles)(withRouter(AppHeader));

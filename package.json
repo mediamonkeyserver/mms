@@ -22,6 +22,7 @@
     "node-ssdp": "^3.3.0",
     "opn": "^5.4.0",
     "pubsub-js": "^1.7.0",
+    "pwd": "^1.1.0",
     "range-parser": "^1.0.3",
     "request": "^2.69.0",
     "rimraf": "^2.6.2",

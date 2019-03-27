@@ -46,7 +46,7 @@ class MainContent extends Component {
 					<Route path='/plst' component={Playlists} />
 					<Route path='/cfg' component={CfgServer} />
 					<Route path='/log' component={Log} />
-					<Route path='/' component={Dashboard} />
+					<Route path='/' render={props => (<Dashboard {...props} user={this.props.user} />)} />
 				</Switch>
 			);
 		}
@@ -56,6 +56,7 @@ class MainContent extends Component {
 MainContent.propTypes = {
 	classes: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
+	user: PropTypes.object,
 };
 
 export default withStyles(styles)(withRouter(MainContent));
