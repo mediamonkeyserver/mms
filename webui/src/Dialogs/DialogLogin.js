@@ -9,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // import Typography from '@material-ui/core/Typography';
 
 import Server from '../server';
@@ -22,11 +23,17 @@ class DialogLogin extends React.Component {
 		username: 'admin',
 		password: '',
 
+		checking: false,
 		error: false,
 	};
 
 	handleLogin = async (/*event*/) => {
+		this.setState({ checking: true });
+
 		const res = await Server.login(this.state.username, this.state.password);
+
+		this.setState({ checking: false });
+
 		if (res) {
 			// Success
 			this.setState({
@@ -86,6 +93,10 @@ class DialogLogin extends React.Component {
 				</DialogContent>
 
 				<DialogActions>
+					{this.state.checking &&
+						<CircularProgress color='secondary' size={24} style={{ marginLeft: '1em' }} />
+					}
+					<div style={{ flexGrow: 1 }} />
 					<Button onClick={this.handleLogin} variant='contained' color='primary'>{'Login'}</Button>
 				</DialogActions>
 			</Dialog>
