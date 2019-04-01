@@ -41,6 +41,7 @@ class API extends events.EventEmitter {
 		this.configuration = {
 			'dlnaSupport': true,
 			'httpPort': config.httpPort,
+			'uuid': config.serverUdn,
 			'name': config.serverName,
 			// @ts-ignore
 			'version': require('./package.json').version

@@ -68,9 +68,6 @@ commander.option('-p, --httpPort <port>', 'Http port', function (v) {
 });
 
 commander.dlna = !!commander.dlna;
-if (!commander.uuid) {
-	commander.uuid = '142f98b7-c28b-4b6f-8ca2-b55d9f0657e3';
-}
 
 try {
 	commander.parse(process.argv);
