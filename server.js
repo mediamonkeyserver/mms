@@ -198,12 +198,13 @@ async function start() {
 
 	var stopped = false;
 
-	var _stopAndExit = function () {
+	var _stopAndExit = async function () {
 		console.log('disconnecting...');
 		stopped = true;
 
-		server.stop(() => {});
+		await server.stop(() => {});
 
+		// JH: we can remove this timeout sometimes, after we review all the stuff and use async/await everywhere consistently
 		setTimeout(function () {
 			process.exit();
 		}, 1000);

@@ -11,17 +11,22 @@ import Server from '../server';
 const styles = ({
 });
 
-class Collections extends Component {
+class CfgServer extends Component {
 	state = {
+		modified: false,
+
 		serverName: '',
-		origServerName: '',
+
+		localHttpPort: '',
+		localHttpsPort: '',
 	}
 
 	updateContent = () => {
 		Server.getInfo().then((info) => {
 			this.setState({
 				serverName: info.serverName,
-				origServerName: info.serverName,
+				localHttpPort: info.httpPort,
+				localHttpsPort: info.httpsPort,
 			});
 		});
 	}
@@ -30,16 +35,20 @@ class Collections extends Component {
 		this.updateContent();
 	}
 
-	handleServerNameChange = (event) => {
-		this.setState({ serverName: event.currentTarget.value });
+	handleTextChange = (event) => {
+		const change = { modified: true };
+		change[event.currentTarget.id] = event.currentTarget.value;
+		this.setState(change);
 	}
 
 	handleSave = () => {
 		this.setState({
-			origServerName: this.state.serverName,
+			modified: false,
 		});
 		Server.saveCongif({
 			serverName: this.state.serverName,
+			httpPort: this.state.localHttpPort,
+			httpsPort: this.state.localHttpsPort,
 		});
 	}
 
@@ -48,23 +57,46 @@ class Collections extends Component {
 			<Grid container justify='center'>
 				<Grid item xs={12} sm={6} lg={4}>
 					<Grid container direction='column'>
+						{/* Server name */}
 						<Grid item>
 							<TextField
-								id='servername'
+								id='serverName'
 								value={this.state.serverName}
 								label='Server name'
 								placeholder='MediaMonkey Server'
-								onChange={this.handleServerNameChange}
+								onChange={this.handleTextChange}
 								fullWidth
 							/>
 						</Grid>
-						<Grid item>
+
+						{/* HTTP Port */}
+						<Grid item style={{ marginTop: '2em' }}>
+							<TextField
+								id='localHttpPort'
+								value={this.state.localHttpPort}
+								label='Local HTTP port'
+								onChange={this.handleTextChange}
+							/>
+						</Grid>
+						<Grid item style={{ marginTop: '0.6em' }}>
+							<TextField
+								id='localHttpsPort'
+								value={this.state.localHttpsPort}
+								label='Local HTTPS port'
+								onChange={this.handleTextChange}
+							/>
+						</Grid>
+
+						{/* Save Button */}
+						<Grid item style={{ marginTop: '1em' }}>
 							<Grid container justify='flex-end'>
 								<Button
 									onClick={this.handleSave}
-									disabled={this.state.serverName === this.state.origServerName}
-									color='primary'>
-									Save changes
+									disabled={!this.state.modified}
+									color='secondary'
+									variant='contained'
+								>
+									{'Save changes'}
 								</Button>
 							</Grid>
 						</Grid>
@@ -75,5 +107,5 @@ class Collections extends Component {
 	}
 }
 
-export default withStyles(styles)(Collections);
+export default withStyles(styles)(CfgServer);
 

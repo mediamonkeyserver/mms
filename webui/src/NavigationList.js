@@ -129,12 +129,15 @@ class NavigationList extends React.Component {
 						{this.state.configOpen ? <ExpandLess /> : <ExpandMore />}
 					</ListItem>
 					<Collapse in={this.state.configOpen} timeout='auto' unmountOnExit>
-						<List component='div' disablePadding>
+						<List disablePadding>
 							<ListItem button className={classes.nested} data-id='/cfg' onClick={this.handleSelectView}>
 								<ListItemText inset primary='Server' />
 							</ListItem>
 							<ListItem button className={classes.nested} data-id='/col' onClick={this.handleSelectView}>
 								<ListItemText inset primary='Collections' />
+							</ListItem>
+							<ListItem button className={classes.nested} data-id='/cfgExt' onClick={this.handleSelectView}>
+								<ListItemText inset primary='External Access' />
 							</ListItem>
 						</List>
 					</Collapse>

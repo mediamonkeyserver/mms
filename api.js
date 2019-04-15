@@ -4,18 +4,9 @@
 
 const assert = require('assert');
 const events = require('events');
-const http = require('http');
 const SSDP = require('node-ssdp');
-const url = require('url');
 const util = require('util');
-const express = require('express');
-const bodyParser = require('body-parser');
-const restRouter = require('./lib/api/rest');
-const clients = require('./lib/clients');
-const os = require('os');
 const sysUI = require('./lib/sysUI');
-// @ts-ignore
-const pjson = require('./package.json');
 
 const debug = require('debug')('upnpserver:api');
 const logger = require('./lib/logger');
@@ -23,6 +14,9 @@ const logger = require('./lib/logger');
 const UPNPServer = require('./lib/upnpServer');
 const Repository = require('./lib/repositories/repository');
 const Configuration = require('./lib/configuration');
+const natUPnP = require('./lib/natUPnP');
+
+const httpServer = require('./lib/httpServer');
 
 class API extends events.EventEmitter {
 
@@ -45,9 +39,8 @@ class API extends events.EventEmitter {
 			'name': config.serverName,
 			// @ts-ignore
 			'version': require('./package.json').version
-		};		
+		};
 		this.configuration = Object.assign({}, this.configuration, configuration);
-
 
 		this.repositories = [];
 		this._upnpClasses = {};
@@ -426,7 +419,7 @@ class API extends events.EventEmitter {
 			},
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
-			ssdpSig: 'Node/' + process.versions.node + ' UPnP/1.0 ' + 'UPnPServer/' +
+			ssdpSig: 'MediaMonkey UPnP/1.0 UPnPServer/' +
 				// @ts-ignore
 				require('./package.json').version
 		};
@@ -447,101 +440,11 @@ class API extends events.EventEmitter {
 			}
 		}
 
-		debug('_upnpServerStarted', 'New Http server port=', upnpServer.port);
+		natUPnP.initialize();
 
-		var app = express();
-		var httpServer = http.createServer(app);
-		clients.initialize(httpServer);
-
-		this.httpServer = httpServer;
-
-		app.use('/api', bodyParser.urlencoded({
-			extended: true
-		}));
-		app.use('/api', bodyParser.json());
-		app.use('/', (req, res, next) => {
-			logger.verbose('HTTP ' + req.method + ' ' + req.url + ', headers: ' + JSON.stringify(req.headers));
-			next();
-		});
-		app.use('/api', restRouter);
-
-		app.use((req, res) => {
-			this._processRequest(req, res);
-			// Don't call next(), as we don't expect any further processing
-			// TODO: Rewrite our _processRequest() to be fully handled by express server?
-		});
-
-		httpServer.on('error', (err) => {
-			// @ts-ignore
-			if (err.code == 'EADDRINUSE') {
-				// @ts-ignore
-				logger.error('Could not start server, port ' + err.port + ' is already in use !!!');
-				logger.error('Probably another instance of this server is already running?');
-			} else
-				logger.error('httpServer error: ' + err);
-		});
-
-		var getLocalIP = function () {
-			var ifaces = os.networkInterfaces();
-			var res = null;
-			var priority1;
-			var priority2;
-			var priority3;
-
-			Object.keys(ifaces).forEach(function (ifname) {
-				ifaces[ifname].forEach(function (iface) {
-					if ('IPv4' !== iface.family || iface.internal !== false) {
-						// skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
-						return;
-					}
-
-					if (iface.address.startsWith('192.168.0') || iface.address.startsWith('192.168.1'))
-						priority1 = iface.address;
-					else {
-						if (iface.address.startsWith('10.0.0.'))
-							priority2 = iface.address;
-						else
-							priority3 = iface.address;
-					}
-				});
-			});
-
-			if (priority1)
-				res = priority1;
-			else {
-				if (priority2)
-					res = priority2;
-				else {
-					if (priority3)
-						res = priority3;
-					else
-						res = '127.0.0.1';
-				}
-			}
-
-			return res;
-		};
-
-		httpServer.listen(upnpServer.port, (error) => {
-			if (error) {
-				return callback(error);
-			}
-
-			this.ssdpServer.start();
-
-			this.emit('waiting');
-
-			const address = httpServer.address();
-
-			debug('_upnpServerStarted', 'Http server is listening on address=', address);
-
-			logger.info('==================================================');
-			// @ts-ignore (address.port not known)
-			logger.info(`MMS v${pjson.version} running at http://${getLocalIP()}:${address.port} (or http://localhost:${address.port})`);
-			logger.info('Connect using a web browser or using MediaMonkey 5.');
-			logger.info('==================================================');
-
+		httpServer.start(this.upnpServer, this.ssdpServer, () => {
 			this._initUIConfigObserver(callback);
+			callback();
 		});
 	}
 
@@ -556,72 +459,21 @@ class API extends events.EventEmitter {
 	}
 
 	/**
-	 * Process request
-	 *
-	 * @param {object} request
-	 * @param {object} response
-	 */
-	_processRequest(request, response) {
-
-		var path = url.parse(request.url).pathname;
-
-		// logger.debug("Uri=" + request.url);
-
-		var now = Date.now();
-		try {
-			this.upnpServer.processRequest(request, response, path, (error, processed) => {
-
-				var stats = {
-					request: request,
-					response: response,
-					path: path,
-					processTime: Date.now() - now,
-				};
-
-				if (error) {
-					response.writeHead(500, 'Server error: ' + error);
-					response.end();
-
-					this.emit('code:500', error, stats);
-					return;
-				}
-
-				if (!processed) {
-					response.writeHead(404, 'Resource not found: ' + path);
-					response.end();
-
-					this.emit('code:404', stats);
-					return;
-				}
-
-				this.emit('code:200', stats);
-			});
-
-		} catch (error) {
-			logger.error('Process request exception', error);
-			this.emit('error', error);
-		}
-	}
-
-	/**
 	 * Stop server.
 	 *
 	 * @param {function|undefined} callback
 	 */
-	stop(callback) {
+	async stop(callback) {
 		debug('stop', 'Stopping ...');
 
 		callback = callback || (() => {
 			return false;
 		});
 
-		var httpServer = this.httpServer;
 		var ssdpServer = this.ssdpServer;
-		var stopped = false;
 
 		if (this.ssdpServer) {
 			this.ssdpServer = undefined;
-			stopped = true;
 
 			try {
 				debug('stop', 'Stop ssdp server ...');
@@ -633,27 +485,13 @@ class API extends events.EventEmitter {
 			}
 		}
 
-		if (httpServer) {
-			this.httpServer = undefined;
-			stopped = true;
+		await natUPnP.finish();
 
-			try {
-				debug('stop', 'Stop http server ...');
-
-				httpServer.close();
-
-			} catch (error) {
-				logger.error(error);
-			}
-		}
+		httpServer.stop();
 
 		debug('stop', 'Stopped');
 
-		if (stopped) {
-			this.emit('stopped');
-		}
-
-		callback(null, stopped);
+		callback(null);
 	}
 }
 

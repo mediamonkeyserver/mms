@@ -8,6 +8,7 @@ import Collections from './Views/Collections';
 import Collection from './Views/Collection';
 import Playlists from './Views/Playlists';
 import CfgServer from './Views/CfgServer';
+import CfgExtAccess from './Views/CfgExtAccess';
 import Log from './Views/Log';
 import Profile from './Views/Profile';
 
@@ -46,6 +47,7 @@ class MainContent extends Component {
 					<Route path='/search/:term' render={props => (<Collection {...props} search={true} searchTerm={props.match.params.term} />)} />
 					<Route path='/plst' component={Playlists} />
 					<Route path='/cfg' component={CfgServer} />
+					<Route path='/cfgExt' component={CfgExtAccess} />
 					<Route path='/log' component={Log} />
 					<Route path='/profile' render={props => (<Profile {...props} user={this.props.user} editUser={this.props.user}/>)} />
 					<Route path='/' render={props => (<Dashboard {...props} user={this.props.user} />)} />
