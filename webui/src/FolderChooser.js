@@ -9,9 +9,6 @@ const styles = theme => ({
 	textField: {
 		width: '100%',
 	},
-	folderList: {
-		width: '100%',
-	},
 	textFieldRoot: {
 		padding: 0,
 		'label + &': {
@@ -57,8 +54,15 @@ class FolderChooser extends React.Component {
 			this.props.onPathChange(newPath);
 	}
 
+	onFileSelect = (newPath) => {
+		if (this.props.onFileSelect)
+			this.props.onFileSelect(newPath);
+	}
+
 	onPathEdited = (event) => {
 		this.onPathChange(event.target.value);
+		if (this.props.onFileSelect)
+			this.props.onFileSelect(event.target.value);
 	}
 
 	render() {
@@ -82,8 +86,10 @@ class FolderChooser extends React.Component {
 				/>
 				<FolderList
 					path={this.state.path}
-					className={classes.folderList}
-					onPathChange={this.onPathChange} />
+					onPathChange={this.onPathChange}
+					onFileSelect={this.onFileSelect}
+					showFiles={this.props.showFiles}
+				/>
 			</div>
 		);
 	}
@@ -93,6 +99,8 @@ FolderChooser.propTypes = {
 	classes: PropTypes.object.isRequired,
 	path: PropTypes.string,
 	onPathChange: PropTypes.func,
+	onFileSelect: PropTypes.func,
+	showFiles: PropTypes.bool,
 };
 
 export default withStyles(styles)(FolderChooser);

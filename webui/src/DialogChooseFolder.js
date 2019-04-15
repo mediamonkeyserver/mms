@@ -19,11 +19,17 @@ const styles = {
 class DialogChooseFolder extends React.Component {
 	state = {
 		open: false,
-		path: '/'
+		path: '/',
+		showFiles: false,
+		title: '',
+		primaryAction: '',
+
+		selectedFile: null,
 	};
 
 	componentDidMount = () => {
 		PubSub.subscribe('ADD_FOLDER', this.handleAddFolder);
+		PubSub.subscribe('SELECT_FILE', this.handleSelectFile);
 	}
 
 	handleAddFolder = (msg, data) => {
@@ -31,13 +37,29 @@ class DialogChooseFolder extends React.Component {
 			open: true,
 			path: '/',
 			callback: data.callback,
+			showFiles: false,
+			title: 'Choose Folder',
+			primaryAction: 'Add',
+		});
+	}
+
+	handleSelectFile = (msg, data) => {
+		this.setState({
+			open: true,
+			path: '/',
+			callback: data.callback,
+			showFiles: true,
+			title: 'Select a File',
+			primaryAction: 'Select',
+
+			selectedFile: null,
 		});
 	}
 
 	handleDialogOK = () => {
 		this.setState({ open: false });
 		if (this.state.callback)
-			this.state.callback(this.state.path);
+			this.state.callback(this.state.showFiles ? this.state.selectedFile : this.state.path);
 	}
 
 	handleDialogClose = () => {
@@ -45,7 +67,14 @@ class DialogChooseFolder extends React.Component {
 	}
 
 	handlePathChange = (newPath) => {
-		this.setState({ path: newPath });
+		this.setState({
+			path: newPath,
+			selectedFile: null,
+		});
+	}
+
+	handleFileSelect = (newPath) => {
+		this.setState({ selectedFile: newPath });
 	}
 
 	render() {
@@ -53,16 +82,25 @@ class DialogChooseFolder extends React.Component {
 			<Dialog
 				open={this.state.open}
 				onClose={this.handleDialogClose}>
-				<DialogTitle>{'Choose Folder'}</DialogTitle>
+				<DialogTitle>{this.state.title}</DialogTitle>
 				<DialogContent>
 					<FolderChooser
 						path={this.state.path}
 						onPathChange={this.handlePathChange}
+						onFileSelect={this.handleFileSelect}
+						showFiles={this.state.showFiles}
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={this.handleDialogClose}>Close</Button>
-					<Button onClick={this.handleDialogOK} color='primary' autoFocus>Add</Button>
+					<Button onClick={this.handleDialogClose}>{'Close'}</Button>
+					<Button
+						onClick={this.handleDialogOK}
+						color='primary'
+						autoFocus
+						disabled={this.state.showFiles && !this.state.selectedFile}
+					>
+						{this.state.primaryAction}
+					</Button>
 				</DialogActions>
 			</Dialog>
 		);
