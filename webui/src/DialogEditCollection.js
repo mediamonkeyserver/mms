@@ -209,7 +209,7 @@ class DialogEditCollection extends React.Component {
 							<Button
 								onClick={this.handleAddFolder}
 								color='primary'
-								variant='raised'
+								variant='contained'
 							// disabled={this.state.colType === ''}
 							>
 								Add folder
