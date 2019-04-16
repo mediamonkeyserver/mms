@@ -39,3 +39,8 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.paper {
+  margin: 1em 0px;
+  padding: 1em;
+}

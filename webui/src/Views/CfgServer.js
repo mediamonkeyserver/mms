@@ -5,10 +5,15 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
 
 import Server from '../server';
 
 const styles = ({
+	paper: {
+		margin: '1em 0px',
+		padding: '1em',
+	}
 });
 
 class CfgServer extends Component {
@@ -57,38 +62,42 @@ class CfgServer extends Component {
 			<Grid container justify='center'>
 				<Grid item xs={12} sm={6} lg={4}>
 					<Grid container direction='column'>
-						{/* Server name */}
-						<Grid item>
-							<TextField
-								id='serverName'
-								value={this.state.serverName}
-								label='Server name'
-								placeholder='MediaMonkey Server'
-								onChange={this.handleTextChange}
-								fullWidth
-							/>
-						</Grid>
+						<Paper className='paper'>
+							{/* Server name */}
+							<Grid item>
+								<TextField
+									id='serverName'
+									value={this.state.serverName}
+									label='Server name'
+									placeholder='MediaMonkey Server'
+									onChange={this.handleTextChange}
+									fullWidth
+								/>
+							</Grid>
+						</Paper>
 
-						{/* HTTP Port */}
-						<Grid item style={{ marginTop: '2em' }}>
-							<TextField
-								id='localHttpPort'
-								value={this.state.localHttpPort}
-								label='Local HTTP port'
-								onChange={this.handleTextChange}
-							/>
-						</Grid>
-						<Grid item style={{ marginTop: '0.6em' }}>
-							<TextField
-								id='localHttpsPort'
-								value={this.state.localHttpsPort}
-								label='Local HTTPS port'
-								onChange={this.handleTextChange}
-							/>
-						</Grid>
+						<Paper className='paper'>
+							{/* HTTP Port */}
+							<Grid item style={{ marginTop: '0.2em' }}>
+								<TextField
+									id='localHttpPort'
+									value={this.state.localHttpPort}
+									label='Local HTTP port'
+									onChange={this.handleTextChange}
+								/>
+							</Grid>
+							<Grid item style={{ marginTop: '1em' }}>
+								<TextField
+									id='localHttpsPort'
+									value={this.state.localHttpsPort}
+									label='Local HTTPS port'
+									onChange={this.handleTextChange}
+								/>
+							</Grid>
+						</Paper>
 
 						{/* Save Button */}
-						<Grid item style={{ marginTop: '1em' }}>
+						<Grid item style={{ marginTop: '0.6em' }}>
 							<Grid container justify='flex-end'>
 								<Button
 									onClick={this.handleSave}

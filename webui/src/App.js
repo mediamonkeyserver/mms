@@ -19,7 +19,7 @@ import { subscribeVideoState } from './actions';
 import { withRouter } from 'react-router-dom';
 import PubSub from 'pubsub-js';
 
-const styles = theme => ({
+const styles = ({
 	root: {
 		position: 'absolute',
 		top: 0,
@@ -28,7 +28,7 @@ const styles = theme => ({
 		right: 0,
 		display: 'flex',
 		'flex-direction': 'column',
-		backgroundColor: theme.palette.background.paper,
+		backgroundColor: '#f0f0f0',
 	},
 	mainContent: {
 		'flex-grow': 100,
