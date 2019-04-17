@@ -205,7 +205,7 @@ class Server {
 		if (params && params.forceHLS)
 			forceHLS = '&forceHLS=true';
 
-		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}${forceHLS}`;
+		return `/api/stream/${mediaItem.db_id}?clientId=${this_client_id}${forceHLS}&token=${auth}`;
 	}
 
 	static getMediaStreamInfo = (mediaItem, params) => {
