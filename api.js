@@ -415,7 +415,7 @@ class API extends events.EventEmitter {
 			udn: this.upnpServer.uuid,
 			location: {
 				port: this.configuration.httpPort,
-				path: '/DeviceDescription.xml'
+				path: '/devicedescription.xml'
 			},
 			sourcePort: 1900, // is needed for SSDP multicast to work correctly (issue #75 of node-ssdp)
 			explicitSocketBind: true, // might be needed for multiple NICs (issue #34 of node-ssdp)
