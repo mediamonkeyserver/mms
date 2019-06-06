@@ -156,4 +156,4 @@ Player.propTypes = {
 };
 
 // @ts-ignore
-export default withTheme()(withStyles(styles)(Player));
+export default withTheme(withStyles(styles)(Player));

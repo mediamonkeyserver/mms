@@ -30,7 +30,7 @@ const styles = theme => ({
 		backgroundColor: theme.palette.background.paper,
 	},
 	nested: {
-		paddingLeft: theme.spacing.unit * 4,
+		paddingLeft: theme.spacing(4),
 	},
 });
 
@@ -89,7 +89,7 @@ class NavigationList extends React.Component {
 						<ListItemIcon>
 							<DashboardIcon />
 						</ListItemIcon>
-						<ListItemText inset primary='Dashboard' />
+						<ListItemText primary='Dashboard' />
 					</ListItem>
 
 					<Divider />
@@ -103,13 +103,13 @@ class NavigationList extends React.Component {
 							key={'navcol' + col.id}
 							onClick={this.handleShowCollection}>
 							<CollectionIcon type={col.type} variant='list' />
-							<ListItemText inset primary={col.name} />
+							<ListItemText primary={col.name} />
 						</ListItem>;
 					})}
 
 					<ListItem button data-id='/plst' onClick={this.handleSelectView}>
 						<CollectionIcon type={'playlists'} variant='list' />
-						<ListItemText inset primary={'Playlists'} />
+						<ListItemText primary={'Playlists'} />
 					</ListItem>
 
 					{/* Server */}
@@ -117,7 +117,8 @@ class NavigationList extends React.Component {
 					<ListSubheader>Server</ListSubheader>
 
 					<ListItem button data-id={'/log'} onClick={this.handleSelectView}>
-						<ListItemText inset primary={'Log'} />
+						<ListItemIcon><div /></ListItemIcon>
+						<ListItemText primary={'Log'} />
 					</ListItem>
 
 					{/* Settings */}
@@ -125,19 +126,22 @@ class NavigationList extends React.Component {
 						<ListItemIcon>
 							<SettingsIcon />
 						</ListItemIcon>
-						<ListItemText inset primary='Configuration' />
+						<ListItemText primary='Configuration' />
 						{this.state.configOpen ? <ExpandLess /> : <ExpandMore />}
 					</ListItem>
 					<Collapse in={this.state.configOpen} timeout='auto' unmountOnExit>
 						<List disablePadding>
 							<ListItem button className={classes.nested} data-id='/cfg' onClick={this.handleSelectView}>
-								<ListItemText inset primary='Server' />
+								<ListItemIcon><div /></ListItemIcon>
+								<ListItemText primary='Server' />
 							</ListItem>
 							<ListItem button className={classes.nested} data-id='/col' onClick={this.handleSelectView}>
-								<ListItemText inset primary='Collections' />
+								<ListItemIcon><div /></ListItemIcon>
+								<ListItemText primary='Collections' />
 							</ListItem>
 							<ListItem button className={classes.nested} data-id='/cfgExt' onClick={this.handleSelectView}>
-								<ListItemText inset primary='External Access' />
+								<ListItemIcon><div /></ListItemIcon>
+								<ListItemText primary='External Access' />
 							</ListItem>
 						</List>
 					</Collapse>

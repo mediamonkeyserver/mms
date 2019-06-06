@@ -35,12 +35,12 @@ const styles = theme => ({
 		alignItems: 'center',
 	},
 	menuButton: {
-		marginLeft: -1.5 * theme.spacing.unit,
-		marginRight: 1.5 * theme.spacing.unit,
+		marginLeft: theme.spacing(-1.5),
+		marginRight: theme.spacing(1.5),
 	},
 	toolbarItem: {
-		marginLeft: theme.spacing.unit,
-		marginRight: theme.spacing.unit,
+		marginLeft: theme.spacing(1),
+		marginRight: theme.spacing(1),
 	},
 });
 

@@ -24,12 +24,12 @@ var style = theme => ({
 		height: 32,
 	},
 	durationLabel: {
-		width: theme.spacing.unit * 10,
-		marginRight: theme.spacing.unit * 1.5,
+		width: theme.spacing(10),
+		marginRight: theme.spacing(1.5),
 	},
 	durationSeconds: {
 		marginTop: 8,
-		marginRight: theme.spacing.unit * 1.5,
+		marginRight: theme.spacing(1.5),
 	}
 });
 

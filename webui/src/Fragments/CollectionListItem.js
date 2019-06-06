@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
@@ -102,9 +103,11 @@ class CollectionListItem extends Component {
 					key={this.props.collection.id}
 					className='listItem'
 					onClick={this.handleItemClick}>
-					<Avatar>
-						<CollectionIcon type={this.props.collection.type} />
-					</Avatar>
+					<ListItemIcon>
+						<Avatar>
+							<CollectionIcon type={this.props.collection.type} />
+						</Avatar>
+					</ListItemIcon>
 					<ListItemText
 						primary={this.props.collection.name}
 						secondary={this.formatFoldersString()}

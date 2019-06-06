@@ -42,7 +42,7 @@ class Dashboard extends Component {
 		const { classes, user } = this.props;
 
 		return (
-			<Grid container justify='space-around' spacing={16}>
+			<Grid container justify='space-around' spacing={2}>
 				{/* Collections */}
 				{user &&
 					<Grid item xs={12} sm={6}>

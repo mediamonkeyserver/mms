@@ -14,7 +14,7 @@ import { subscribeCollectionChangeFilters, getCollectionFilters, removeCollectio
 
 var style = theme => ({
 	filterChip: {
-		marginRight: theme.spacing.unit,
+		marginRight: theme.spacing(1),
 	}
 });
 
