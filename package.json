@@ -40,11 +40,11 @@
   },
   "description": "MediaMonkey Server",
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.1.0",
     "mocha": "^6.1.4",
     "pkg": "^4.4.0",
     "shelljs": "^0.8.1",
-    "webpack": "4.29.6",
+    "webpack": "4.39.1",
     "webpack-cli": "^3.3.2"
   },
   "repository": {

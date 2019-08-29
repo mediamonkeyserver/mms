@@ -17,7 +17,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "3.1.1",
     "react-virtualized": "^9.19.1",
     "screenfull": "^4.2.0",
     "socket.io-client": "^2.1.1",
@@ -30,8 +30,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
+    "babel-eslint": "10.0.2",
+    "eslint": "6.1.0",
     "eslint-plugin-react": "^7.9.1"
   },
   "browserslist": {
