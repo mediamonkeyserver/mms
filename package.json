@@ -20,7 +20,7 @@
     "mime": "^2.4.3",
     "mkdirp": "^0.5.1",
     "moviedb": "^0.2.2",
-    "music-metadata": "^4.1.0",
+    "music-metadata": "^6.3.0",
     "node-ssdp": "^4.0.0",
     "opn": "^6.0.0",
     "pubsub-js": "^1.7.0",
