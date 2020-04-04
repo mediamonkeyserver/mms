@@ -9,9 +9,13 @@ The code is based on upnpserver package.
 
 ## Installation
 
-    $ npm install mediamonkeyserver
+    $ git clone https://github.com/mediamonkeyserver/mms.git
 
-* 'uws' package needs binary modules, for platforms where we can't compile (some NAS devices) we might want to replace it by 'ws' in engine.io
+or just download and unpack https://github.com/mediamonkeyserver/mms/archive/master.zip
+
+Run installation script then
+
+    $ npm install
 
 ## Running
     $ npm start
