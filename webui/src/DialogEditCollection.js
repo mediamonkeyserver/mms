@@ -143,7 +143,7 @@ class DialogEditCollection extends React.Component {
 
 				<DialogContent className={classes.root}>
 					{/* Collection type */}
-					<Grid container spacing={24}>
+					<Grid container spacing={3}>
 						<Grid item xs={12} sm={4}>
 							<FormControl fullWidth className={classes.colType}>
 								<InputLabel>Collection type</InputLabel>
