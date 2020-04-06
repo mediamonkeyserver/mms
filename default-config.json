@@ -56,15 +56,6 @@
       "priority": -10
     },
     {
-      "key": "tmdb",
-      "mimeTypes": [
-        "inode/directory",
-        "video/*"
-      ],
-      "type": "tmdb",
-      "priority": -10
-    },
-    {
       "key": "srt",
       "mimeType": "video/*",
       "type": "srt",
