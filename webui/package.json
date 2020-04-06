@@ -5,19 +5,19 @@
   "proxy": "http://localhost:10222/",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.0.2",
+    "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.0.1",
     "debug": "^4.1.1",
     "hls.js": "^0.12.4",
     "js-cookie": "^2.2.0",
     "material-ui-search-bar": "^1.0.0-beta.13",
     "pubsub-js": "^1.6.0",
-    "query-string": "^6.6.0",
+    "query-string": "^6.12.0",
     "rc-slider": "^8.6.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
+    "react-scripts": "3.4.1",
     "react-virtualized": "^9.19.1",
     "screenfull": "^4.2.0",
     "socket.io-client": "^2.1.1",
@@ -30,9 +30,9 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-eslint": "10.0.2",
-    "eslint": "6.1.0",
-    "eslint-plugin-react": "^7.9.1"
+    "babel-eslint": "10.1.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.19.0"
   },
   "browserslist": {
     "production": [
