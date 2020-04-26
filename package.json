@@ -35,7 +35,7 @@
     "sqlstring": "^2.3.1",
     "table-parser": "^1.0.1",
     "uuid": "^3.0.0",
-    "windows-trayicon": "^1.0.2"
+    "windows-trayicon": "^2.0.0"
   },
   "description": "MediaMonkey Server",
   "devDependencies": {
