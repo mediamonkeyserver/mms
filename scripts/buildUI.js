@@ -9,7 +9,9 @@ console.log(`Using ${npm}for building UI.`); // eslint-disable-line no-console
 
 shell.rm('-r', 'build-webui');
 shell.cd('webui');
+console.log('Installing necessary build modules. This may take a few minutes... Do not terminate the process.'); // eslint-disable-line no-console
 shell.exec(npm + 'install');
+console.log('Building web UI. This may take a few minutes... Do not terminate the process.'); // eslint-disable-line no-console
 shell.exec(npm + 'run build');
 shell.mv('build', '../build-webui');
 shell.cd('..');
