@@ -1,11 +1,15 @@
 [![Build Status][travis-image]][travis-url] [![NPM version][npm-image]][npm-url] 
 
-# mediamonkey server
+# MediaMonkey Server
 ![upnpserver icon](icon/icon_120.png)
 
 MediaMonkey Server is a cross-platform media server written in Node.js.
 
 The code is based on upnpserver package.
+
+## Requirements
+- Node.js >10.x and Node Package Manager (npm)
+- Python (Version 3.8 is known to work)
 
 ## Installation
 
@@ -13,7 +17,7 @@ The code is based on upnpserver package.
 
 or just download and unpack https://github.com/mediamonkeyserver/mms/archive/master.zip
 
-Run installation script then
+Run installation script
 
     $ npm install
 
