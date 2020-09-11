@@ -20,24 +20,26 @@ const styles = ({
 
 class DialogLogin extends React.Component {
 	state = {
-		username: 'admin',
+		username: localStorage.getItem('username') || '',
 		password: '',
-
+		
 		checking: false,
 		error: false,
 	};
 
 	handleLogin = async (/*event*/) => {
 		this.setState({ checking: true });
-
+		
 		const res = await Server.login(this.state.username, this.state.password);
-
+		
 		this.setState({ checking: false });
-
-		if (res) {
+		
+		if (res && res.token && res.user) {
+			//Set a localStorage item to save username permanently
+			localStorage.setItem('username', res.user.name);
 			// Success
 			this.setState({
-				username: 'admin',
+				username: res.user.name,
 				password: '',
 				error: false,
 			});
@@ -48,7 +50,11 @@ class DialogLogin extends React.Component {
 			});
 		}
 	}
-
+	
+	onChangeUsername = (event) => {
+		this.setState({ username: event.currentTarget.value });
+	}
+	
 	onChangePassword = (event) => {
 		this.setState({ password: event.currentTarget.value });
 	}
@@ -58,7 +64,7 @@ class DialogLogin extends React.Component {
 			this.handleLogin();
 		}
 	}
-
+	
 	render() {
 		return (
 			<Dialog
@@ -73,11 +79,12 @@ class DialogLogin extends React.Component {
 					<TextField
 						label={'Username'}
 						value={this.state.username}
+						onChange={this.onChangeUsername}
 						fullWidth
-						helperText={'\'admin\' is the only supported username for now.'}
+						helperText={'The default username is \'admin\'.'}
 						style={{ marginBottom: '1em' }}
 					/>
-
+					
 					<TextField
 						label={'Password'}
 						value={this.state.password}

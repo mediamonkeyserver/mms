@@ -73,7 +73,7 @@ class Server {
 
 		if (res) {
 			Server.setAuth(res.token);
-			cookie.set('token', res.token);			
+			cookie.set('token', res.token);
 			PubSub.publish('UPDATE_GLOBAL', {
 				user: res.user,
 			});
@@ -82,11 +82,25 @@ class Server {
 		return res;
 	}
 
-	static logout() {
-		Server.setAuth(null);
-		cookie.remove('token');
-		PubSub.publish('UPDATE_GLOBAL', {
-			user: null,
+	static async logout() {
+		
+		fetch('/api/user/logout')
+		.then(res => {
+			
+			if (res.ok === true) {
+				Server.setAuth(null);
+				cookie.remove('token');
+				PubSub.publish('UPDATE_GLOBAL', {
+					user: null,
+				});
+			}
+			else {
+				console.log('Unable to log out');
+				console.log(res);
+			}
+		})
+		.catch(err => {
+			console.error(err);
 		});
 	}
 
