@@ -53,6 +53,10 @@ export function subscribeLogChanges(callback) {
 	return PubSub.subscribe('NEW_LOG_ITEM', (msg, data) => callback(data));
 }
 
+export function unsubscribeLogChanges() {
+	PubSub.unsubscribe('NEW_LOG_ITEM');;
+}
+
 export function forceLogRefresh() {
 	PubSub.publish('NEW_LOG_ITEM', null);
 }

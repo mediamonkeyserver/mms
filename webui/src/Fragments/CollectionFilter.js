@@ -122,7 +122,9 @@ class CollectionFilter extends Component {
 
 CollectionFilter.propTypes = {
 	classes: PropTypes.object.isRequired,
-	collectionID: PropTypes.string.isRequired,
+	collectionID: PropTypes.oneOfType([
+		PropTypes.string, PropTypes.number
+	]).isRequired,
 };
 
 export default withStyles(style)(CollectionFilter);
