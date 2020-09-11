@@ -8,6 +8,8 @@ import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import Server from '../server';
 
+const PubSub = require('pubsub-js');
+
 const styles = {
 };
 
@@ -70,12 +72,25 @@ class Profile extends Component {
 			password: this.state.password,
 			display_name: this.state.displayName,
 		};
-		Server.saveProfile(profile);
-		this.setState({
-			password: '',
-			passwordConf: '',
-			changed: false,
-		});
+		Server.saveProfile(profile)
+		.then(user => {
+			this.setState({
+				password: '',
+				passwordConf: '',
+				changed: false,
+			});
+			// 2020-09-11 JL: Show toast message when profile is updated
+			PubSub.publish('SHOW_SNACKBAR', {
+				message: `Profile updated.`,
+				autoHide: 5000,
+			});
+		})
+		.catch(err => {
+			PubSub.publish('SHOW_SNACKBAR', {
+				message: `An error occurred.`,
+				autoHide: 5000,
+			});
+		})
 	}
 
 	onKeyPress = (event) => {
