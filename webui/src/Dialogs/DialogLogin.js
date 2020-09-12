@@ -9,10 +9,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import Typography from '@material-ui/core/Typography';
 
 import Server from '../server';
+import { json } from 'body-parser';
 
 const styles = ({
 
@@ -22,21 +25,27 @@ class DialogLogin extends React.Component {
 	state = {
 		username: localStorage.getItem('username') || '',
 		password: '',
-		
+		rememberUsername: true,
+
 		checking: false,
 		error: false,
 	};
 
 	handleLogin = async (/*event*/) => {
 		this.setState({ checking: true });
-		
+
 		const res = await Server.login(this.state.username, this.state.password);
-		
+
 		this.setState({ checking: false });
-		
+
 		if (res && res.token && res.user) {
-			//Set a localStorage item to save username permanently
-			localStorage.setItem('username', res.user.name);
+			if (this.state.rememberUsername) {
+				//Set a localStorage item to save username permanently
+				localStorage.setItem('username', res.user.name);
+			}
+			else {
+				localStorage.removeItem('username');
+			}
 			// Success
 			this.setState({
 				username: res.user.name,
@@ -50,13 +59,18 @@ class DialogLogin extends React.Component {
 			});
 		}
 	}
-	
+
 	onChangeUsername = (event) => {
 		this.setState({ username: event.currentTarget.value });
 	}
-	
+
 	onChangePassword = (event) => {
 		this.setState({ password: event.currentTarget.value });
+	}
+	
+	onCheckboxChange = (event) => {
+		var isChecked = event.currentTarget.checked ? true : false;
+		this.setState({ rememberUsername: isChecked });
 	}
 
 	handleKeyPress = (event) => {
@@ -64,7 +78,7 @@ class DialogLogin extends React.Component {
 			this.handleLogin();
 		}
 	}
-	
+
 	render() {
 		return (
 			<Dialog
@@ -84,7 +98,7 @@ class DialogLogin extends React.Component {
 						helperText={'The default username is \'admin\'.'}
 						style={{ marginBottom: '1em' }}
 					/>
-					
+
 					<TextField
 						label={'Password'}
 						value={this.state.password}
@@ -96,7 +110,20 @@ class DialogLogin extends React.Component {
 							(this.state.error ? 'Incorrect username or password. ' : '') +
 							'The default password for \'admin\' is \'admin\''
 						}
+						style={{marginBottom: '1em'}}
 					/>
+					<FormControlLabel
+						label={'Remember Me'}
+						checked={this.state.rememberUsername}
+						control={
+							<Checkbox
+								checked={this.state.rememberUsername}
+								onChange={this.onCheckboxChange}
+								key={'rememberUsername'}
+							/>
+						}
+						onChange={this.onCheckboxChange}
+					></FormControlLabel>
 				</DialogContent>
 
 				<DialogActions>
