@@ -3,3 +3,8 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.iconBumpUp{
+  /* For icons that appear 1px too low on screen */
+  margin-top: -1px;
+}

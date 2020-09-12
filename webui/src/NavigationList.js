@@ -21,6 +21,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import LogsIcon from '@material-ui/icons/Subject';
+import ServerIcon from '@material-ui/icons/Storage';
+import PermMediaIcon from '@material-ui/icons/PermMedia';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 
 const styles = theme => ({
 	root: {
@@ -31,6 +35,9 @@ const styles = theme => ({
 	},
 	nested: {
 		paddingLeft: theme.spacing(4),
+	},
+	'.MuiListItemIcon-root': {
+		marginTop: '-10px',
 	},
 });
 
@@ -86,8 +93,8 @@ class NavigationList extends React.Component {
 				>
 					{/* Dashboard */}
 					<ListItem button data-id='/' onClick={this.handleSelectView}>
-						<ListItemIcon>
-							<DashboardIcon />
+						<ListItemIcon className='iconBumpUp'>
+							<DashboardIcon/>
 						</ListItemIcon>
 						<ListItemText primary='Dashboard' />
 					</ListItem>
@@ -117,13 +124,15 @@ class NavigationList extends React.Component {
 					<ListSubheader>Server</ListSubheader>
 
 					<ListItem button data-id={'/log'} onClick={this.handleSelectView}>
-						<ListItemIcon><div /></ListItemIcon>
-						<ListItemText primary={'Log'} />
+						<ListItemIcon>
+							<LogsIcon />
+						</ListItemIcon>
+						<ListItemText primary={'Logs'} />
 					</ListItem>
 
 					{/* Settings */}
 					<ListItem button onClick={this.handleConfigClick}>
-						<ListItemIcon>
+						<ListItemIcon className='iconBumpUp'>
 							<SettingsIcon />
 						</ListItemIcon>
 						<ListItemText primary='Configuration' />
@@ -132,15 +141,21 @@ class NavigationList extends React.Component {
 					<Collapse in={this.state.configOpen} timeout='auto' unmountOnExit>
 						<List disablePadding>
 							<ListItem button className={classes.nested} data-id='/cfg' onClick={this.handleSelectView}>
-								<ListItemIcon><div /></ListItemIcon>
+								<ListItemIcon>
+									<ServerIcon/>
+								</ListItemIcon>
 								<ListItemText primary='Server' />
 							</ListItem>
 							<ListItem button className={classes.nested} data-id='/col' onClick={this.handleSelectView}>
-								<ListItemIcon><div /></ListItemIcon>
+								<ListItemIcon>
+									<PermMediaIcon/>
+								</ListItemIcon>
 								<ListItemText primary='Collections' />
 							</ListItem>
 							<ListItem button className={classes.nested} data-id='/cfgExt' onClick={this.handleSelectView}>
-								<ListItemIcon><div /></ListItemIcon>
+								<ListItemIcon>
+									<SettingsEthernetIcon/>
+								</ListItemIcon>
 								<ListItemText primary='External Access' />
 							</ListItem>
 						</List>
