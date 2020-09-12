@@ -59,6 +59,23 @@ class Server {
 		options.method = options.method || 'DELETE';
 		return Server.postJson(path, json, options);
 	}
+	
+	static checkIfLoggedIn(){
+		Server.fetchJson('/user/isLoggedIn')
+		.then(res => {
+			if (res !== 1) {
+				console.log('Showing login prompt');
+				Server.setAuth(null);
+				cookie.remove('token');
+				PubSub.publish('UPDATE_GLOBAL', {
+					user: null,
+				});
+			}
+		})
+		.catch(err => {
+			console.error(err);
+		})
+	}
 
 	static async login(username, password) {
 		var res;

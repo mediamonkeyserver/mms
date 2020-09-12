@@ -10,6 +10,7 @@ import Dialogs from './Dialogs';
 import DialogLogin from './Dialogs/DialogLogin';
 import MainContent from './MainContent';
 import Player from './Player';
+import Server from './server';
 import AudioPlayer from './Fragments/AudioPlayer';
 import VideoPlayer from './Fragments/VideoPlayer';
 import screenfull from 'screenfull';
@@ -71,6 +72,7 @@ class App extends Component {
 
 	componentDidMount() {
 		document.body.addEventListener('keyup', this.handleKeyUp);
+		Server.checkIfLoggedIn();
 	}
 
 	handleKeyUp = (event) => {
