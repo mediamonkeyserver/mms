@@ -90,6 +90,10 @@ For testing purposes used *mocha* framework. To run tests, you should do this:
 make test
 ```
 
+## Troubleshooting
+There are some known issues.
+1. `"Error: Could not locate the bindings file."`: If you get an error saying that a module could not locate the bindings file, chances are there was an issue with node-gyp when the module was being installed. This has occurred a few times to the `windows-trayicon` module. If you have node-gyp and all its build dependencies installed, try running `npm install windows-trayicon` again. It will rebuild and it should work.
+
 ## Author
 
 MediaMonkey team
