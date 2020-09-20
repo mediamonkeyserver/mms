@@ -10,6 +10,10 @@ The code is based on upnpserver package.
 ## Requirements
 - Node.js >10.x and Node Package Manager (npm)
 - Python (Version 3.8 is known to work)
+    - If you do not add Python to system path, then run: `npm config set python /path/to/executable/python`
+- Node-gyp build tools (https://github.com/nodejs/node-gyp)
+    - On an elevated command prompt run: `npm install -global windows-build-tools`
+    - Then, run `npm config set msvs_version 2017`
 
 ## Installation
 
