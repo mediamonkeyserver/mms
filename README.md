@@ -5,7 +5,7 @@
 
 MediaMonkey Server is a cross-platform media server written in Node.js.
 
-The code is based on upnpserver package.
+It is built upon a fork of [upnpserver](https://www.npmjs.com/package/upnpserver)
 
 ## Requirements
 - Node.js >10.x and Node Package Manager (npm)
@@ -96,8 +96,9 @@ There are some known issues.
 
 ## Author
 
-MediaMonkey team
-Olivier Oeuillot (Original author of the upnpserver package)
+- MediaMonkey team
+
+- [Olivier Oeuillot](https://github.com/oeuillot) (Original author of the upnpserver package)
 
 ## Contributors
 
