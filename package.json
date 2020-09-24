@@ -44,7 +44,8 @@
     "pkg": "^4.4.6",
     "shelljs": "^0.8.4",
     "webpack": "4.42.0",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "node-abi-version": "^1.2.4"
   },
   "repository": {
     "type": "git",
