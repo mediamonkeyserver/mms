@@ -15,7 +15,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // import Typography from '@material-ui/core/Typography';
 
 import Server from '../server';
-import { json } from 'body-parser';
 
 const styles = ({
 

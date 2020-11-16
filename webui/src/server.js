@@ -1,24 +1,60 @@
 import PubSub from 'pubsub-js';
 import io from 'socket.io-client';
-import { forceLogRefresh } from 'actions';
+import { 
+	forceLogRefresh, 
+	subscribeOfflineStateChange, 
+	notifyOffline, 
+	notifyOnline,
+	subscribeLoginStateChange,
+	notifyLoginStateChange,
+	showSnackbarMessage,
+} from './actions';
 import cookie from 'js-cookie';
 
+//eslint-disable-next-line
+var isOffline;
 var serverInfo;
 var auth;
-// var serverInfoPromise;
-
-// Connect to the server
-const socket = io();
-socket.on('new_log_item', () => {
-	forceLogRefresh();
-});
-
+var user;
 var this_client_id;
-socket.on('id_assigned', (id) => {
-	this_client_id = id;
+
+// Connect to the server's websocket/socket.io
+const socket = io();
+
+socket.on('new_log_item', forceLogRefresh);
+socket.on('id_assigned', (id) => { this_client_id = id; });
+
+socket.on('connect_error', handleConnectError);
+socket.on('reconnect', attemptNum =>  {
+	console.log(`Reconnected after attempt ${attemptNum}`);
+	showSnackbarMessage('Reconnected!', {ttl: 1000});
 });
+
+//socket.on('connect_timeout', err => console.log('Connect timeout'));
+//socket.on('reconnect_error', err => console.log('Reconnect error'));
+//socket.on('reconnect_failed', err => console.log('Reconnect failed'));
+//socket.on('disconnect', () => console.log('Disconnected'));
+//socket.on('reconnect_attempt', () => console.log('Attempting to reconnect'));
+
+function handleConnectError(err) {	
+	showSnackbarMessage('Could not connect to server.');
+	notifyOffline();
+}
+
+subscribeOfflineStateChange(data => { isOffline = data.offline; });
+
+subscribeLoginStateChange(data => {	user = data.user; });
+
 
 class Server {
+	/**
+	 * Send a request to server.
+	 * @param {String} path URL path (excluding /web/api)
+	 * @param {Object} [options] Options
+	 * @param {String} [options.method] HTTP method
+	 * @param {String} [options.headers] Headers
+	 * @returns {Promise<any>} JSON-decoded response from server
+	 */
 	static fetchJson = (path, options) => {
 		return new Promise((res, reject) => {
 			options = options || {};
@@ -43,7 +79,16 @@ class Server {
 			});
 		});
 	}
-
+	
+	/**
+	 * Send a request to server with JSON attached.
+	 * @param {String} path URL path (excluding /web/api)
+	 * @param {Object} json JSON to send.
+	 * @param {Object} [options] Options
+	 * @param {String} [options.method='POST'] HTTP method
+	 * @param {String} [options.headers] Headers
+	 * @returns {Promise<any>} JSON-decoded response from server
+	 */
 	static postJson = (path, json, options) => {
 		options = options || {};
 		options.method = options.method || 'POST';
@@ -53,30 +98,55 @@ class Server {
 		options.body = JSON.stringify(json);
 		return Server.fetchJson(path, options);
 	}
-
+	
+	/**
+	 * Send a DELETE request to server with JSON attached.
+	 * @param {String} path URL path (excluding /web/api)
+	 * @param {Object} json JSON to send.
+	 * @param {Object} [options] Options
+	 * @param {String} [options.method='DELETE'] HTTP method
+	 * @param {String} [options.headers] Headers
+	 * @returns {Promise<any>} JSON-decoded response from server
+	 */
 	static deleteJson = (path, json, options) => {
 		options = options || {};
 		options.method = options.method || 'DELETE';
 		return Server.postJson(path, json, options);
 	}
 	
-	static checkIfLoggedIn(){
-		Server.fetchJson('/user/isLoggedIn')
+	/**
+	 * Periodically ping server to make sure we have a connection.
+	 */
+	static phoneHome() {
+		Server.fetchJson('/phone-home')
 		.then(res => {
-			if (res !== 1) {
-				console.log('Showing login prompt');
-				Server.setAuth(null);
-				cookie.remove('token');
-				PubSub.publish('UPDATE_GLOBAL', {
-					user: null,
-				});
+			if (res.loggedIn === false) {
+				//Only show login prompt if we aren't already aware that user is not logged in
+				if (user) {
+					console.log('Showing login prompt');
+					Server.setAuth(null);
+					cookie.remove('token');
+					
+					notifyLoginStateChange({user: null});
+				}
+				else {
+					//In the future we can delete this console.log, but for the time being
+					//	we should keep it, in case DialogLogin inexplicably doesn't show up
+					console.log('Would show login prompt, but we already know that we are not logged in, so we will not.');
+				}
 			}
+			notifyOnline();
 		})
 		.catch(err => {
-			console.error(err);
-		})
+			handleConnectError(err);
+		});
 	}
-
+	
+	/**
+	 * Log in to server.
+	 * @param {String} username username
+	 * @param {String} password password
+	 */
 	static async login(username, password) {
 		var res;
 		try {
@@ -91,14 +161,16 @@ class Server {
 		if (res) {
 			Server.setAuth(res.token);
 			cookie.set('token', res.token);
-			PubSub.publish('UPDATE_GLOBAL', {
-				user: res.user,
-			});
+			
+			notifyLoginStateChange({user: res.user});
 		}
 
 		return res;
 	}
-
+	
+	/**
+	 * Log out from server.
+	 */
 	static async logout() {
 		
 		fetch('/api/user/logout')
@@ -107,9 +179,8 @@ class Server {
 			if (res.ok === true) {
 				Server.setAuth(null);
 				cookie.remove('token');
-				PubSub.publish('UPDATE_GLOBAL', {
-					user: null,
-				});
+				
+				notifyLoginStateChange({user: null});
 			}
 			else {
 				console.log('Unable to log out');
@@ -120,30 +191,43 @@ class Server {
 			console.error(err);
 		});
 	}
-
+	/*
+				case 'name': query += `name = "${userData.name}", `; break;
+				case 'display_name': query += `display_name = "${userData.display_name}", `; break;
+				case 'role_key': query += `role_key = "${userData.role_key}", `; break;
+				case 'password': query += `password = "${userData.password}", `; break;
+				*/
+	/**
+	 * 
+	 * @param {Object} profile Profile info.
+	 * @param {String} [profile.name] Name
+	 * @param {String} [profile.display_name] Display name
+	 * @param {String} [profile.password] Password
+	 */
 	static async saveProfile(profile) {
 		const res = await Server.postJson('/user/profile', profile);
 		if (res.user) {
-			PubSub.publish('UPDATE_GLOBAL', {
-				user: res.user,
-			});
+			notifyLoginStateChange({user: res.user});
 		}
 		return res.user;
 	}
-
+	
 	static setAuth = (newAuth) => {
 		auth = newAuth;
 	}
-
+	
+	/**
+	 * @returns {Promise<Object>} user info
+	 */
 	static getUserInfo = () => {
 		return Server.fetchJson('/user');
 	}
-
+	
 	static getInfo = () => {
 		return new Promise((res, rej) => {
 			if (serverInfo)
 				res(serverInfo);
-
+			
 			Server.fetchJson('/').then(json => {
 				serverInfo = json;
 				res(serverInfo);

@@ -5,9 +5,12 @@ import PropTypes from 'prop-types';
 
 import cookie from 'js-cookie';
 import Server from './server';
-import PubSub from 'pubsub-js';
 import { withRouter } from 'react-router-dom';
 import Navigation from './navigation';
+import { 
+	subscribeLoginStateChange, 
+	//notifyLoginStateChange,
+} from './actions'
 
 class User extends Component {
 	state = {
@@ -28,8 +31,8 @@ class User extends Component {
 
 			this.getUserInfo();
 		}
-
-		PubSub.subscribe('UPDATE_GLOBAL', (msg, data) => {
+		
+		subscribeLoginStateChange(data => {
 			if (data.user !== undefined)
 				this.setState({ user: data.user });
 		});

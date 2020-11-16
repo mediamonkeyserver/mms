@@ -72,7 +72,6 @@ class App extends Component {
 
 	componentDidMount() {
 		document.body.addEventListener('keyup', this.handleKeyUp);
-		Server.checkIfLoggedIn();
 	}
 
 	handleKeyUp = (event) => {
@@ -96,6 +95,10 @@ class App extends Component {
 	render() {
 		const { classes } = this.props;
 		const videoShown = this.state.video ? '' : 'none';
+		
+		//Whenever a page renders, ping the server to see if we're online
+		console.log('rendering')
+		Server.phoneHome();
 
 		return (
 
