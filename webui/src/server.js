@@ -118,7 +118,7 @@ class Server {
 	 * Periodically ping server to make sure we have a connection.
 	 */
 	static phoneHome() {
-		Server.fetchJson('/phone-home')
+		Server.fetchJson('/ping')
 		.then(res => {
 			if (res.loggedIn === false) {
 				//Only show login prompt if we aren't already aware that user is not logged in
