@@ -50,7 +50,7 @@ class CfgServer extends Component {
 		this.setState({
 			modified: false,
 		});
-		Server.saveCongif({
+		Server.saveConfig({
 			serverName: this.state.serverName,
 			httpPort: this.state.localHttpPort,
 			httpsPort: this.state.localHttpsPort,

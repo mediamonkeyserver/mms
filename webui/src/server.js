@@ -153,7 +153,7 @@ class Server {
 		});
 	}
 
-	static saveCongif = (cfg) => {
+	static saveConfig = (cfg) => {
 		Server.postJson('/', cfg).then(() => {
 			serverInfo = undefined;
 			PubSub.publish('CONFIG_CHANGE');

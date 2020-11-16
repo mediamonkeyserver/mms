@@ -51,7 +51,7 @@ class CfgExtAccess extends Component {
 		this.setState({
 			modified: false,
 		});
-		Server.saveCongif({
+		Server.saveConfig({
 			extAccess: this.state.extAccess,
 			performNAT: this.state.performNAT,
 			extHttpsPort: this.state.extHttpsPort,
