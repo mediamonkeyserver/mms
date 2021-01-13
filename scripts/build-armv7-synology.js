@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const version = JSON.parse(fs.readFileSync('package.json')).version;
 
-const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
+const npm = 'npm '; //(shell.which('yarn') ? 'yarn ' : 'npm ');
 console.log(`Using ${npm}for building armv7 for synology.`); // eslint-disable-line no-console
 
 shell.mkdir('-p', 'dist/armv7-synology');

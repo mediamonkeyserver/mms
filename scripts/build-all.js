@@ -39,7 +39,7 @@ async function getSQLitePath(arch) {
 }
 
 async function main() {
-	const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
+	const npm = 'npm '; //(shell.which('yarn') ? 'yarn ' : 'npm ');
 	console.log(`Using ${npm}for building all platforms.`); // eslint-disable-line no-console
 
 	const version = JSON.parse(fs.readFileSync('package.json')).version;

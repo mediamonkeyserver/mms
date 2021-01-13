@@ -3,7 +3,7 @@
 const shell = require('shelljs');
 const fs = require('fs');
 
-const npm = (shell.which('yarn') ? 'yarn ' : 'npm ');
+const npm = 'npm '; //(shell.which('yarn') ? 'yarn ' : 'npm ');
 
 console.log(`Using ${npm}for building UI.`); // eslint-disable-line no-console
 
