@@ -25,5 +25,5 @@ wget https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v10.21
 git apply node.v10.21.0.cpp.patch
 /bin/bash ./configure --prefix=../install --dest-cpu=arm64 --cross-compiling --dest-os=linux --with-arm-float-abi=hard --with-arm-fpu=neon
 # make -j6 parameter caused freezes of the build process (JH)
-make -j6
+make
 cp out/Release/node /nodepkg/node-arm64-rtd1296-synology
