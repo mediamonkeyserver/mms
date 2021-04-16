@@ -31,5 +31,9 @@ export default class Navigation {
 	static goProfile() {
 		Navigation.go('/profile');
 	}
+	
+	static goHome() {
+		Navigation.go('/');
+	}
 }
 

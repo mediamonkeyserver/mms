@@ -8,12 +8,15 @@ import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import Server from '../server';
 
+const PubSub = require('pubsub-js');
+
 const styles = {
 };
 
 class Profile extends Component {
 	state = {
-		name: '',
+		username: '',
+		displayName: '',
 		password: '',
 		passwordConf: '',
 
@@ -24,6 +27,14 @@ class Profile extends Component {
 	constructor(props) {
 		super(props);
 		Object.assign(this.state, this.getState(props));
+		
+		Server.getUserInfo()
+		.then(userInfo => {
+			this.setState({
+				username: userInfo.name,
+				displayName: userInfo.display_name
+			});
+		})
 	}
 
 	componentDidUpdate(prevProps) {
@@ -32,11 +43,15 @@ class Profile extends Component {
 	}
 
 	getState(props) {
-		return { name: (props.editUser && props.editUser.name) || '' };
+		return { username: (props.editUser && props.editUser.name) || '' };
 	}
 
-	onNameChange = (event) => {
-		this.setState({ name: event.currentTarget.value, changed: true });
+	onUsernameChange = (event) => {
+		this.setState({ username: event.currentTarget.value, changed: true });
+	}
+	
+	onDisplayNameChange = (event) => {
+		this.setState({ displayName: event.currentTarget.value, changed: true });
 	}
 
 	onPasswordChange = (event) => {
@@ -53,15 +68,29 @@ class Profile extends Component {
 
 	onSave = () => {
 		const profile = {
-			name: this.state.name,
+			name: this.state.username,
 			password: this.state.password,
+			display_name: this.state.displayName,
 		};
-		Server.saveProfile(profile);
-		this.setState({
-			password: '',
-			passwordConf: '',
-			changed: false,
-		});
+		Server.saveProfile(profile)
+		.then(user => {
+			this.setState({
+				password: '',
+				passwordConf: '',
+				changed: false,
+			});
+			// 2020-09-11 JL: Show toast message when profile is updated
+			PubSub.publish('SHOW_SNACKBAR', {
+				message: `Profile updated.`,
+				autoHide: 5000,
+			});
+		})
+		.catch(err => {
+			PubSub.publish('SHOW_SNACKBAR', {
+				message: `An error occurred.`,
+				autoHide: 5000,
+			});
+		})
 	}
 
 	onKeyPress = (event) => {
@@ -71,8 +100,8 @@ class Profile extends Component {
 	}
 
 	canSave() {
-		return this.state.name && this.state.changed && (
-			(this.state.name !== this.props.editUser.name) ||
+		return this.state.username && this.state.changed && (
+			(this.state.username !== this.props.editUser.name) ||
 			!this.state.password ||
 			(this.state.password === this.state.passwordConf)
 		);
@@ -91,10 +120,18 @@ class Profile extends Component {
 				onKeyPress={this.onKeyPress}
 			>
 				<TextField
-					label='Name'
-					value={this.state.name}
+					label='Username'
+					value={this.state.username}
 					fullWidth
-					onChange={this.onNameChange}
+					onChange={this.onUsernameChange}
+					style={{ marginBottom: '2em' }}
+				/>
+				
+				<TextField
+					label='Display Name'
+					value={this.state.displayName}
+					fullWidth
+					onChange={this.onDisplayNameChange}
 					style={{ marginBottom: '2em' }}
 				/>
 

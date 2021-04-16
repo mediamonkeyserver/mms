@@ -25,7 +25,7 @@ class Dialogs extends React.Component {
 	showSnackbar(msg, data) {
 		this.setState({
 			snackbarOpen: true,
-			snackbarAutoHide: data.autoHide || 10000,
+			snackbarAutoHide: data.autoHide || this.state.snackbarAutoHide,
 			snackbarMessage: data.message,
 		});
 	}

@@ -53,6 +53,10 @@ export function subscribeLogChanges(callback) {
 	return PubSub.subscribe('NEW_LOG_ITEM', (msg, data) => callback(data));
 }
 
+export function unsubscribeLogChanges() {
+	PubSub.unsubscribe('NEW_LOG_ITEM');;
+}
+
 export function forceLogRefresh() {
 	PubSub.publish('NEW_LOG_ITEM', null);
 }
@@ -80,4 +84,51 @@ export function notifyVideoShow() {
 
 export function notifyVideoHide() {
 	PubSub.publish('VIDEO', 'hide');
+}
+
+
+// == Online/Offline State ==
+
+export function subscribeOfflineStateChange(callback) {
+	return PubSub.subscribe('OFFLINE_STATUS', (msg, data) => callback(data));
+}
+
+export function notifyOffline() {
+	PubSub.publish('OFFLINE_STATUS', {offline: true});
+}
+
+export function notifyOnline() {
+	PubSub.publish('OFFLINE_STATUS', {offline: false});
+}
+
+
+// == Global Vars ==
+
+export function subscribeLoginStateChange(callback) {
+	return PubSub.subscribe('LOGIN_STATE', (msg, data) => callback(data));
+}
+
+export function notifyLoginStateChange(data) {
+	PubSub.publish('LOGIN_STATE', data);
+}
+
+
+// == Snackbar ==
+
+export function subscribeSnackbarMessage(callback) {
+	return PubSub.subscribe('SHOW_SNACKBAR', (msg, data) => callback(data));
+}
+
+/**
+ * Show snackbar message.
+ * @param {String} message Message to show 
+ * @param {Object} [options] Options, such as autoHide timeout
+ * @param {Number} [options.ttl=10000] Time-to-live for snackbar in milliseconds.
+ */
+export function showSnackbarMessage(message, options) {
+	if (!options) options = {};
+	PubSub.publish('SHOW_SNACKBAR', {
+		message: message,
+		autoHide: options.ttl
+	});
 }

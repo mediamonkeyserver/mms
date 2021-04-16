@@ -10,6 +10,7 @@ import Dialogs from './Dialogs';
 import DialogLogin from './Dialogs/DialogLogin';
 import MainContent from './MainContent';
 import Player from './Player';
+import Server from './server';
 import AudioPlayer from './Fragments/AudioPlayer';
 import VideoPlayer from './Fragments/VideoPlayer';
 import screenfull from 'screenfull';
@@ -94,6 +95,10 @@ class App extends Component {
 	render() {
 		const { classes } = this.props;
 		const videoShown = this.state.video ? '' : 'none';
+		
+		//Whenever a page renders, ping the server to see if we're online
+		console.log('rendering')
+		Server.phoneHome();
 
 		return (
 

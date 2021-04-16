@@ -57,7 +57,9 @@ class CollectionSorting extends Component {
 }
 
 CollectionSorting.propTypes = {
-	collectionID: PropTypes.string.isRequired,
+	collectionID: PropTypes.oneOfType([
+		PropTypes.string, PropTypes.number
+	]).isRequired,
 };
 
 export default CollectionSorting;

@@ -1,10 +1,17 @@
 {
+  "name": "mediamonkeyserver",
+  "version": "0.3.2",
+  "description": "MediaMonkey Server",
+  "main": "api.js",
+  "license": "GPL-2.0+",
   "bin": {
     "mms": "claccess"
   },
   "dependencies": {
     "async": "^3.2.0",
     "body-parser": "^1.19.0",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^7.1.1",
     "check-disk-space": "^2.1.0",
     "commander": "^2.20.3",
     "daemonize-process": "^2.0.1",
@@ -37,7 +44,6 @@
     "uuid": "^3.4.0",
     "windows-trayicon": "^2.0.0"
   },
-  "description": "MediaMonkey Server",
   "devDependencies": {
     "eslint": "^6.8.0",
     "mocha": "^6.2.3",
@@ -47,34 +53,23 @@
     "webpack-cli": "^3.3.12",
     "node-abi-version": "^1.2.4"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mediamonkeyserver/mms.git"
   },
-  "engines": {
-    "node": ">=5.0.0"
-  },
-  "gitHead": "b2f29f2882c2bf3318d35b47c63ddb2500bb01d0",
   "keywords": [
     "Node.js",
     "upnp",
     "mediamonkey",
     "server"
   ],
-  "license": "GPL-2.0+",
-  "main": "api.js",
-  "maintainers": [
-    {
-      "name": "jhajek",
-      "email": "jh@mediamonkey.com"
-    }
-  ],
-  "name": "mediamonkeyserver",
-  "optionalDependencies": {},
   "pkg": {
     "scripts": [
       "node_modules/node-ssdp/lib/*.js",
-      "lib",
+      "lib/**/*.js",
       "server.js"
     ],
     "assets": [
@@ -83,7 +78,6 @@
       "build-webui"
     ]
   },
-  "readme": "README.md",
   "scripts": {
     "start": "node server.js",
     "startapp": "electron server.js",
@@ -98,6 +92,5 @@
     "build-armv7-synology": "node scripts/build-armv7-synology",
     "build-armv8-synology": "node scripts/build-rtd1296-synology",
     "build-nodepkg-rtd1296": "node scripts/build-nodepkg-rtd1296.js"
-  },
-  "version": "0.3.2"
+  }
 }
