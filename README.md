@@ -1,11 +1,19 @@
 [![Build Status][travis-image]][travis-url] [![NPM version][npm-image]][npm-url] 
 
-# mediamonkey server
+# MediaMonkey Server
 ![upnpserver icon](icon/icon_120.png)
 
 MediaMonkey Server is a cross-platform media server written in Node.js.
 
-The code is based on upnpserver package.
+It is built upon a fork of [upnpserver](https://www.npmjs.com/package/upnpserver)
+
+## Requirements
+- Node.js >10.x and Node Package Manager (npm)
+- Python (Version 3.8 is known to work)
+    - If you do not add Python to system path, then run: `npm config set python /path/to/executable/python`
+- Node-gyp build tools (https://github.com/nodejs/node-gyp)
+    - On an elevated command prompt run: `npm install -global windows-build-tools`
+    - Then, run `npm config set msvs_version 2017`
 
 ## Installation
 
@@ -13,7 +21,7 @@ The code is based on upnpserver package.
 
 or just download and unpack https://github.com/mediamonkeyserver/mms/archive/master.zip
 
-Run installation script then
+Run installation script
 
     $ npm install
 
@@ -82,10 +90,15 @@ For testing purposes used *mocha* framework. To run tests, you should do this:
 make test
 ```
 
+## Troubleshooting
+There are some known issues.
+1. `"Error: Could not locate the bindings file."`: If you get an error saying that a module could not locate the bindings file, chances are there was an issue with node-gyp when the module was being installed. This has occurred a few times to the `windows-trayicon` module. If you have node-gyp and all its build dependencies installed, try running `npm install windows-trayicon` again. It will rebuild and it should work.
+
 ## Author
 
-MediaMonkey team
-Olivier Oeuillot (Original author of the upnpserver package)
+- MediaMonkey team
+
+- [Olivier Oeuillot](https://github.com/oeuillot) (Original author of the upnpserver package)
 
 ## Contributors
 

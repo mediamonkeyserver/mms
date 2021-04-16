@@ -20,9 +20,9 @@ cp /synotoolkit/build_env/ds.rtd1296-6.2/usr/local/aarch64-unknown-linux-gnueabi
 cd /
 git clone https://github.com/nodejs/node.git
 cd /node
-git checkout v8.11.3
-wget https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v8.11.3.cpp.patch
-git apply node.v8.11.3.cpp.patch
+git checkout v10.21.0
+wget https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v10.21.0.cpp.patch
+git apply node.v10.21.0.cpp.patch
 /bin/bash ./configure --prefix=../install --dest-cpu=arm64 --cross-compiling --dest-os=linux --with-arm-float-abi=hard --with-arm-fpu=neon
 # make -j6 parameter caused freezes of the build process (JH)
 make

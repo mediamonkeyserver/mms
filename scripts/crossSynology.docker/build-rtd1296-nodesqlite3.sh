@@ -3,8 +3,8 @@
 curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh -o install_nvm.sh
 bash install_nvm.sh
 . ~/.nvm/nvm.sh   # to make nvm usable from shell
-nvm install 8.15.0
-nvm use 8.15.0
+nvm install 10.21.0
+nvm use 10.21.0
 
 export CC="/synotoolkit/build_env/ds.rtd1296-6.2/usr/local/aarch64-unknown-linux-gnueabi/bin/aarch64-unknown-linux-gnueabi-gcc"
 export CXX="/synotoolkit/build_env/ds.rtd1296-6.2/usr/local/aarch64-unknown-linux-gnueabi/bin/aarch64-unknown-linux-gnueabi-g++"
@@ -24,6 +24,6 @@ cp /synotoolkit/build_env/ds.rtd1296-6.2/usr/local/aarch64-unknown-linux-gnueabi
 
 cd /
 mkdir sqlite3
-cd sqlite
+cd sqlite3
 npm install sqlite3 --build-from-source --target_arch=arm
-cp -r /sqlite/node_modules/sqlite3/lib/binding /local
+cp -r node_modules/sqlite3/lib/binding /local
