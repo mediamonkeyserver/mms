@@ -9,15 +9,16 @@
   },
   "dependencies": {
     "async": "^3.2.0",
-    "body-parser": "^1.19.0",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^7.1.1",
+    "body-parser": "^1.19.0",
     "check-disk-space": "^2.1.0",
     "commander": "^2.20.3",
     "daemonize-process": "^2.0.1",
     "debug": "^4.2.0",
     "exif": "^0.6.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "fast-xml-parser": "^3.17.4",
     "follow-redirects": "^1.13.0",
     "gm": "^1.21.1",
@@ -29,6 +30,8 @@
     "music-metadata": "^6.3.0",
     "node-ssdp": "^4.0.0",
     "opn": "^6.0.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "pubsub-js": "^1.9.0",
     "pwd": "^1.1.0",
     "range-parser": "^1.2.1",
@@ -42,7 +45,7 @@
     "sqlstring": "^2.3.2",
     "table-parser": "^1.0.1",
     "uuid": "^3.4.0",
-    "windows-trayicon": "^2.0.0"
+    "windows-trayicon": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
