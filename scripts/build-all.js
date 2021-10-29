@@ -6,34 +6,32 @@
 // 3. FFMPEG present in 'binaries/ffmpeg/{platform}
 
 const shell = require('shelljs');
-const http = require('http');
 const fs = require('fs');
-const nABI = require('node-abi-version').getABIVersion();  // ABI version
+const nABI = require('node-abi-version').getABIVersion() || 93;  // ABI version
 const nVer = process.version.match(/^v(\d+)\./)[1];  // Node version
-const nSQLite = require('../node_modules/sqlite3/package.json').version;
+const nSQLite = require('../node_modules/better-sqlite3/package.json').version;
 const winrar = '"c:/Program Files/WinRAR/WinRAR"';
+const fetch = require('node-fetch');
+const pipeline = require('stream').pipeline;
+const promisify = require('util').promisify;
 
 async function download(url, dest) {
-	var file = fs.createWriteStream(dest);
-	await new Promise((res) => {
-		http.get(url, function (response) {
-			response.pipe(file);
-			file.on('finish', function () {
-				file.close(() => {
-					return res();
-				});
-			});
-		});
-	});
+	const response = await fetch(url);
+	const streamPipeline = promisify(pipeline);
+	await streamPipeline(response.body, fs.createWriteStream(dest));
 }
 
 async function getSQLitePath(arch) {
-	const folder = `binaries/sqlite/${nSQLite}/node-v${nABI}-${arch}`;
+	const folder = `binaries/better-sqlite3/${nSQLite}/node-v${nABI}-${arch}`;
 	if (!shell.test('-e', folder)) {
 		shell.mkdir('-p', folder);
-		const fname = `binaries/sqlite/${nSQLite}/node-v${nABI}-${arch}.tar.gz`;
-		await download(`http://mapbox-node-binary.s3.amazonaws.com/sqlite3/v${nSQLite}/node-v${nABI}-${arch}.tar.gz`, fname);
-		shell.exec(`${winrar} x ${fname} binaries/sqlite/${nSQLite}/`);
+		// const fname = `binaries/better-sqlite3/${nSQLite}/node-v${nABI}-${arch}.tar.gz`;
+		// await download(`http://mapbox-node-binary.s3.amazonaws.com/sqlite3/v${nSQLite}/node-v${nABI}-${arch}.tar.gz`, fname);
+		const fname = folder + '.tar.gz';
+		const path = `https://github.com/JoshuaWise/better-sqlite3/releases/download/v${nSQLite}/better-sqlite3-v${nSQLite}-node-v${nABI}-${arch}.tar.gz`;
+		await download(path, fname);
+		shell.exec(`${winrar} x ${fname} binaries/better-sqlite3/temp/`);
+		shell.mv('binaries/better-sqlite3/temp/build/Release/*', folder);
 	}
 	return folder + '/*';
 }
@@ -53,7 +51,7 @@ async function main() {
 
 	// So that mms.exe works with native tray icon module
 	// More info at https://www.ironsrc.com/blog/rename-import-dll/ and https://github.com/parro-it/libui-node/issues/120#issuecomment-425627593
-	const bin = 'node_modules\\windows-trayicon\\build\\Release\\nbind.node';
+	const bin = 'node_modules\\windows-trayicon\\build\\Release\\addon.node';
 	const binBack = bin + '.back';
 	shell.cp(bin, binBack);
 	shell.exec(`scripts\\rid.exe ${bin} node.exe mms.exe`);
@@ -64,14 +62,14 @@ async function main() {
 	shell.exec(`${winrar} a ../MMS-win64-${version}.rar * -s -md64 -ma`);
 	shell.cd('../..');
 
-	// *** Win 32 bit ***
-	shell.mkdir('-p', 'dist/win32');
-	shell.exec(`pkg -t node${nVer}-win-x86 -o dist/win32/mms.exe .`);
-	shell.cp(await getSQLitePath('win32-ia32'), 'dist/win32');
-	shell.cp('binaries/ffmpeg/win32/*', 'dist/win32');
-	shell.cd('dist/win32');
-	shell.exec(`${winrar} a ../MMS-win32-${version}.rar * -s -md64 -ma`);
-	shell.cd('../..');
+	// *** Win 32 bit (removed as no longer supported - we'd have to add pkg support) ***
+	// shell.mkdir('-p', 'dist/win32');
+	// shell.exec(`pkg -t node${nVer}-win-x86 -o dist/win32/mms.exe .`);
+	// shell.cp(await getSQLitePath('win32-ia32'), 'dist/win32');
+	// shell.cp('binaries/ffmpeg/win32/*', 'dist/win32');
+	// shell.cd('dist/win32');
+	// shell.exec(`${winrar} a ../MMS-win32-${version}.rar * -s -md64 -ma`);
+	// shell.cd('../..');
 
 	// *** Mac ***
 	shell.mkdir('-p', 'dist/mac64');
