@@ -31,7 +31,7 @@ const fs = require('fs');
 const version = JSON.parse(fs.readFileSync('package.json')).version;
 
 shell.mkdir('-p', 'dist/linux-armv7');
-shell.exec('pkg -t node10-linux-armv7 -o dist/linux-armv7/mms .');
+shell.exec('pkg -t node16-linux-armv7 -o dist/linux-armv7/mms .');
 shell.cp('node_modules/sqlite3/lib/binding/node-v64-linux-arm/*', 'dist/linux-armv7');
 shell.cp('binaries/linux-armv7/*', 'dist/linux-armv7');
 shell.cd('dist/linux-armv7');
