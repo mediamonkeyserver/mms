@@ -92,6 +92,7 @@
     "packWin": "node scripts/packWin.js",
     "buildUI": "node scripts/buildUI.js",
     "build-arm": "npm run buildUI && node scripts/build-arm.js",
+    "build-arm64": "npm run buildUI && node scripts/build-arm64.js",
     "build-all": "npm run buildUI && node scripts/build-all.js",
     "build-armv7-synology": "node scripts/build-armv7-synology",
     "build-armv8-synology": "node scripts/build-rtd1296-synology",

@@ -1,0 +1,6 @@
+Status of individual build scripts:
+
+1. build-all.js - Used to build Win, Mac and Linux
+2. build-arm64.js - Used to build armv8 (64 bit) executable
+3. build-arm.js - Was used to build armv7 (32 bit) executable, but due to issues with pkg, which currently supports only linuxstatic for armv7, this is no longer supported
+4. Synology builds - Currently unsupported, worked for older versions, but aren't maintained at this moment. Should be quite easy to update for armv8, but for armv7 probably impossible, due to the pkg issue (see above)
