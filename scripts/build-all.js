@@ -15,6 +15,8 @@ const fetch = require('node-fetch');
 const pipeline = require('stream').pipeline;
 const promisify = require('util').promisify;
 
+const pkgPath = 'node node_modules\\pkg\\lib-es5\\bin.js';
+
 async function download(url, dest) {
 	const response = await fetch(url);
 	const streamPipeline = promisify(pipeline);
@@ -44,7 +46,7 @@ async function main() {
 
 	// *** Win 64 bit ***
 	shell.mkdir('-p', 'dist/win64/icon');
-	shell.exec(`pkg -t node${nVer}-win-x64 -o dist/win64/mms.exe . --options max_old_space_size=8192`);
+	shell.exec(`${pkgPath} -t node${nVer}-win-x64 -o dist/win64/mms.exe . --options max_old_space_size=8192`);
 	shell.cp(await getSQLitePath('win32-x64'), 'dist/win64');
 	shell.cp('binaries/ffmpeg/win64/*', 'dist/win64');
 	shell.cp('icon/mm.ico', 'dist/win64/icon');
@@ -73,7 +75,7 @@ async function main() {
 
 	// *** Mac ***
 	shell.mkdir('-p', 'dist/mac64');
-	shell.exec(`pkg -t node${nVer}-macos-x64 -o dist/mac64/mms . --options max_old_space_size=8192`);
+	shell.exec(`${pkgPath} -t node${nVer}-macos-x64 -o dist/mac64/mms . --options max_old_space_size=8192`);
 	shell.cp(await getSQLitePath('darwin-x64'), 'dist/mac64');
 	shell.cp('binaries/ffmpeg/macOS/*', 'dist/mac64');
 	shell.cd('dist/mac64');
@@ -82,7 +84,7 @@ async function main() {
 
 	// *** Linux ***
 	shell.mkdir('-p', 'dist/linux64');
-	shell.exec(`pkg -t node${nVer}-linux-x64 -o dist/linux64/mms . --options max_old_space_size=8192`);
+	shell.exec(`${pkgPath} -t node${nVer}-linux-x64 -o dist/linux64/mms . --options max_old_space_size=8192`);
 	shell.cp(await getSQLitePath('linux-x64'), 'dist/linux64');
 	shell.cp('binaries/ffmpeg/linux64/*', 'dist/linux64');
 	shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/linux64; tar cfz ../MMS-linux64-${version}.tar.gz *"`);
@@ -93,7 +95,7 @@ async function main() {
 	shell.mv(nodelinux64, nodelinux64 + '.back');
 	shell.cp('binaries/node/node-linux64-QNAPx86', nodelinux64);
 	shell.mkdir('-p', 'dist/QNAPx86');
-	shell.exec(`pkg -t node${nVer}-linux-x64 -o dist/QNAPx86/mms .`);
+	shell.exec(`${pkgPath} -t node${nVer}-linux-x64 -o dist/QNAPx86/mms .`);
 	shell.cp(`binaries/sqlite/node-v${nABI}-linux-x64-QNAPx86/*`, 'dist/QNAPx86');
 	shell.cp('binaries/ffmpeg/linux64/*', 'dist/QNAPx86');
 	shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/QNAPx86; tar cfz ../MMS-QNAPx86-${version}.tar.gz *"`);
