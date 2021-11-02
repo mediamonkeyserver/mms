@@ -1,6 +1,6 @@
 {
   "name": "mediamonkeyserver",
-  "version": "0.3.2",
+  "version": "0.4.1",
   "description": "MediaMonkey Server",
   "main": "api.js",
   "license": "GPL-2.0+",
