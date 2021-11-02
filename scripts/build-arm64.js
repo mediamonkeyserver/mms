@@ -7,7 +7,7 @@ const fs = require('fs');
 const version = JSON.parse(fs.readFileSync('package.json')).version;
 
 shell.mkdir('-p', 'dist/linux-arm64');
-shell.exec('pkg -t node16-linux-arm64 -o dist/linux-arm64/mms .');
+shell.exec('node_modules/pkg/lib-es5/bin.js -t node16-linux-arm64 -o dist/linux-arm64/mms .');
 shell.cp('node_modules/better-sqlite3/build/Release/*', 'dist/linux-arm64');
 shell.cp('binaries/linux-arm64/*', 'dist/linux-arm64');
 shell.cd('dist/linux-arm64');
