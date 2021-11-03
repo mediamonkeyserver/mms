@@ -53,7 +53,7 @@ class API extends events.EventEmitter {
 		if (typeof (paths) === 'string') {
 			this.addDirectory('/', paths);
 
-		} else if (util.isArray(paths)) {
+		} else if (Array.isArray(paths)) {
 			paths.forEach((path) => this.initPaths(path));
 		}
 
@@ -67,7 +67,7 @@ class API extends events.EventEmitter {
 			var toks = cf.split(',');
 			toks.forEach((tok) => this.loadConfiguration(require(tok)));
 
-		} else if (util.isArray(cf)) {
+		} else if (Array.isArray(cf)) {
 			cf.forEach((c) => this.loadConfiguration(require(c)));
 		}
 	}
