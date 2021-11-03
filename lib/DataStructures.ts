@@ -25,8 +25,8 @@ declare namespace MediaMonkeyServer{
 	
 	//better-sqlite3 RunResult
 	interface RunResult {
-		changes: number,
-		lastInsertRowid: Integer.IntLike,
+		changes: number;
+    lastInsertRowid: number | bigint;
 	}
 	
 	interface Metas {
