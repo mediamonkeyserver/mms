@@ -7,6 +7,10 @@ MediaMonkey Server is a cross-platform media server written in Node.js.
 
 It is built upon a fork of [upnpserver](https://www.npmjs.com/package/upnpserver)
 
+## Binaries
+
+You can find pre-compiled binaries for various platforms at https://www.mediamonkey.com/forum/viewtopic.php?f=31&t=90809. Use these if you want to avoid Node.js installation and other steps below.
+
 ## Requirements
 - Node.js >10.x and Node Package Manager (npm)
 - Python (Version 3.8 is known to work)
