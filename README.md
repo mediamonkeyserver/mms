@@ -65,7 +65,7 @@ Finish the setup with the following steps:
 
 * Enable the service
 ```bash
-systemctl enable mediamonkeyserver.service
+systemctl --now enable mediamonkeyserver.service
 ```
 
 * Verify its status
