@@ -33,6 +33,7 @@
     "opn": "^6.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+	"passport-unique-token": "^3.0.0",
     "pubsub-js": "^1.9.0",
     "pwd": "^1.1.0",
     "range-parser": "^1.2.1",

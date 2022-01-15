@@ -36,7 +36,16 @@ socket.on('reconnect', attemptNum =>  {
 //socket.on('disconnect', () => console.log('Disconnected'));
 //socket.on('reconnect_attempt', () => console.log('Attempting to reconnect'));
 
-function handleConnectError(err) {	
+function handleConnectError(err) {
+	// When we're not logged in, the error will say: Error: 401: Unauthorized
+	if (typeof err === 'string' && err.includes('401')) {
+		
+		Server.setAuth(null);
+		cookie.remove('token');
+		
+		notifyLoginStateChange({user: null});
+		console.log('Got an unauthorized error; Setting state to logged-out');
+	}
 	showSnackbarMessage('Could not connect to server.');
 	notifyOffline();
 }
@@ -123,7 +132,6 @@ class Server {
 			if (res.loggedIn === false) {
 				//Only show login prompt if we aren't already aware that user is not logged in
 				if (user) {
-					console.log('Showing login prompt');
 					Server.setAuth(null);
 					cookie.remove('token');
 					
