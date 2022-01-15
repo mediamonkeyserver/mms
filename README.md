@@ -14,10 +14,10 @@ You can find pre-compiled binaries for various platforms at https://www.mediamon
 ## Requirements
 - Node.js >10.x and Node Package Manager (npm)
 - Build tools. They are needed only in case better-sqlite3 binary isn't available for your configuration (os and node version), which normally shouldn't happen. The installation needs might differ by platform:
-    - The latest Node.js installer on Windows should take care of all that's needed (if the options is enabled).
+    - The latest Node.js installer on Windows should take care of all that's needed (Enable "Automatically install the necessary tools").
     - For Linux bases platforms build-essential and python3 should be installed, i.e. something like `sudo apt install build-essential python3` should be enough.
 
-## Installation
+## Installation from Source
 
     $ git clone https://github.com/mediamonkeyserver/mms.git
 
