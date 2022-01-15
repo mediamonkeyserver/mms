@@ -17,7 +17,7 @@ You can find pre-compiled binaries for various platforms at https://www.mediamon
     - The latest Node.js installer on Windows should take care of all that's needed (if the options is enabled).
     - For Linux bases platforms build-essential and python3 should be installed, i.e. something like `sudo apt install build-essential python3` should be enough.
 
-## Installation
+## Installation from Source
 
     $ git clone https://github.com/mediamonkeyserver/mms.git
 
