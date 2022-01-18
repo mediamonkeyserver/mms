@@ -97,7 +97,7 @@ class App extends Component {
 		const videoShown = this.state.video ? '' : 'none';
 		
 		//Whenever a page renders, ping the server to see if we're online
-		console.log('rendering')
+		// console.log('rendering');
 		Server.phoneHome();
 
 		return (

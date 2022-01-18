@@ -31,9 +31,9 @@ class LoginIcon extends React.Component {
 		// 2020-09-11 JL: Now navigates home after logging out
 		this.handleMenuClose();
 		Server.logout()
-		.then(() => {
-			Navigation.goHome();
-		});
+			.then(() => {
+				Navigation.goHome();
+			});
 	}
 
 	showProfile = () => {

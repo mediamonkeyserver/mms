@@ -1,9 +1,9 @@
 import PubSub from 'pubsub-js';
 import io from 'socket.io-client';
-import { 
-	forceLogRefresh, 
-	subscribeOfflineStateChange, 
-	notifyOffline, 
+import {
+	forceLogRefresh,
+	subscribeOfflineStateChange,
+	notifyOffline,
 	notifyOnline,
 	subscribeLoginStateChange,
 	notifyLoginStateChange,
@@ -25,9 +25,9 @@ socket.on('new_log_item', forceLogRefresh);
 socket.on('id_assigned', (id) => { this_client_id = id; });
 
 socket.on('connect_error', handleConnectError);
-socket.on('reconnect', attemptNum =>  {
+socket.on('reconnect', attemptNum => {
 	console.log(`Reconnected after attempt ${attemptNum}`);
-	showSnackbarMessage('Reconnected!', {ttl: 1000});
+	showSnackbarMessage('Reconnected!', { ttl: 1000 });
 });
 
 //socket.on('connect_timeout', err => console.log('Connect timeout'));
@@ -39,11 +39,11 @@ socket.on('reconnect', attemptNum =>  {
 function handleConnectError(err) {
 	// When we're not logged in, the error will say: Error: 401: Unauthorized
 	if (typeof err === 'string' && err.includes('401')) {
-		
+
 		Server.setAuth(null);
 		cookie.remove('token');
-		
-		notifyLoginStateChange({user: null});
+
+		notifyLoginStateChange({ user: null });
 		console.log('Got an unauthorized error; Setting state to logged-out');
 	}
 	showSnackbarMessage('Could not connect to server.');
@@ -52,7 +52,7 @@ function handleConnectError(err) {
 
 subscribeOfflineStateChange(data => { isOffline = data.offline; });
 
-subscribeLoginStateChange(data => {	user = data.user; });
+subscribeLoginStateChange(data => { user = data.user; });
 
 
 class Server {
@@ -88,7 +88,7 @@ class Server {
 			});
 		});
 	}
-	
+
 	/**
 	 * Send a request to server with JSON attached.
 	 * @param {String} path URL path (excluding /web/api)
@@ -107,7 +107,7 @@ class Server {
 		options.body = JSON.stringify(json);
 		return Server.fetchJson(path, options);
 	}
-	
+
 	/**
 	 * Send a DELETE request to server with JSON attached.
 	 * @param {String} path URL path (excluding /web/api)
@@ -122,34 +122,34 @@ class Server {
 		options.method = options.method || 'DELETE';
 		return Server.postJson(path, json, options);
 	}
-	
+
 	/**
 	 * Periodically ping server to make sure we have a connection.
 	 */
 	static phoneHome() {
 		Server.fetchJson('/ping')
-		.then(res => {
-			if (res.loggedIn === false) {
-				//Only show login prompt if we aren't already aware that user is not logged in
-				if (user) {
-					Server.setAuth(null);
-					cookie.remove('token');
-					
-					notifyLoginStateChange({user: null});
+			.then(res => {
+				if (res.loggedIn === false) {
+					//Only show login prompt if we aren't already aware that user is not logged in
+					if (user) {
+						Server.setAuth(null);
+						cookie.remove('token');
+
+						notifyLoginStateChange({ user: null });
+					}
+					else {
+						//In the future we can delete this console.log, but for the time being
+						//	we should keep it, in case DialogLogin inexplicably doesn't show up
+						console.log('Would show login prompt, but we already know that we are not logged in, so we will not.');
+					}
 				}
-				else {
-					//In the future we can delete this console.log, but for the time being
-					//	we should keep it, in case DialogLogin inexplicably doesn't show up
-					console.log('Would show login prompt, but we already know that we are not logged in, so we will not.');
-				}
-			}
-			notifyOnline();
-		})
-		.catch(err => {
-			handleConnectError(err);
-		});
+				notifyOnline();
+			})
+			.catch(err => {
+				handleConnectError(err);
+			});
 	}
-	
+
 	/**
 	 * Log in to server.
 	 * @param {String} username username
@@ -169,35 +169,35 @@ class Server {
 		if (res) {
 			Server.setAuth(res.token);
 			cookie.set('token', res.token);
-			
-			notifyLoginStateChange({user: res.user});
+
+			notifyLoginStateChange({ user: res.user });
 		}
 
 		return res;
 	}
-	
+
 	/**
 	 * Log out from server.
 	 */
 	static async logout() {
-		
+
 		fetch('/api/user/logout')
-		.then(res => {
-			
-			if (res.ok === true) {
-				Server.setAuth(null);
-				cookie.remove('token');
-				
-				notifyLoginStateChange({user: null});
-			}
-			else {
-				console.log('Unable to log out');
-				console.log(res);
-			}
-		})
-		.catch(err => {
-			console.error(err);
-		});
+			.then(res => {
+
+				if (res.ok === true) {
+					Server.setAuth(null);
+					cookie.remove('token');
+
+					notifyLoginStateChange({ user: null });
+				}
+				else {
+					console.log('Unable to log out');
+					console.log(res);
+				}
+			})
+			.catch(err => {
+				console.error(err);
+			});
 	}
 	/*
 				case 'name': query += `name = "${userData.name}", `; break;
@@ -215,27 +215,27 @@ class Server {
 	static async saveProfile(profile) {
 		const res = await Server.postJson('/user/profile', profile);
 		if (res.user) {
-			notifyLoginStateChange({user: res.user});
+			notifyLoginStateChange({ user: res.user });
 		}
 		return res.user;
 	}
-	
+
 	static setAuth = (newAuth) => {
 		auth = newAuth;
 	}
-	
+
 	/**
 	 * @returns {Promise<Object>} user info
 	 */
 	static getUserInfo = () => {
 		return Server.fetchJson('/user');
 	}
-	
+
 	static getInfo = () => {
 		return new Promise((res, rej) => {
 			if (serverInfo)
 				res(serverInfo);
-			
+
 			Server.fetchJson('/').then(json => {
 				serverInfo = json;
 				res(serverInfo);

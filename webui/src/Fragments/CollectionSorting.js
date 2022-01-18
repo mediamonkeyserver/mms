@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SimpleDropdown from 'Fragments/SimpleDropdown';
+import SimpleDropdown from './SimpleDropdown';
 import MenuItem from '@material-ui/core/MenuItem';
-import { changeCollectionSort } from 'actions';
+import { changeCollectionSort } from '../actions';
 
 const audioSorts = {
 	title: 'by Title',

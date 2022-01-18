@@ -27,14 +27,14 @@ class Profile extends Component {
 	constructor(props) {
 		super(props);
 		Object.assign(this.state, this.getState(props));
-		
+
 		Server.getUserInfo()
-		.then(userInfo => {
-			this.setState({
-				username: userInfo.name,
-				displayName: userInfo.display_name
+			.then(userInfo => {
+				this.setState({
+					username: userInfo.name,
+					displayName: userInfo.display_name
+				});
 			});
-		})
 	}
 
 	componentDidUpdate(prevProps) {
@@ -49,7 +49,7 @@ class Profile extends Component {
 	onUsernameChange = (event) => {
 		this.setState({ username: event.currentTarget.value, changed: true });
 	}
-	
+
 	onDisplayNameChange = (event) => {
 		this.setState({ displayName: event.currentTarget.value, changed: true });
 	}
@@ -73,24 +73,24 @@ class Profile extends Component {
 			display_name: this.state.displayName,
 		};
 		Server.saveProfile(profile)
-		.then(user => {
-			this.setState({
-				password: '',
-				passwordConf: '',
-				changed: false,
+			.then((/*user*/) => {
+				this.setState({
+					password: '',
+					passwordConf: '',
+					changed: false,
+				});
+				// 2020-09-11 JL: Show toast message when profile is updated
+				PubSub.publish('SHOW_SNACKBAR', {
+					message: 'Profile updated.',
+					autoHide: 5000,
+				});
+			})
+			.catch((/*err*/) => {
+				PubSub.publish('SHOW_SNACKBAR', {
+					message: 'An error occurred.',
+					autoHide: 5000,
+				});
 			});
-			// 2020-09-11 JL: Show toast message when profile is updated
-			PubSub.publish('SHOW_SNACKBAR', {
-				message: `Profile updated.`,
-				autoHide: 5000,
-			});
-		})
-		.catch(err => {
-			PubSub.publish('SHOW_SNACKBAR', {
-				message: `An error occurred.`,
-				autoHide: 5000,
-			});
-		})
 	}
 
 	onKeyPress = (event) => {
@@ -126,7 +126,7 @@ class Profile extends Component {
 					onChange={this.onUsernameChange}
 					style={{ marginBottom: '2em' }}
 				/>
-				
+
 				<TextField
 					label='Display Name'
 					value={this.state.displayName}

@@ -44,7 +44,7 @@ class LogList extends React.Component {
 		unsubscribeLogChanges();
 	}
 
-	logChanged = (msg, data) => {
+	logChanged = (/*msg, data*/) => {
 		this.updateList(this.props.logType);
 	}
 

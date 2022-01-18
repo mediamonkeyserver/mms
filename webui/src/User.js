@@ -7,10 +7,10 @@ import cookie from 'js-cookie';
 import Server from './server';
 import { withRouter } from 'react-router-dom';
 import Navigation from './navigation';
-import { 
-	subscribeLoginStateChange, 
+import {
+	subscribeLoginStateChange,
 	//notifyLoginStateChange,
-} from './actions'
+} from './actions';
 
 class User extends Component {
 	state = {
@@ -31,7 +31,7 @@ class User extends Component {
 
 			this.getUserInfo();
 		}
-		
+
 		subscribeLoginStateChange(data => {
 			if (data.user !== undefined)
 				this.setState({ user: data.user });

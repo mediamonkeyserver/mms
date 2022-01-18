@@ -54,7 +54,7 @@ export function subscribeLogChanges(callback) {
 }
 
 export function unsubscribeLogChanges() {
-	PubSub.unsubscribe('NEW_LOG_ITEM');;
+	PubSub.unsubscribe('NEW_LOG_ITEM');
 }
 
 export function forceLogRefresh() {
@@ -94,11 +94,11 @@ export function subscribeOfflineStateChange(callback) {
 }
 
 export function notifyOffline() {
-	PubSub.publish('OFFLINE_STATUS', {offline: true});
+	PubSub.publish('OFFLINE_STATUS', { offline: true });
 }
 
 export function notifyOnline() {
-	PubSub.publish('OFFLINE_STATUS', {offline: false});
+	PubSub.publish('OFFLINE_STATUS', { offline: false });
 }
 
 
