@@ -91,16 +91,16 @@ async function main() {
 	shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "apt-get update; apt-get install xz-utils; cd /dist/linux64; tar cfJ ../MMS-linux64-${version}.tar.xz *"`);
 
 	// *** QNAP x86 ***
-	const nodelinux64 = '~/.pkg-cache/v2.5/fetched-v8.11.3-linux-x64';
-	shell.mv(nodelinux64, nodelinux64 + '.back');
-	shell.cp('binaries/node/node-linux64-QNAPx86', nodelinux64);
-	shell.mkdir('-p', 'dist/QNAPx86');
-	shell.exec(`${pkgPath} -t node${nVer}-linux-x64 -o dist/QNAPx86/mms .`);
-	shell.cp(`binaries/sqlite/node-v${nABI}-linux-x64-QNAPx86/*`, 'dist/QNAPx86');
-	shell.cp('binaries/ffmpeg/linux64/*', 'dist/QNAPx86');
-	shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/QNAPx86; tar cfz ../MMS-QNAPx86-${version}.tar.gz *"`);
-	shell.rm(nodelinux64);
-	shell.mv(nodelinux64 + '.back', nodelinux64);
+	//	const nodelinux64 = '~/.pkg-cache/v2.5/fetched-v8.11.3-linux-x64';
+	//	shell.mv(nodelinux64, nodelinux64 + '.back');
+	//	shell.cp('binaries/node/node-linux64-QNAPx86', nodelinux64);
+	//	shell.mkdir('-p', 'dist/QNAPx86');
+	//	shell.exec(`${pkgPath} -t node${nVer}-linux-x64 -o dist/QNAPx86/mms .`);
+	//	shell.cp(`binaries/sqlite/node-v${nABI}-linux-x64-QNAPx86/*`, 'dist/QNAPx86');
+	//	shell.cp('binaries/ffmpeg/linux64/*', 'dist/QNAPx86');
+	//	shell.exec(`docker run --rm -v %CD%/dist/:/dist ubuntu /bin/bash -c "cd /dist/QNAPx86; tar cfz ../MMS-QNAPx86-${version}.tar.gz *"`);
+	//	shell.rm(nodelinux64);
+	//	shell.mv(nodelinux64 + '.back', nodelinux64);
 
 
 	// We don't have sqlite for linux 32bit build yet.
