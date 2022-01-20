@@ -1,6 +1,6 @@
 {
   "name": "mediamonkeyserver",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "MediaMonkey Server",
   "main": "api.js",
   "license": "GPL-2.0+",
@@ -42,7 +42,7 @@
     "sax": "^1.2.4",
     "selfsigned": "^2.0.0",
     "send": "^0.17.1",
-    "socket.io": "^4.4.1",
+    "socket.io": "^2.3.0",
     "sprintf-js": "^1.1.2",
     "sqlstring": "^2.3.2",
     "table-parser": "^1.0.0",
