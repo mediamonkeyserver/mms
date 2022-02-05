@@ -11,23 +11,24 @@ It is built upon a fork of [upnpserver](https://www.npmjs.com/package/upnpserver
 
 You can find pre-compiled binaries for various platforms at https://www.mediamonkey.com/forum/viewtopic.php?f=31&t=90809. Use these if you want to avoid Node.js installation and other steps below.
 
-## Requirements
+## Installation from source
+
+### Requirements
 - Node.js >10.x and Node Package Manager (npm)
 - Build tools. They are needed only in case better-sqlite3 binary isn't available for your configuration (os and node version), which normally shouldn't happen. The installation needs might differ by platform:
     - The latest Node.js installer on Windows should take care of all that's needed (Enable "Automatically install the necessary tools").
     - For Linux bases platforms build-essential and python3 should be installed, i.e. something like `sudo apt install build-essential python3` should be enough.
 
-## Installation from Source
+### Installing
 
-    $ git clone https://github.com/mediamonkeyserver/mms.git
+1. To download, either:
+    - `$ git clone https://github.com/mediamonkeyserver/mms.git`
+    - or just download and unpack https://github.com/mediamonkeyserver/mms/archive/master.zip
 
-or just download and unpack https://github.com/mediamonkeyserver/mms/archive/master.zip
+2. Run installation script
+    `$ npm install`
 
-Run installation script
-
-    $ npm install
-
-## Running
+### Running
     $ npm start
     Server will start on port 10222
 
