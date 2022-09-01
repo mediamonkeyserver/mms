@@ -37,5 +37,6 @@ module.exports = {
         ],
         "prefer-rest-params": "warn",
 		"no-unused-vars": "warn",
+		"no-unreachable": "warn",
     }
 };

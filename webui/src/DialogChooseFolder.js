@@ -104,7 +104,7 @@ class DialogChooseFolder extends React.Component {
 }
 
 DialogChooseFolder.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 };
 
 export default DialogChooseFolder;

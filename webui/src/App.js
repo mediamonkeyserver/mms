@@ -17,6 +17,7 @@ import screenfull from 'screenfull';
 
 import { subscribeVideoState } from './actions';
 
+import { withRouter } from 'react-router-dom';
 import PubSub from 'pubsub-js';
 
 const styles = ({
@@ -137,4 +138,4 @@ App.propTypes = {
 	user: PropTypes.object,
 };
 
-export default withStyles(App, styles);
+export default withRouter(withStyles(App, styles));

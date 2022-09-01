@@ -10,6 +10,7 @@
     "@enykeev/react-virtualized": "^9.22.4-mirror.1",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.3",
+    "@types/react-router-dom": "^5.3.3",
     "debug": "^4.1.1",
     "hls.js": "^1.2.1",
     "js-cookie": "^2.2.0",

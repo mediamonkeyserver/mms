@@ -15,14 +15,13 @@ import CollectionsList from '../Fragments/CollectionsList';
 import PubSub from 'pubsub-js';
 
 import { withRouter } from 'react-router-dom';
+import { styled } from '@mui/material';
 
 const MAX_LOG_ITEMS = 15;
 
-const styles = {
-	cardActions: {
-		justifyContent: 'flex-end',
-	}
-};
+const StyledCardActions = styled(CardActions)(({theme}) => ({
+	justifyContent: 'flex-end',
+}));
 
 class Dashboard extends Component {
 	state = {
@@ -39,10 +38,10 @@ class Dashboard extends Component {
 	}
 
 	render() {
-		const { classes, user } = this.props;
+		const { user } = this.props;
 
 		return (
-			<Grid container justify='space-around' spacing={2}>
+			<Grid container justifyContent='space-around' spacing={2}>
 				{/* Collections */}
 				{user &&
 					<Grid item xs={12} sm={6}>
@@ -51,9 +50,9 @@ class Dashboard extends Component {
 							<CardContent>
 								<CollectionsList hideCreate click='show' />
 							</CardContent>
-							<CardActions className={classes.cardActions}>
+							<StyledCardActions>
 								<Button onClick={this.handleNewCollection} color='primary'>Create Collection</Button>
-							</CardActions>
+							</StyledCardActions>
 						</Card>
 					</Grid>
 				}
@@ -66,9 +65,9 @@ class Dashboard extends Component {
 							<CardContent>
 								<LogList maxItems={MAX_LOG_ITEMS} />
 							</CardContent>
-							<CardActions className={classes.cardActions}>
+							<StyledCardActions>
 								<Button onClick={this.handleShowLog} color='primary'>Show Full Log</Button>
-							</CardActions>
+							</StyledCardActions>
 						</Card>
 					</Grid>
 				}
@@ -78,9 +77,8 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-	classes: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	user: PropTypes.object,
 };
 
-export default withStyles(withRouter(Dashboard), styles);
+export default withRouter(Dashboard);

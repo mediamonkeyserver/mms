@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'tss-react/mui';
 
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -10,9 +9,6 @@ import Divider from '@mui/material/Divider';
 
 import Server from './server';
 import Navigation from './navigation';
-
-const styles = {
-};
 
 class LoginIcon extends React.Component {
 	state = {
@@ -86,8 +82,7 @@ class LoginIcon extends React.Component {
 }
 
 LoginIcon.propTypes = {
-	classes: PropTypes.object.isRequired,
 	user: PropTypes.object,
 };
 
-export default withStyles(LoginIcon, styles);
+export default LoginIcon;

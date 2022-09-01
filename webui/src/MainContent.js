@@ -63,4 +63,4 @@ MainContent.propTypes = {
 	user: PropTypes.object,
 };
 
-export default withStyles(withRouter(MainContent), styles);
+export default withRouter(withStyles(MainContent, styles));

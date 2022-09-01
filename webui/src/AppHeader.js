@@ -24,6 +24,7 @@ import Server from './server';
 import { withRouter } from 'react-router-dom';
 
 import { Route, Switch } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 const styles = theme => ({
 	root: {
@@ -82,6 +83,7 @@ class AppHeader extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		return; 
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.setState({ search: '' });
 		}
@@ -139,9 +141,11 @@ class AppHeader extends React.Component {
 	renderCollectionSortBody(colID) {
 		return (
 			<React.Fragment>
-				<div className={this.props.classes.toolbarItem}>
+				<Box sx={{
+					mx: 1,
+				}}>
 					<CollectionSorting collectionID={colID} />
-				</div>
+				</Box>
 				<CollectionFilterButton collectionID={colID} />
 			</React.Fragment>
 		);
@@ -162,9 +166,11 @@ class AppHeader extends React.Component {
 
 	renderFilterStateBody(colID) {
 		return (
-			<div className={this.props.classes.toolbarItem}>
+			<Box sx={{
+				mx: 1
+			}}>
 				<CollectionFilter collectionID={colID} />
-			</div>
+			</Box>
 		);
 	}
 
@@ -192,27 +198,46 @@ class AppHeader extends React.Component {
 	}
 
 	render() {
-		const { classes } = this.props;
-
+		// const { classes } = this.props;
+		
 		return (
-			<div className={classes.root}>
+			<Box sx={{
+				width: '100%',
+				zIndex: 100,
+			}}>
 				<AppBar position='static'>
-					<Toolbar>
-						<IconButton className={classes.menuButton} color='inherit' aria-label='Menu' onClick={this.handleMainDrawer}>
+					<Toolbar className='HELLO TESTING'>
+						<IconButton color='inherit' aria-label='Menu' onClick={this.handleMainDrawer}
+							sx={{
+								ml: -1.5,
+								mr: 1.5
+							}}
+						>
 							<MenuIcon />
 						</IconButton>
-						<div className={classes.expand}>
-							<Typography variant='h6' color='inherit' className={this.props.classes.toolbarItem}>
+						<Box 
+							sx={{
+								flex: 1,
+								display: 'flex',
+								alignItems: 'center',
+							}}
+						>
+							<Typography variant='h6' color='inherit' 
+								sx={{
+									mx: 1,
+								}}
+							>
 								{this.renderTitle()}
 							</Typography>
 							{this.renderFilterState()}
-						</div>
+						</Box>
 			
-						{/* Search bar todo */}
+						{/* Search bar todo: our own version? */}
 						{
 							<SearchBar
-								onRequestSearch={this.handleSearch}
-								onChange={this.handleSearchChange}
+								// @ts-ignore -- something weird with the import
+								onRequestSearch={() => this.handleSearch()} 
+								onChange={() => this.handleSearchChange()}
 								value={this.state.search}
 								style={{
 									marginRight: 16,
@@ -236,16 +261,16 @@ class AppHeader extends React.Component {
 						<LoginIcon user={this.props.user} />
 					</Toolbar>
 				</AppBar>
-			</div>
+			</Box>
 		);
 	}
 }
 
 AppHeader.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	user: PropTypes.object,
 };
 
-export default withStyles(withRouter(AppHeader), styles);
+export default withRouter(AppHeader);

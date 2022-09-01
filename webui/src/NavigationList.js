@@ -172,4 +172,4 @@ NavigationList.propTypes = {
 	onItemClicked: PropTypes.func.isRequired,
 };
 
-export default withStyles(withRouter(NavigationList), styles);
+export default withRouter(withStyles(NavigationList, styles));

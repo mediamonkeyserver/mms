@@ -23,8 +23,7 @@ import MenuIcon from '@mui/icons-material/MoreVert';
 import PubSub from 'pubsub-js';
 import Server from '../server';
 
-const styles = ({
-});
+import { withRouter } from 'react-router-dom';
 
 // TODO: The hover effect is currently hacked by global CSS, should probably better be handled locally, but how?
 
@@ -160,4 +159,4 @@ CollectionListItem.propTypes = {
 	history: PropTypes.object.isRequired,
 };
 
-export default withStyles(CollectionListItem, styles);
+export default withRouter(CollectionListItem);

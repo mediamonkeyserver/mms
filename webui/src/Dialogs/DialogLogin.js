@@ -20,19 +20,14 @@ const styles = ({
 });
 
 class DialogLogin extends React.Component {
-	
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			username: localStorage.getItem('username') || '',
-			password: '',
-			rememberUsername: true,
-	
-			checking: false,
-			error: false,
-		};
-	}
+	state = {
+		username: localStorage.getItem('username') || '',
+		password: '',
+		rememberUsername: true,
+
+		checking: false,
+		error: false,
+	};
 
 	handleLogin = async (/*event*/) => {
 		this.setState({ checking: true });
