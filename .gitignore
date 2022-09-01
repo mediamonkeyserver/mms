@@ -10,6 +10,7 @@ lib-cov
 *.pid
 *.gz
 .settings
+bun.lockb
 
 pids
 logs
