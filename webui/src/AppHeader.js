@@ -1,20 +1,21 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from 'tss-react/mui';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import CollectionSorting from './Fragments/CollectionSorting';
 import CollectionFilter from './Fragments/CollectionFilter';
 import CollectionFilterButton from './Fragments/CollectionFilterButton';
-import SearchBar from 'material-ui-search-bar';
+import SearchBar from './SearchBar';
+// import SearchBar from 'material-ui-search-bar';
 
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from './LoginIcon';
-import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import CastingButton from './Fragments/CastingButton';
 
 import PubSub from 'pubsub-js';
@@ -206,9 +207,9 @@ class AppHeader extends React.Component {
 							</Typography>
 							{this.renderFilterState()}
 						</div>
-
+			
+						{/* Search bar todo */}
 						{
-							// @ts-ignore
 							<SearchBar
 								onRequestSearch={this.handleSearch}
 								onChange={this.handleSearchChange}
@@ -247,4 +248,4 @@ AppHeader.propTypes = {
 	user: PropTypes.object,
 };
 
-export default withStyles(styles)(withRouter(AppHeader));
+export default withStyles(withRouter(AppHeader), styles);

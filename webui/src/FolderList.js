@@ -1,15 +1,15 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import { withStyles } from 'tss-react/mui';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Path from './utils';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 
-import FolderIcon from '@material-ui/icons/Folder';
+import FolderIcon from '@mui/icons-material/Folder';
 
 import Server from './server';
 
@@ -108,4 +108,4 @@ FolderList.propTypes = {
 	showFiles: PropTypes.bool,
 };
 
-export default withStyles(styles)(FolderList);
+export default withStyles(FolderList, styles);

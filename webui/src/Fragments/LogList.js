@@ -1,10 +1,10 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from 'tss-react/mui';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
 
 import Server from '../server';
 import { subscribeLogChanges, unsubscribeLogChanges } from '../actions';
@@ -88,4 +88,4 @@ LogList.propTypes = {
 	dense: PropTypes.bool,
 };
 
-export default withStyles(styles)(LogList);
+export default withStyles(LogList, styles);

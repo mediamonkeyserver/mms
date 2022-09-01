@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
 import DialogEditCollection from './DialogEditCollection';
 import DialogChooseFolder from './DialogChooseFolder';
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 
 import PubSub from 'pubsub-js';
 
@@ -51,7 +51,7 @@ class Dialogs extends React.Component {
 }
 
 Dialogs.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired, // JL: ???
 };
 
-export default withStyles(styles)(Dialogs);
+export default withStyles(Dialogs, styles);

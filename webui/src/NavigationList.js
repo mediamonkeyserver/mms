@@ -1,14 +1,14 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import Divider from '@material-ui/core/Divider';
+import { withStyles } from 'tss-react/mui';
+import ListSubheader from '@mui/material/ListSubheader';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
 import CollectionIcon from './Fragments/CollectionIcon';
 
 import Server from './server';
@@ -17,14 +17,14 @@ import PubSub from 'pubsub-js';
 import { withRouter } from 'react-router-dom';
 
 // icons
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import LogsIcon from '@material-ui/icons/Subject';
-import ServerIcon from '@material-ui/icons/Storage';
-import PermMediaIcon from '@material-ui/icons/PermMedia';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogsIcon from '@mui/icons-material/Subject';
+import ServerIcon from '@mui/icons-material/Storage';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 
 const styles = theme => ({
 	root: {
@@ -172,4 +172,4 @@ NavigationList.propTypes = {
 	onItemClicked: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(withRouter(NavigationList));
+export default withStyles(withRouter(NavigationList), styles);

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
 import 'rc-slider/assets/index.css';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 import AppHeader from './AppHeader';
 import MainDrawer from './MainDrawer';
 import Dialogs from './Dialogs';
@@ -17,7 +17,6 @@ import screenfull from 'screenfull';
 
 import { subscribeVideoState } from './actions';
 
-import { withRouter } from 'react-router-dom';
 import PubSub from 'pubsub-js';
 
 const styles = ({
@@ -28,11 +27,11 @@ const styles = ({
 		left: 0,
 		right: 0,
 		display: 'flex',
-		'flex-direction': 'column',
+		flexDirection: 'column',
 		backgroundColor: '#f0f0f0',
 	},
 	mainContent: {
-		'flex-grow': 100,
+		flexGrow: 100,
 		marginTop: 10,
 		padding: 10,
 		overflowX: 'hidden',
@@ -138,5 +137,4 @@ App.propTypes = {
 	user: PropTypes.object,
 };
 
-// @ts-ignore
-export default withStyles(styles)(withRouter(App));
+export default withStyles(App, styles);

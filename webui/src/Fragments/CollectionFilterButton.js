@@ -1,21 +1,21 @@
 // @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import TextField from '@mui/material/TextField';
 
-import FilterIcon from '@material-ui/icons/FilterList';
-import StarIcon from '@material-ui/icons/Star';
-import BackArrow from '@material-ui/icons/KeyboardBackspace';
-import DurationIcon from '@material-ui/icons/AccessTime';
-import CheckIcon from '@material-ui/icons/Check';
+import FilterIcon from '@mui/icons-material/FilterList';
+import StarIcon from '@mui/icons-material/Star';
+import BackArrow from '@mui/icons-material/KeyboardBackspace';
+import DurationIcon from '@mui/icons-material/AccessTime';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { addCollectionFilter } from '../actions';
 
@@ -220,4 +220,4 @@ CollectionFilterButton.propTypes = {
 	]).isRequired,
 };
 
-export default withStyles(style)(CollectionFilterButton);
+export default withStyles(CollectionFilterButton, style);

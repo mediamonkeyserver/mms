@@ -1,11 +1,11 @@
 //@ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from 'tss-react/mui';
+import TextField from '@mui/material/TextField';
 
-import Collapse from '@material-ui/core/Collapse';
-import Button from '@material-ui/core/Button';
+import Collapse from '@mui/material/Collapse';
+import Button from '@mui/material/Button';
 import Server from '../server';
 
 const PubSub = require('pubsub-js');
@@ -181,4 +181,4 @@ Profile.propTypes = {
 	editUser: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Profile);
+export default withStyles(Profile, styles);

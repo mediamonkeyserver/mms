@@ -1,9 +1,9 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 import FolderList from './FolderList';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 const styles = theme => ({
 	textField: {
@@ -103,4 +103,4 @@ FolderChooser.propTypes = {
 	showFiles: PropTypes.bool,
 };
 
-export default withStyles(styles)(FolderChooser);
+export default withStyles(FolderChooser, styles);

@@ -36,5 +36,6 @@ module.exports = {
             "never"
         ],
         "prefer-rest-params": "warn",
+		"no-unused-vars": "warn",
     }
 };

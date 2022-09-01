@@ -1,7 +1,7 @@
 // @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
 import Dashboard from './Views/Dashboard';
 import Collections from './Views/Collections';
@@ -16,8 +16,8 @@ import { Route, Switch } from 'react-router-dom';
 import PubSub from 'pubsub-js';
 import { withRouter } from 'react-router-dom';
 
-const styles = {
-};
+const styles = ({
+});
 
 class MainContent extends Component {
 	state = {
@@ -63,4 +63,4 @@ MainContent.propTypes = {
 	user: PropTypes.object,
 };
 
-export default withStyles(styles)(withRouter(MainContent));
+export default withStyles(withRouter(MainContent), styles);

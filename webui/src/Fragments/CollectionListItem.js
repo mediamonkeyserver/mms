@@ -1,32 +1,30 @@
 // @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
+import { withStyles } from 'tss-react/mui';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
 
 import CollectionIcon from './CollectionIcon';
-import MenuIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@mui/icons-material/MoreVert';
 
 import PubSub from 'pubsub-js';
 import Server from '../server';
 
-import { withRouter } from 'react-router-dom';
-
-const styles = {
-};
+const styles = ({
+});
 
 // TODO: The hover effect is currently hacked by global CSS, should probably better be handled locally, but how?
 
@@ -162,4 +160,4 @@ CollectionListItem.propTypes = {
 	history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(CollectionListItem));
+export default withStyles(CollectionListItem, styles);

@@ -1,14 +1,14 @@
 //@ts-check
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Switch from '@material-ui/core/Switch';
-import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
+import Paper from '@mui/material/Paper';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 
 import Server from '../server';
 import PubSub from 'pubsub-js';
@@ -209,5 +209,5 @@ class CfgExtAccess extends Component {
 	}
 }
 
-export default withStyles(styles)(CfgExtAccess);
+export default withStyles(CfgExtAccess, styles);
 

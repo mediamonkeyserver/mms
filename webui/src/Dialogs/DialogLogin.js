@@ -1,18 +1,17 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CircularProgress from '@material-ui/core/CircularProgress';
-// import Typography from '@material-ui/core/Typography';
+import { withStyles } from 'tss-react/mui';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import CircularProgress from '@mui/material/CircularProgress';
+// import Typography from '@mui/material/Typography';
 
 import Server from '../server';
 
@@ -21,14 +20,19 @@ const styles = ({
 });
 
 class DialogLogin extends React.Component {
-	state = {
-		username: localStorage.getItem('username') || '',
-		password: '',
-		rememberUsername: true,
-
-		checking: false,
-		error: false,
-	};
+	
+	constructor(props) {
+		super(props);
+		
+		this.state = {
+			username: localStorage.getItem('username') || '',
+			password: '',
+			rememberUsername: true,
+	
+			checking: false,
+			error: false,
+		};
+	}
 
 	handleLogin = async (/*event*/) => {
 		this.setState({ checking: true });
@@ -77,12 +81,17 @@ class DialogLogin extends React.Component {
 			this.handleLogin();
 		}
 	}
+	
+	handleDialogClose = (reason) => {
+		if (reason === 'backdropClick') return; // disableBackdropClick support was removed
+		this.setState({ open: false });
+	}
 
 	render() {
 		return (
 			<Dialog
 				open={!this.props.user}
-				disableBackdropClick
+				onClose={() => null}
 				fullWidth
 				onKeyPress={this.handleKeyPress}
 			>
@@ -142,5 +151,5 @@ DialogLogin.propTypes = {
 	user: PropTypes.object,
 };
 
-// @ts-ignore
-export default withStyles(styles)(withMobileDialog({ breakpoint: 'xs' })(DialogLogin));
+// todo: mobile dialog breakpoint xs
+export default withStyles(DialogLogin, styles);

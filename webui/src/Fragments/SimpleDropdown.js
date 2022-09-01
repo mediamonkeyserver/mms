@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
-import Menu from '@material-ui/core/Menu';
+import { withStyles } from 'tss-react/mui';
+import Typography from '@mui/material/Typography';
+import DropdownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Menu from '@mui/material/Menu';
 
 const styles = ({
 	root: {
@@ -57,4 +57,4 @@ SimpleDropdown.propTypes = {
 	onClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SimpleDropdown);
+export default withStyles(SimpleDropdown, styles);

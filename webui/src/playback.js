@@ -75,8 +75,9 @@ subscribePlaybackStateChange((data) => {
 
 	var newstate = data.state;
 	var mediaItem = data.mediaItem || state.mediaItem;
+	// todo: better boolean logic
 	var send = (data.state !== lastStateSent) ||	// Different state => send notification
-		((lastMediaItem || {}).db_id !== (mediaItem || {}).db_id); // Diffent item playing => send notification
+		((lastMediaItem || {db_id: undefined}).db_id !== (mediaItem || {db_id: undefined}).db_id); // Diffent item playing => send notification
 
 	if (newstate === 'seeked') {
 		send = true; // We need to notify about the seek right away
@@ -92,15 +93,51 @@ subscribePlaybackStateChange((data) => {
 
 // == Playback ==
 
+// declare type MediaItem = any; // todo more specific
+
+// declare interface PlaybackState {
+// 	activeAVPlayer?: typeof videoPlayer;
+// 	mediaItem?: MediaItem;
+// 	getPlaying: () => MediaItem;
+// 	getActive: () => MediaItem;
+// 	castingPlaying: boolean;
+// 	castingActive: boolean;
+// 	playingHLS: boolean;
+// 	castingCurrentTime?: number;
+// 	castingLastUpdate?: number;
+// }
+
+/**
+ * // todo more specific
+ * @typedef {any} MediaItem
+ */
+
+/**
+ * @typedef {Object} PlaybackState
+ * @property {typeof videoPlayer} [activeAVPlayer]
+ * @property {MediaItem} [mediaItem]
+ * @property {() => MediaItem} getPlaying
+ * @property {() => MediaItem} getActive
+ * @property {boolean} castingPlaying
+ * @property {boolean} castingActive
+ * @property {boolean} playingHLS
+ * @property {number} [castingCurrentTime]
+ * @property {number} [castingLastUpdate]
+ */
+
+/**
+ * @type {PlaybackState}
+ */
 var state = {
-	activeAVPlayer: null,
-	mediaItem: null,
+	activeAVPlayer: undefined,
+	mediaItem: undefined,
 	getPlaying: function () { return castingClientID ? this.castingPlaying : this.activeAVPlayer && !this.activeAVPlayer.ended && !this.activeAVPlayer.paused; },
 	getActive: function () { return castingClientID ? this.castingActive : this.activeAVPlayer && !this.activeAVPlayer.ended; },
 	castingPlaying: false,
 	castingActive: false,
-	castingCurrentTime: null,
-	castingLastUpdate: null,
+	playingHLS: false,
+	castingCurrentTime: undefined,
+	castingLastUpdate: undefined,
 };
 
 var hls;
@@ -285,7 +322,7 @@ class Playback {
 		if (castingClientID) {
 			// Temporarily set the casting state, until we're notified from the target player about the actual state
 			state.mediaItem = mediaItem;
-			state.currentCurrentTime = 0;
+			state.castingCurrentTime = 0;
 			state.castingLastUpdate = performance.now();
 			state.castingActive = true;
 			state.castingPlaying = true;
@@ -342,9 +379,10 @@ class Playback {
 	}
 
 	static getCurrentTime() {
-		var res = null;
+		var res;
 		if (castingClientID) {
-			res = state.castingCurrentTime + (state.castingPlaying ? performance.now() - state.castingLastUpdate : 0) / 1000;
+			// todo better typecasting logic for castingCurrentTime and castingLastUpdate
+			res = (state.castingCurrentTime || 0) + (state.castingPlaying ? performance.now() - (state.castingLastUpdate || 0) : 0) / 1000;
 		} else {
 			if (state.activeAVPlayer) {
 				res = state.activeAVPlayer.currentTime;

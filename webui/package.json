@@ -8,19 +8,21 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@enykeev/react-virtualized": "^9.22.4-mirror.1",
-    "@mui/material": "^5.10.1",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.3",
     "debug": "^4.1.1",
-    "hls.js": "^0.12.4",
+    "hls.js": "^1.2.1",
     "js-cookie": "^2.2.0",
     "pubsub-js": "^1.6.0",
     "query-string": "^6.12.0",
     "rc-slider": "^8.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "~6.3.0",
+    "react-router-dom": "~5.0.1",
     "react-scripts": "^5.0.1",
     "screenfull": "^4.2.0",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "tss-react": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +34,7 @@
     "babel-eslint": "10.1.0",
     "caniuse-lite": "~1.0.30001377",
     "eslint": "^6.6.0",
-    "eslint-plugin-react": "^7.19.0"
+    "eslint-plugin-react": "^7.31.1"
   },
   "browserslist": {
     "production": [

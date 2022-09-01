@@ -1,8 +1,8 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+import { withStyles } from 'tss-react/mui';
+import Drawer from '@mui/material/Drawer';
 import PubSub from 'pubsub-js';
 import NavigationList from './NavigationList';
 
@@ -42,4 +42,4 @@ MainDrawer.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MainDrawer);
+export default withStyles(MainDrawer, styles);

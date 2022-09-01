@@ -1,11 +1,11 @@
 //@ts-check
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
 
 import Server from '../server';
 
@@ -116,5 +116,5 @@ class CfgServer extends Component {
 	}
 }
 
-export default withStyles(styles)(CfgServer);
+export default withStyles(CfgServer, styles);
 

@@ -1,16 +1,16 @@
 // @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import MusicIcon from '@material-ui/icons/MusicNote';
-import MovieIcon from '@material-ui/icons/Movie';
-import PlaylistIcon from '@material-ui/icons/PlaylistPlay';
+import MusicIcon from '@mui/icons-material/MusicNote';
+import MovieIcon from '@mui/icons-material/Movie';
+import PlaylistIcon from '@mui/icons-material/PlaylistPlay';
 
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
-const styles = {
-};
+const styles = ({
+});
 
 class CollectionIcon extends Component {
 	rendericon() {
@@ -42,4 +42,4 @@ CollectionIcon.propTypes = {
 	variant: PropTypes.string,
 };
 
-export default withStyles(styles)(CollectionIcon);
+export default withStyles(CollectionIcon, styles);

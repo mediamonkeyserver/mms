@@ -1,17 +1,17 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListSubheader from '@mui/material/ListSubheader';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
-import CastIcon from '@material-ui/icons/Cast';
-import CastConnectedIcon from '@material-ui/icons/CastConnected';
-import ComputerIcon from '@material-ui/icons/Computer';
+import CastIcon from '@mui/icons-material/Cast';
+import CastConnectedIcon from '@mui/icons-material/CastConnected';
+import ComputerIcon from '@mui/icons-material/Computer';
 
 import Server from '../server';
 import { getCastingClientID, setCastingClientID } from '../playback';
@@ -121,4 +121,4 @@ CastingButton.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CastingButton);
+export default withStyles(CastingButton, styles);

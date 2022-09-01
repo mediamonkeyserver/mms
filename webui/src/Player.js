@@ -1,20 +1,20 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
+import { withStyles } from 'tss-react/mui';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
 import Slider from 'rc-slider'; // We use this non-Material UI Slider until there's one included in the material-ui library.
-import { withTheme } from '@material-ui/core/styles';
 
-import PlayIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import StopIcon from '@material-ui/icons/Stop';
+import PlayIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import StopIcon from '@mui/icons-material/Stop';
 
 import Playback from './playback';
 import { subscribePlaybackStateChange } from './actions';
+import theme from './theme';
 
 const styles = {
 	root: {
@@ -113,13 +113,13 @@ class Player extends React.Component {
 								value={this.state.seekPosition}
 								max={SEEK_STEPS}
 								railStyle={{
-									backgroundColor: this.props.theme.palette.primary.light,
+									backgroundColor: theme.palette.primary.light,
 								}}
 								trackStyle={{
-									backgroundColor: this.props.theme.palette.secondary.main,
+									backgroundColor: theme.palette.secondary.main,
 								}}
 								handleStyle={{
-									backgroundColor: this.props.theme.palette.secondary.main,
+									backgroundColor: theme.palette.secondary.main,
 									border: 'none',
 									width: 12,
 									height: 12,
@@ -152,8 +152,6 @@ class Player extends React.Component {
 
 Player.propTypes = {
 	classes: PropTypes.object.isRequired,
-	theme: PropTypes.object.isRequired,
 };
 
-// @ts-ignore
-export default withTheme(withStyles(styles)(Player));
+export default withStyles(Player, styles);

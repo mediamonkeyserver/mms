@@ -1,13 +1,13 @@
 //@ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
+import { withStyles } from 'tss-react/mui';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 
 import LogList from '../Fragments/LogList';
 import CollectionsList from '../Fragments/CollectionsList';
@@ -83,4 +83,4 @@ Dashboard.propTypes = {
 	user: PropTypes.object,
 };
 
-export default withStyles(styles)(withRouter(Dashboard));
+export default withStyles(withRouter(Dashboard), styles);

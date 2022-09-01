@@ -1,12 +1,12 @@
 // @ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import List from '@material-ui/core/List';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import List from '@mui/material/List';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import CollectionListItem from './CollectionListItem';
 
@@ -91,5 +91,5 @@ CollectionsList.propTypes = {
 	click: PropTypes.string,
 };
 
-export default withStyles(styles)(CollectionsList);
+export default withStyles(CollectionsList, styles);
 

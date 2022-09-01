@@ -1,28 +1,28 @@
 // @ts-check
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from 'tss-react/mui';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+// import withMobileDialog from '@mui/material/withMobileDialog';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 
-// import MusicIcon from '@material-ui/icons/MusicNote';
-// import MovieIcon from '@material-ui/icons/Movie';
-// import PlaylistIcon from '@material-ui/icons/PlaylistPlay';
-import RemoveIcon from '@material-ui/icons/Clear';
+// import MusicIcon from '@mui/icons-material/MusicNote';
+// import MovieIcon from '@mui/icons-material/Movie';
+// import PlaylistIcon from '@mui/icons-material/PlaylistPlay';
+import RemoveIcon from '@mui/icons-material/Clear';
 
 import PubSub from 'pubsub-js';
 import Server from './server';
@@ -60,7 +60,9 @@ class DialogEditCollection extends React.Component {
 		folders: []
 	};
 
-	handleDialogClose = () => {
+	handleDialogClose = (reason) => {
+		if (reason === 'backdropClick') return; // disableBackdropClick support was removed
+		
 		this.setState({ open: false });
 	}
 
@@ -136,7 +138,6 @@ class DialogEditCollection extends React.Component {
 			<Dialog
 				open={this.state.open}
 				onClose={this.handleDialogClose}
-				disableBackdropClick
 				fullWidth
 			>
 				<DialogTitle>{this.state.add ? 'Create Collection' : 'Edit Collection'}</DialogTitle>
@@ -238,5 +239,5 @@ DialogEditCollection.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-// @ts-ignore
-export default withStyles(styles)(withMobileDialog({ breakpoint: 'xs' })(DialogEditCollection));
+// todo mobile breakpoint xs
+export default withStyles(DialogEditCollection, styles);

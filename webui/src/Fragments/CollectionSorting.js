@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SimpleDropdown from './SimpleDropdown';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 import { changeCollectionSort } from '../actions';
 
 const audioSorts = {

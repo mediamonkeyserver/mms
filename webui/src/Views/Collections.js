@@ -1,10 +1,10 @@
 //@ts-check
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from 'tss-react/mui';
 
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 import CollectionsList from '../Fragments/CollectionsList';
 
@@ -29,5 +29,5 @@ Collections.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Collections);
+export default withStyles(Collections, styles);
 
